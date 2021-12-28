@@ -1,5 +1,10 @@
 package com.oems.home.model;
 
-public class BaseUser {
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
+@Entity
+public class BaseUser {
+@Id
+private String NID;
 }
