@@ -14,7 +14,8 @@ Step-4: Check any pending marge request
 
 Step-5: Pull and merge development branch:
 
-		git commit -am "description"
+		git add .
+		git commit -m "description"
 		git checkout development
 		git pull origin develop
 		git checkout <my_branch>
