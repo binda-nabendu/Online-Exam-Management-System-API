@@ -1,0 +1,38 @@
+----------------For Teacher--------------
+/teacher-board
+
+/teachers/all-teachers
+
+/courses
+/courses/{teacherId}
+/courses/{code}/my-student
+
+/exams/question/?
+/exams/all-exams/{courseCode,questionId}
+/exams/all-result/{teacherId}
+/exams/review
+
+/terms-and-condition
+
+/faq
+
+--------------For Admin----------------
+/admin-board
+
+/teachers/add-teachers
+/teachers/approve-teachers
+
+/students/add-students
+/students/all-students
+/students/approve-students
+
+/courses/add-courses
+
+-----------For Student-----------------
+/student-board
+
+/courses/my-courses/{studentId}
+/courses/dept/{deptId}
+/courses/completed/{studentId}
+/exams/upcoming/{studentId}
+/exams/previous
