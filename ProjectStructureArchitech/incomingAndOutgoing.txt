@@ -34,5 +34,6 @@
 /courses/my-courses/{studentId}
 /courses/dept/{deptId}
 /courses/completed/{studentId}
+
 /exams/upcoming/{studentId}
 /exams/previous
