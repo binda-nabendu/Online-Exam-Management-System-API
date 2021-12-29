@@ -17,9 +17,9 @@ Step-5: Pull and merge development branch:
 		git add .
 		git commit -m "description"
 		git checkout development
-		git pull origin develop
+		git pull origin development
 		git checkout <my_branch>
-		git merge develop
+		git merge development
 		
 Step-6: Send a merge request to develop branch : 
 		git push origin <my_branch>
