@@ -1,33 +1,36 @@
 package com.oems.home.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 
 @Entity
+@Table(name = "base_user")
 public class BaseUser {
 @Id
-private String nid;
+@OneToOne(mappedBy = "student")
+private Student nid;
 private String name;
 private String fatherName;
 private String motherName;
-private String gender;
+private int gender;//1 for male, 2 for female
 private String contactNo;
 private String email;
 private Date dob;
 private String address;
 private Boolean adminApproval;
-private String role;
+private int role;//1 for admin, 2 for teacher, 3 for student
 private String password;
 
-public String getNID() {
-	return nid;
-}
-public void setNID(String nID) {
-	nid = nID;
-}
-public String getName() {
+	public Student getNid() {
+		return nid;
+	}
+
+	public void setNid(Student nid) {
+		this.nid = nid;
+	}
+
+	public String getName() {
 	return name;
 }
 public void setName(String name) {
@@ -45,10 +48,10 @@ public String getMotherName() {
 public void setMotherName(String motherName) {
 	this.motherName = motherName;
 }
-public String getGender() {
+public int getGender() {
 	return gender;
 }
-public void setGender(String gender) {
+public void setGender(int gender) {
 	this.gender = gender;
 }
 public String getContactNo() {
@@ -82,9 +85,10 @@ public void setAdminApproval(Boolean adminApproval) {
 	this.adminApproval = adminApproval;
 }
 public String getRole() {
-	return role;
+	return Integer.toString(role);
 }
-public void setRole(String role) {
+public void setRole(int role) {
+
 	this.role = role;
 }
 public String getPassword() {

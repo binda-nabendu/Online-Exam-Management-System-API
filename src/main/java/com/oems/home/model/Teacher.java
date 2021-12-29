@@ -2,14 +2,13 @@ package com.oems.home.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Teacher {
 	@Id
 	private String id;
 	private String educationalQualification;
-	private String expart;
+	private String expert;
 	public String getId() {
 		return id;
 	}
@@ -22,10 +21,10 @@ public class Teacher {
 	public void setEducationalQualification(String educationalQualification) {
 		this.educationalQualification = educationalQualification;
 	}
-	public String getExpart() {
-		return expart;
+	public String getExpert() {
+		return expert;
 	}
-	public void setExpart(String expart) {
-		this.expart = expart;
+	public void setExpert(String expert) {
+		this.expert = expert;
 	}
 }
