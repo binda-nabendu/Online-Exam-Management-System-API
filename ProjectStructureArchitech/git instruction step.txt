@@ -1,0 +1,25 @@
+TEAM WORK
+Step-1: pull code from origin development branch:
+
+		git checkout development
+		git pull origin development
+		
+Step-2: Create and change branch to develop:
+
+		git checkout nabendu
+		git merge development
+Step-3: Write my code
+
+Step-4: Check any pending marge request
+
+Step-5: Pull and merge development branch:
+
+		git add .
+		git commit -m "description"
+		git checkout development
+		git pull origin develop
+		git checkout <my_branch>
+		git merge develop
+		
+Step-6: Send a merge request to develop branch : 
+		git push origin <my_branch>
