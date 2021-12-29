@@ -22,18 +22,19 @@
 /teachers/add-teachers
 /teachers/approve-teachers
 
+/courses/add-courses
+
 /students/add-students
 /students/all-students
 /students/approve-students
 
-/courses/add-courses
 
 -----------For Student-----------------
 /student-board
 
-/courses/my-courses/{studentId}
-/courses/dept/{deptId}
-/courses/completed/{studentId}
+/departmental-course/my-courses/{studentId}
+/departmental-course/{deptId}
+/departmental-course/completed/{studentId}
 
 /exams/upcoming/{studentId}
-/exams/previous
+/exams/previous/{studentId}

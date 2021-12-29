@@ -2,28 +2,30 @@ package com.oems.home.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.math.BigDecimal;
+import java.sql.Date;
 
 @Entity
 public class BaseUser {
 @Id
-private String NID;
+private String nid;
 private String name;
 private String fatherName;
 private String motherName;
 private String gender;
 private String contactNo;
 private String email;
-private String dob;
+private Date dob;
 private String address;
 private Boolean adminApproval;
 private String role;
 private String password;
 
 public String getNID() {
-	return NID;
+	return nid;
 }
 public void setNID(String nID) {
-	NID = nID;
+	nid = nID;
 }
 public String getName() {
 	return name;
@@ -61,10 +63,10 @@ public String getEmail() {
 public void setEmail(String email) {
 	this.email = email;
 }
-public String getDob() {
+public Date getDob() {
 	return dob;
 }
-public void setDob(String dob) {
+public void setDob(Date dob) {
 	this.dob = dob;
 }
 public String getAddress() {
