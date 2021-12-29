@@ -30,7 +30,7 @@ public class UserDetailed implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getNID();
+        return user.getUID();
     }
 
     @Override

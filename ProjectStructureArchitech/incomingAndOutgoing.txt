@@ -1,3 +1,4 @@
+Database Name : E_M_System
 ----------------For Teacher--------------
 /teacher-board
 
@@ -8,9 +9,9 @@
 /courses/{code}/my-student
 
 /exams/question/?
-/exams/all-exams/{courseCode,questionId}
-/exams/all-result/{teacherId}
-/exams/review
+/exams/all-exams/{teacher-id}
+/exams/all-result/{teacher-id}
+/exams/review/{courseId}/{examId}
 
 /terms-and-condition
 
@@ -30,11 +31,16 @@
 
 
 -----------For Student-----------------
-/student-board
+/student-board/{id}
 
-/departmental-course/my-courses/{studentId}
+/departmental-course/current-courses/{studentId}
 /departmental-course/{deptId}
 /departmental-course/completed/{studentId}
 
 /exams/upcoming/{studentId}
 /exams/previous/{studentId}
+/exams/review//{studentId}/{examId}
+
+create table baseUser(nid varchar(20) primary key, name varchar (52), fatherName varchar(52), motherName varchar(52),
+gender char(1), contactNo varchar(20), email varchar(52), dob date, address varchar(200), adminApproval bool,
+role int(1), password varchar(100));

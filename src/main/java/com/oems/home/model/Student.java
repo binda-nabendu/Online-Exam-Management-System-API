@@ -1,24 +1,28 @@
 package com.oems.home.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import com.fasterxml.jackson.databind.ser.Serializers;
 
+import javax.persistence.*;
 
 @Entity
+@Table(name = "student")
 public class Student {
 	@Id
-	private String id;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id", referencedColumnName = "nid")
+	private BaseUser id;
 	private String deptId;
 	private int batch;
-	private int semister;
-	
-	public String getId() {
+	private int semester;
+
+	public BaseUser getId() {
 		return id;
 	}
-	public void setId(String id) {
+
+	public void setId(BaseUser id) {
 		this.id = id;
 	}
+
 	public String getDeptId() {
 		return deptId;
 	}
@@ -31,11 +35,11 @@ public class Student {
 	public void setBatch(int batch) {
 		this.batch = batch;
 	}
-	public int getSemister() {
-		return semister;
+	public int getSemester() {
+		return semester;
 	}
-	public void setSemister(int semister) {
-		this.semister = semister;
+	public void setSemester(int semester) {
+		this.semester = semester;
 	}
 	
 	

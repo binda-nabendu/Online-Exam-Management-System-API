@@ -45,9 +45,9 @@ public class SecurityManager extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        final String admin = "ADMIN";
-        final String teacher = "TEACHER";
-        final String student = "STUDENT";
+        final String admin   = "1";
+        final String teacher = "2";
+        final String student = "3";
 
         http.authorizeRequests()
                 .antMatchers("/teacher-board").hasRole(teacher)
