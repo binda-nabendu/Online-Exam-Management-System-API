@@ -23,18 +23,3 @@ Step-5: Pull and merge development branch:
 		
 Step-6: Send a merge request to develop branch : 
 		git push origin <my_branch>
-
-		create table baseUser(
-            nid varchar(20) primary key,
-            userName varchar (50),
-            fatherName varchar(50),
-            motherName varchar(50),
-            gender tinyint,
-            contactNo varchar(20),
-            email varchar(50),
-            dob date,
-            address varchar(200),
-            adminApproval tinyint,
-            role varchar(8),
-            password varchar(100)
-            );
