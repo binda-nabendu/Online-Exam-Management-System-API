@@ -4,11 +4,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 
-@Entity
-@Table(name = "base_user")
 public class BaseUser {
-@Id
-@OneToOne(mappedBy = "student")
 private Student nid;
 private String name;
 private String fatherName;

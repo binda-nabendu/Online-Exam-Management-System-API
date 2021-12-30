@@ -1,5 +1,6 @@
 package com.oems.home.controller;
 
+import com.oems.home.model.QuestionPaper;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,14 +30,27 @@ public class TeacherController {
         return "All Current Courses of That teacher";
     }
     @GetMapping
-    @RequestMapping("/courses/{code}/my-student")
-    public String allStudentOfThatCourse(@PathVariable("code")String courseCode){
+    @RequestMapping("/courses/my-students/{course-code}")
+    public String allStudentOfThatCourse(@PathVariable("course-code")String courseCode){
 
         return "All student list of that Courses of That teacher";
     }
     /*
     TODO -------------------- create question part------------------
      */
+    @PostMapping
+    @RequestMapping("/exams/questions/{question-paper}")
+    public String QuestionPaper(@PathVariable("question-paper") QuestionPaper questionPaper){
+        return "Your Question will set successful";
+    }
+
+    @GetMapping
+    @RequestMapping("/exams/questions/{question-paper-id}")
+    public String QuestionPaper(@PathVariable("question-paper-id") int qId){
+        return "Your"+qId+" Question is here";
+    }
+
+
     @GetMapping
     @RequestMapping("/exams/all-exams/{teacher-id}")
     public String getAllQuestionThatTeacherMade(@PathVariable("teacher-id") String tid){

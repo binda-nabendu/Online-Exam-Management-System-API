@@ -3,28 +3,25 @@ package com.oems.home.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
-public class Teacher {
-	@Id
-	private String id;
+
+public class Teacher extends BaseUser{
 	private String educationalQualification;
-	private String expert;
-	public String getId() {
-		return id;
+
+	public String getExpertise() {
+		return expertise;
 	}
-	public void setId(String id) {
-		this.id = id;
+
+	public void setExpertise(String expertise) {
+		this.expertise = expertise;
 	}
+
+	private String expertise;
+
 	public String getEducationalQualification() {
 		return educationalQualification;
 	}
+
 	public void setEducationalQualification(String educationalQualification) {
 		this.educationalQualification = educationalQualification;
-	}
-	public String getExpert() {
-		return expert;
-	}
-	public void setExpert(String expert) {
-		this.expert = expert;
 	}
 }
