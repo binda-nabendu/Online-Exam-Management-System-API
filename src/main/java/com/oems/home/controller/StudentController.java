@@ -37,7 +37,7 @@ public class StudentController {
         return "List of previous exam up to 2 semester";
     }
     @PostMapping
-    @RequestMapping("/exams/review/{studentId}/{examId}")
+    @RequestMapping("/exams/send-review/{studentId}/{examId}")
     public String RequestReview(@PathVariable("studentId")String id ,@PathVariable("examId") int examId){
         return "Review Request Sand..";
     }
