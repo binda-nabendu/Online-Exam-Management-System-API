@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class TeacherController {
     @GetMapping
-    @RequestMapping("teacher-board/{id}")
+    @RequestMapping("/teacher-board/{id}")
     public String TeacherBoardManager(@PathVariable("id") String id){
 
         return "Teacher board manager";
@@ -18,7 +18,7 @@ public class TeacherController {
         return "All teacher list";
     }
     @GetMapping
-    @RequestMapping("/courses")
+    @RequestMapping("/all-courses")
     public String allCoursesOfAllDept(){
 
         return "All Courses of all department";
@@ -35,9 +35,7 @@ public class TeacherController {
 
         return "All student list of that Courses of That teacher";
     }
-    /*
-    TODO -------------------- create question part------------------
-     */
+
     @PostMapping
     @RequestMapping("/exams/questions/{question-paper}")
     public String QuestionPaper(@PathVariable("question-paper") QuestionPaper questionPaper){
@@ -62,7 +60,7 @@ public class TeacherController {
         return "Here all of your subject result you can see";
     }
     @GetMapping
-    @RequestMapping("/exams/review/{courseId}/{examId}")
+    @RequestMapping("/exams/receive-review/{courseId}/{examId}")
     public String RequestReview(@PathVariable("courseId")String id ,@PathVariable("examId") int examId){
         return "Review Request Send..";
     }

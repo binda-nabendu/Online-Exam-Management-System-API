@@ -1,72 +1,67 @@
 package com.oems.home.security;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.builders.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityManager extends WebSecurityConfigurerAdapter {
-    @Bean
-    public UserDetailsService getUserDetailsService(){
-        return new AllUserDetailsServiceProvider();
-    }
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+    @Autowired
+    private DataSource dataSource;
 
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider(){
-
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-
-        authenticationProvider.setUserDetailsService(this.getUserDetailsService());
-
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-
-        return authenticationProvider;
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
+    @Autowired
+    public void configAuthentication(AuthenticationManagerBuilder authBuilder) throws Exception {
+        authBuilder.jdbcAuthentication()
+                .dataSource(dataSource)
+                .passwordEncoder(new BCryptPasswordEncoder())
+                .usersByUsernameQuery("select nid, password, adminApproval from baseUser where nid=?")
+                .authoritiesByUsernameQuery("select nid, role from baseUser where nid=?")
+                ;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        final String admin   = "1";
-        final String teacher = "2";
-        final String student = "3";
-
         http.authorizeRequests()
-                .antMatchers("/teacher-board").hasRole(teacher)
-                .antMatchers("/admin-board").hasRole(admin)
-                .antMatchers("/student-board").hasRole(student)
+                .antMatchers("/teacher-board/**").access("hasAuthority('TEACHER')")
+                .antMatchers("/admin-board/**").access("hasAuthority('ADMIN')")
+                .antMatchers("/student-board/**").access("hasAuthority('STUDENT')")
 
-                .antMatchers("/teachers/all-teachers").hasAnyRole(admin, teacher,student)
-                .antMatchers("/teachers/add-teachers").hasRole(admin)
-                .antMatchers("/teachers/approve-teachers").hasRole(admin)
+                .antMatchers("/teachers/all-teachers").authenticated()
 
-                .antMatchers("/courses/add-courses").hasRole(admin)
-                .antMatchers("/courses/**").hasAnyRole(admin, teacher)
+                .antMatchers("/courses/add-courses/**").access("hasAuthority('ADMIN')")
+                .antMatchers("/all-courses").access("hasAuthority('TEACHER') OR hasAuthority('ADMIN')")
+                .antMatchers("/courses/**").access("hasAuthority('TEACHER') OR hasAuthority('ADMIN')")
 
-                .antMatchers("/students/**").hasRole(admin)
+                .antMatchers("/departmental-course/**").access("hasAuthority('STUDENT')")
 
-                .antMatchers("/departmental-course/**").hasRole(student)
+                .antMatchers("/exams/questions/**").access("hasAuthority('TEACHER') OR hasAuthority('ADMIN')")
+                .antMatchers("/exams/all-exams/**").access("hasAuthority('TEACHER') OR hasAuthority('ADMIN')")
+                .antMatchers("/exams/all-result/**").access("hasAuthority('TEACHER') OR hasAuthority('ADMIN')")
+                .antMatchers("/exams/upcoming/**").access("hasAuthority('STUDENT')")
+                .antMatchers("/exams/previous/**").access("hasAuthority('STUDENT')")
 
-                .antMatchers("/**").permitAll()
+                .antMatchers("/exams/receive-review/**").access("hasAuthority('TEACHER') OR hasAuthority('ADMIN')")
+                .antMatchers("/exams/send-review/**").access("hasAuthority('STUDENT')")
 
-                .and().formLogin().and().csrf().disable();
+                .antMatchers("/teachers/approve-teachers/**").access("hasAuthority('ADMIN')")
+                .antMatchers("/students/approve-student/**").access("hasAuthority('ADMIN')")
+
+                .antMatchers("/departmental-course/**").access("hasAuthority('STUDENT')")
+
+                .antMatchers("/teachers/add-teacher/**").permitAll()
+                .antMatchers("/student/add-student/**").permitAll()
+
+                .and()
+                .formLogin().permitAll()
+                .and()
+                .logout().permitAll();
     }
 }
