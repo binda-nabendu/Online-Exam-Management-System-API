@@ -19,49 +19,51 @@ create table baseUser(
 
 create table  student(
 	stdId varchar(20) primary key,
-	deptId varchar(10),
-	batch int(4),
-	semester int(2),
+	deptId varchar(10) not null,
+	batch int(4) not null,
+	semester int(2) not null,
     foreign key(stdId) references baseUser(nid)
 );
 
 create table teacher(
 	teacherId varchar(20) primary key,
-	eduQualification varchar(200),
-	expertise varchar(50),
+	eduQualification varchar(200) default 'Did not give yet',
+	expertise varchar(50) not null,
     foreign key(teacherId) references baseUser(nid)
 );
 
 create table department(
 	deptId varchar(10) primary key,
-	deptName varchar(60)
+	deptName varchar(60) not null
 );
 
 create table courses(
 	courseCode varchar(10) primary key,
-	courseName varchar(50),
-	deptId varchar(10),
-	teacherId char(10),
+    deptId varchar(10) primary key,
+	courseName varchar(50) not null,
+	teacherId varchar(20) default 'Not assigned',
+    courseCurrSession int(10),
     foreign key(deptId) references department(deptId),
     foreign key(teacherId) references teacher(teacherId)
 );
 
 create table examPaper(
 	examId int(10) primary key auto_increment,
-	courseCode varchar(10),
-	percentageValue decimal(5,2),
-	startingDateTime datetime,
-	endingDateTime datetime,
-	total int(4),
+	courseCode varchar(10) primary key,
+	percentageValue decimal(5,2) not null,
+	startingDateTime datetime not null,
+	endingDateTime datetime not null,
+    courseSession int(10) not null,
+	total decimal(5,2) not null,
     foreign key(courseCode) references courses(courseCode)
 );
 
 create table question(
 	questionId int(20) primary key auto_increment,
-	examId int(10),
-	question varchar(200),
+	examId int(10) primary key,
+	question varchar(200) not null,
 	questionImage blob,
-	mark decimal(4,2),
+	mark decimal(4,2) not null,
 	foreign key(examId) references examPaper(examId)
  );
 
@@ -69,7 +71,7 @@ create table studentMark(
 	stdId varchar(20) primary key,
 	courseCode varchar(10) primary key,
 	examId int(10) primary key,
-	gotTotalMarks decimal(5,2),
+	gotTotalMarks decimal(5,2) default 0.0,
     foreign key(stdId) references student(stdId),
     foreign key(courseCode) references courses(courseCode),
     foreign key(examId) references examPaper(examId)
@@ -78,9 +80,9 @@ create table studentMark(
 create table questionAns(
 	examId int(10) primary key,
 	questionId int(20) primary key,
-	optionNo varchar(2),
-	optionValue varchar(200),
-	ansStatus bool,
+	optionNo varchar(2) not null,
+	optionValue varchar(200) not null,
+	ansStatus bool default false,
     foreign key(examId) references examPaper(examId),
     foreign key(questionId) references question(questionId)
 );
@@ -89,8 +91,8 @@ create table stdAnsScript(
 	stdId varchar(20) primary key,
 	examId int(10) primary key,
 	questionId int(20) primary key,
-	optionNo varchar(2),
-	ansStatus bool,
+	optionNo varchar(2) default 'Z',
+	ansStatus bool default false,
     foreign key(stdId) references student(stdId),
     foreign key(examId) references examPaper(examId),
     foreign key(questionId) references question(questionId)
@@ -99,8 +101,8 @@ create table stdAnsScript(
 create table result(
 	stdId varchar(20) primary key,
 	courseCode varchar(10) primary key,
-	cgpa decimal(3,2),
-	grade varchar(3),
+	cgpa decimal(3,2) default -1,
+	grade varchar(3) default 'X',
 	semester int(2),
     foreign key(stdId) references student(stdId),
     foreign key(courseCode) references courses(courseCode)
