@@ -1,14 +1,19 @@
 Database Name : E_M_System
 ----------------For Teacher--------------
-/teacher-board
+/teacher-board/{id}
 
 /teachers/all-teachers
 
 /courses
 /courses/{teacherId}
-/courses/{code}/my-student
+/courses/my-students/{course-code}
 
-/exams/question/?
+@GetMapping
+/exams/questions/{question-paper}
+
+@PostMapping
+/exams/questions/{question-paper-id}
+
 /exams/all-exams/{teacher-id}
 /exams/all-result/{teacher-id}
 /exams/review/{courseId}/{examId}
@@ -21,7 +26,9 @@ Database Name : E_M_System
 /admin-board
 
 /teachers/add-teachers
-/teachers/approve-teachers
+/teachers/approve-teachers/list
+/teachers/approve-teachers/approve/{teacher-id}
+/teachers/approve-teachers/delete/{teacher-id}
 
 /courses/add-courses
 
