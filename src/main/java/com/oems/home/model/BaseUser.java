@@ -14,6 +14,9 @@ private String password;
 //private Boolean adminApproval;
 private String role;
 
+	public BaseUser(){
+	}
+
 	public BaseUser(String nid, String userName, String fatherName, String motherName, int gender, String contactNo, String email, String dob, String address, String password, String role) {
 		this.nid = nid;
 		this.userName = userName;

@@ -8,6 +8,10 @@ public class Student extends BaseUser{
 	private String deptId;
 	private int semester;
 
+	public Student(){
+		super();
+	}
+
 	public Student(String nid, String userName, String fatherName, String motherName, int gender, String contactNo,
 				   String email, String dob, String address, String password, String role, String deptId, int semester) {
 		super(nid, userName, fatherName, motherName, gender, contactNo, email, dob, address, password, role);
