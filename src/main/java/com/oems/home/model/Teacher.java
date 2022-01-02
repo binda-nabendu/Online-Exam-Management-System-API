@@ -8,6 +8,11 @@ public class Teacher extends BaseUser{
 	private String eduQualification;
 	private String expertise;
 
+	public Teacher(String nid, String name, String fatherName, String motherName, int gender, String contactNo, String email, String dob, String address, String password, String role) {
+		super(nid, name, fatherName, motherName, gender, contactNo, email, dob, address, password, role);
+	}
+
+
 	public String getEduQualification() {
 		return eduQualification;
 	}

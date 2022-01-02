@@ -5,7 +5,8 @@ import com.oems.home.model.CourseDetails;
 import com.oems.home.model.Student;
 import com.oems.home.model.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.MediaType;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Path;
@@ -43,14 +44,14 @@ public class AdminController {
     }
 
     //-----------For student approve-------------
-    @PostMapping("/student/add-student")
-    public String addStudent(Student student){
-        String encodedPassword = new BCryptPasswordEncoder().encode(student.getPassword());
-        student.setPassword(encodedPassword);
-        //studentDao.create(student);
+    @PostMapping("/add-student")
+    public Student addStudent(Student student){
+//        String encodedPassword = new BCryptPasswordEncoder().encode(student.getPassword());
+//        student.setPassword(encodedPassword);
+        studentDao.create(student);
 
 
-        return "Student added successful";
+        return student;
     }
 
 
