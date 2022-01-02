@@ -25,7 +25,8 @@ create table  student(
 	deptId varchar(10) not null,
 	batch int(4) not null,
 	semester int(2) not null,
-    foreign key(stdId) references baseUser(nid)
+    foreign key(stdId) references baseUser(nid),
+    foreign key(deptId) references department(deptId)
 );
 create table teacher(
 	teacherId varchar(20) primary key,
@@ -46,13 +47,15 @@ create table courses(
 create table examPaper(
 	examId int(10) auto_increment,
 	courseCode varchar(10),
+    teacherId varchar(20),
 	percentageValue decimal(5,2) not null,
 	startingDateTime datetime not null,
 	endingDateTime datetime not null,
     courseSession int(10) not null,
 	total decimal(5,2) not null,
     constraint pk_examPaper primary key (examId,courseCode),
-    foreign key(courseCode) references courses(courseCode)
+    foreign key(courseCode) references courses(courseCode),
+    foreign key(teacherId) references teacher(teacherId)
 );
 create table question(
 	questionId int(20) auto_increment,
