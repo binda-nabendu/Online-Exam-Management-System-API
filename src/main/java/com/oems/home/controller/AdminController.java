@@ -1,14 +1,20 @@
 package com.oems.home.controller;
 
+import com.oems.home.dao.StudentJdbcDao;
 import com.oems.home.model.CourseDetails;
 import com.oems.home.model.Student;
 import com.oems.home.model.Teacher;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Path;
 
 @RestController
 public class AdminController {
+
+    @Autowired
+    StudentJdbcDao studentDao;
 
     @GetMapping("/admin-board/{user-id}")
     public String adminBoardManager(@PathVariable("user-id") String user){
@@ -37,8 +43,13 @@ public class AdminController {
     }
 
     //-----------For student approve-------------
-    @PostMapping("/student/add-student/{student-details}")
-    public String addTeacher(@PathVariable("student-details") Student student){
+    @PostMapping("/student/add-student")
+    public String addStudent(Student student){
+        String encodedPassword = new BCryptPasswordEncoder().encode(student.getPassword());
+        student.setPassword(encodedPassword);
+        //studentDao.create(student);
+
+
         return "Student added successful";
     }
 

@@ -5,7 +5,16 @@ import javax.persistence.Id;
 
 
 public class Teacher extends BaseUser{
-	private String educationalQualification;
+	private String eduQualification;
+	private String expertise;
+
+	public String getEduQualification() {
+		return eduQualification;
+	}
+
+	public void setEduQualification(String eduQualification) {
+		this.eduQualification = eduQualification;
+	}
 
 	public String getExpertise() {
 		return expertise;
@@ -13,15 +22,5 @@ public class Teacher extends BaseUser{
 
 	public void setExpertise(String expertise) {
 		this.expertise = expertise;
-	}
-
-	private String expertise;
-
-	public String getEducationalQualification() {
-		return educationalQualification;
-	}
-
-	public void setEducationalQualification(String educationalQualification) {
-		this.educationalQualification = educationalQualification;
 	}
 }

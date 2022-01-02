@@ -59,7 +59,7 @@ public class SecurityManager extends WebSecurityConfigurerAdapter {
                 .antMatchers("/courses/add-department/**").access("hasAuthority('ADMIN')")
 
                 .antMatchers("/teachers/add-teacher/**").permitAll()
-                .antMatchers("/student/add-student/**").permitAll()
+                .antMatchers("/student/add-student").permitAll()
 
                 .and()
                 .formLogin().permitAll()
