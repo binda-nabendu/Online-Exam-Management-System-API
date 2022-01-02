@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Path;
+import java.util.List;
 
 @RestController
 public class AdminController {
@@ -56,8 +57,8 @@ public class AdminController {
 
 
     @GetMapping("/student/approve-student/list")
-    public String approveStudent(){
-        return "All student list who are request for approve";
+    public List<Student> approveStudent(){
+        return studentDao.listOfNonApprovedStudent();
     }
 
     @PostMapping("/student/approve-student/approve/{student-id}")

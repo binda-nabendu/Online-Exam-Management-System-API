@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -41,6 +42,29 @@ public class StudentJdbcDao implements Dao<Student> {
         }
     }
 
+    RowMapper<Student> rowMapper = (rs,rowNumber)->{
+        Student student = new Student();
+        student.setNid(rs.getString("nid"));
+        student.setUserName(rs.getString("userName"));
+        student.setFatherName(rs.getString("fatherName"));
+        student.setMotherName(rs.getString("motherName"));
+        student.setGender(rs.getInt("gender"));
+        student.setContactNo(rs.getString("contactNo"));
+        student.setEmail(rs.getString("email"));
+        student.setDob(rs.getString("dob"));
+        student.setAddress(rs.getString("address"));
+        student.setDeptId(rs.getString("deptId"));
+        student.setSemester(rs.getInt("semester"));
+        //here we have to add batch later
+        student.setRole(rs.getString("role"));
+        student.setPassword(rs.getString("password"));
+        return student;
+    };
+
+    public List<Student> listOfNonApprovedStudent(){
+        String joinQueryForAllStudentInfo ="select * from baseUser b, student s where b.nid=s.stdId and adminApproval=0";
+        return jdbcTemplate.query(joinQueryForAllStudentInfo,rowMapper);
+    }
 
     @Override
     public Optional<Student> get(String target) {
