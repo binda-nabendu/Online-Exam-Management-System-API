@@ -1,16 +1,23 @@
+Database Name : E_M_System
 ----------------For Teacher--------------
-/teacher-board
+/teacher-board/{id}
 
 /teachers/all-teachers
 
 /courses
 /courses/{teacherId}
-/courses/{code}/my-student
+/courses/my-students/{course-code}
 
-/exams/question/?
-/exams/all-exams/{courseCode,questionId}
-/exams/all-result/{teacherId}
-/exams/review
+@GetMapping
+/exams/questions/{question-paper}
+
+@PostMapping
+/exams/questions/{question-paper-id}
+
+/exam/question/view/questionId
+/exams/all-exams/{teacher-id}
+/exams/all-result/{teacher-id}
+/exams/review/{courseId}/{examId}
 
 /terms-and-condition
 
@@ -20,20 +27,24 @@
 /admin-board
 
 /teachers/add-teachers
-/teachers/approve-teachers
+/teachers/approve-teachers/list
+/teachers/approve-teachers/approve/{teacher-id}
+/teachers/approve-teachers/delete/{teacher-id}
+
+/courses/add-courses
 
 /students/add-students
 /students/all-students
 /students/approve-students
 
-/courses/add-courses
 
 -----------For Student-----------------
-/student-board
+/student-board/{id}
 
-/courses/my-courses/{studentId}
-/courses/dept/{deptId}
-/courses/completed/{studentId}
+/departmental-course/current-courses/{studentId}
+/departmental-course/{deptId}
+/departmental-course/completed/{studentId}
 
 /exams/upcoming/{studentId}
-/exams/previous
+/exams/previous/{studentId}
+/exams/review//{studentId}/{examId}
