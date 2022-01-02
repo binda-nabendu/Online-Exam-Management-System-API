@@ -5,28 +5,26 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 public class BaseUser {
-private Student nid;
+private String nid;
 private String name;
 private String fatherName;
 private String motherName;
-private int gender;//1 for male, 2 for female
+private int gender;//1 for male, 2 for female, 3 for others, 4 for not disclose
 private String contactNo;
 private String email;
 private Date dob;
 private String address;
-private Boolean adminApproval;
-private int role;//1 for admin, 2 for teacher, 3 for student
 private String password;
+//private Boolean adminApproval;
+private String role;
 
-	public Student getNid() {
-		return nid;
-	}
-
-	public void setNid(Student nid) {
-		this.nid = nid;
-	}
-
-	public String getName() {
+public String getNid() {
+	return nid;
+}
+public void setNid(String nid) {
+	this.nid = nid;
+}
+public String getName() {
 	return name;
 }
 public void setName(String name) {
@@ -74,20 +72,22 @@ public String getAddress() {
 public void setAddress(String address) {
 	this.address = address;
 }
-public Boolean getAdminApproval() {
-	return adminApproval;
-}
-public void setAdminApproval(Boolean adminApproval) {
-	this.adminApproval = adminApproval;
-}
-public String getRole() {
-	return Integer.toString(role);
-}
-public void setRole(int role) {
+//public Boolean getAdminApproval() {
+//	return adminApproval;
+//}
+//public void setAdminApproval(Boolean adminApproval) {
+//	this.adminApproval = adminApproval;
+//}
 
-	this.role = role;
-}
-public String getPassword() {
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getPassword() {
 	return password;
 }
 public void setPassword(String password) {

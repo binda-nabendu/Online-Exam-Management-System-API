@@ -4,17 +4,17 @@ use examManagementSystem;
 
 create table baseUser(
 	nid varchar(20) primary key,
-    userName varchar (50),
-    fatherName varchar(50),
-    motherName varchar(50),
-	gender tinyint(3),
-	contactNo varchar(20),
+    userName varchar (50) not null,
+    fatherName varchar(50) not null,
+    motherName varchar(50) not null,
+	gender tinyint(3) not null,
+	contactNo varchar(20) not null,
 	email varchar(50),
-	dob date,
-	address varchar(200),
-	adminApproval tinyint(3),
-	role varchar(10),
-	password varchar(100)
+	dob date not null,
+	address varchar(200) not null,
+	adminApproval tinyint(3) default 0,
+	role varchar(10)  not null,
+	password varchar(100)  not null
 );
 create table department(
 	deptId varchar(10) primary key,
@@ -23,7 +23,7 @@ create table department(
 create table  student(
 	stdId varchar(20) primary key,
 	deptId varchar(10) not null,
-	batch int(4) not null,
+	batch int(4),
 	semester int(2) not null,
     foreign key(stdId) references baseUser(nid),
     foreign key(deptId) references department(deptId)
