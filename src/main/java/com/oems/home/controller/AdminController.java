@@ -3,6 +3,7 @@ package com.oems.home.controller;
 import com.oems.home.dao.StudentJdbcDao;
 import com.oems.home.dao.TeacherJdbcDao;
 import com.oems.home.model.CourseDetails;
+import com.oems.home.model.Dashboard;
 import com.oems.home.model.Student;
 import com.oems.home.model.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ public class AdminController {
     TeacherJdbcDao teacherDao; 
 
     @GetMapping("/admin-board/{user-id}")
-    public String adminBoardManager(@PathVariable("user-id") String user){
-        return "This return admin Dashboard";
+    public Dashboard adminBoardManager(@PathVariable("user-id") String user){
+        return studentDao.adminBoardManager(user);
     }
 
     @PostMapping("/add-teacher")
@@ -66,13 +67,13 @@ public class AdminController {
     }
 
     @PostMapping("/student/approve-student/approve/{student-id}")
-    public String approveStudent(@PathVariable("student-id") String sId){
-        return "Student who will be approved by admin now";
+    public void approveStudent(@PathVariable("student-id") String sId){
+        studentDao.approveOrDeleteStudent(sId,true);
     }
 
     @PostMapping("/student/approve-student/delete/{student-id}")
-    public String deleteStudent(@PathVariable("student-id") String sId){
-        return "Student who will not be approve instead of delete them";
+    public void deleteStudent(@PathVariable("student-id") String sId){
+        studentDao.approveOrDeleteStudent(sId,false);
     }
 
     @PostMapping("/courses/add-department/{department-details}")

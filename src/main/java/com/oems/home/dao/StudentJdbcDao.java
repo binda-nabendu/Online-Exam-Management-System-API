@@ -1,5 +1,8 @@
 package com.oems.home.dao;
 
+import com.oems.home.model.CourseDetails;
+import com.oems.home.model.Dashboard;
+import com.oems.home.model.Department;
 import com.oems.home.model.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,9 +78,55 @@ public class StudentJdbcDao implements Dao<Student> {
     public void update(Student student, String target) {
 
     }
+    public void approveOrDeleteStudent(String id,Boolean approve){
+        if(approve){
+            String q1= "update baseUser set adminApproval=1 where nid= ?";
+            jdbcTemplate.update(q1,id);
+        }else{
+            String q1="delete from student where stdId=?";
+            String q2 = "delete from baseUser where nid= ?";
+            jdbcTemplate.update(q1,id);
+            jdbcTemplate.update(q2,id);
+        }
+    }
+    public Dashboard adminBoardManager(String id){
+        String q1= "select COUNT(*) from student";
+        String q2= "select COUNT(*) from teacher";
+        String q3 = "select COUNT(*) from department";
+        String q4 = "select COUNT(*) from exam where teacherId=?";
+        Dashboard dashboard = new Dashboard();
+        dashboard.setTotalStudents(jdbcTemplate.queryForObject(q1,Integer.class));
+        dashboard.setTotalTeachers(jdbcTemplate.queryForObject(q2,Integer.class));
+        dashboard.setTotalDepartments(jdbcTemplate.queryForObject(q3,Integer.class));
+        //todo...
+        //dashboard.setTotalUpComingExam(jdbcTemplate.queryForObject(q4,Integer.class));
+        return dashboard;
+
+    }
+
 
     @Override
     public void delete(String target) {
 
+    }
+
+    public List<CourseDetails> departmentalCourse(String dept){
+        String q1 ="select * from courses where deptId="+dept;
+        return jdbcTemplate.query(q1,(rs, rowNumber)->{
+           CourseDetails courseDetails = new CourseDetails();
+           courseDetails.setCourseCode(rs.getString("courseCode"));
+           courseDetails.setCourseName(rs.getString("courseName"));
+           courseDetails.setCourseSessions(rs.getString("courseCurrSession"));
+           return courseDetails;
+        });
+
+    }
+    public List<CourseDetails> allRunningCourseDetails(String stdId){
+        String q1 ="select courseCode from result where stdId="+stdId+" and cgpa="+-1;
+        return jdbcTemplate.query(q1,(rs, rowNumber)->{
+            CourseDetails courseDetails = new CourseDetails();
+            courseDetails.setCourseCode(rs.getString("courseCode"));
+            return courseDetails;
+        });
     }
 }
