@@ -2,30 +2,31 @@ package com.oems.home.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
-@Entity
-public class Teacher {
-	@Id
-	private String id;
-	private String educationalQualification;
-	private String expart;
-	public String getId() {
-		return id;
+
+public class Teacher extends BaseUser{
+	private String eduQualification;
+	private String expertise;
+
+	public Teacher(String nid, String name, String fatherName, String motherName, int gender, String contactNo, String email, String dob, String address, String password, String role) {
+		super(nid, name, fatherName, motherName, gender, contactNo, email, dob, address, password, role);
+		
 	}
-	public void setId(String id) {
-		this.id = id;
+
+
+	public String getEduQualification() {
+		return eduQualification;
 	}
-	public String getEducationalQualification() {
-		return educationalQualification;
+
+	public void setEduQualification(String eduQualification) {
+		this.eduQualification = eduQualification;
 	}
-	public void setEducationalQualification(String educationalQualification) {
-		this.educationalQualification = educationalQualification;
+
+	public String getExpertise() {
+		return expertise;
 	}
-	public String getExpart() {
-		return expart;
-	}
-	public void setExpart(String expart) {
-		this.expart = expart;
+
+	public void setExpertise(String expertise) {
+		this.expertise = expertise;
 	}
 }
