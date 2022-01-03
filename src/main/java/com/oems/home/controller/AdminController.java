@@ -1,6 +1,7 @@
 package com.oems.home.controller;
 
 import com.oems.home.dao.StudentJdbcDao;
+import com.oems.home.dao.TeacherJdbcDao;
 import com.oems.home.model.CourseDetails;
 import com.oems.home.model.Student;
 import com.oems.home.model.Teacher;
@@ -17,15 +18,18 @@ public class AdminController {
 
     @Autowired
     StudentJdbcDao studentDao;
+    @Autowired
+    TeacherJdbcDao teacherDao; 
 
     @GetMapping("/admin-board/{user-id}")
     public String adminBoardManager(@PathVariable("user-id") String user){
         return "This return admin Dashboard";
     }
 
-    @PostMapping("/teachers/add-teacher/{teacher-details}")
-    public String addTeacher(@PathVariable("teacher-details") Teacher teacher){
-        return "This return admin Dashboard";
+    @PostMapping("/add-teacher")
+    public Teacher addTeacher(Teacher teacher){
+        teacherDao.create(teacher);
+        return teacher;
     }
 
     //-----------For teacher approve-------------
