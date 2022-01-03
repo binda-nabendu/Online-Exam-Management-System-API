@@ -3,6 +3,7 @@ package com.oems.home.controller;
 import com.oems.home.dao.StudentJdbcDao;
 import com.oems.home.dao.TeacherJdbcDao;
 import com.oems.home.model.CourseDetails;
+import com.oems.home.model.Dashboard;
 import com.oems.home.model.Student;
 import com.oems.home.model.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ public class AdminController {
     TeacherJdbcDao teacherDao; 
 
     @GetMapping("/admin-board/{user-id}")
-    public String adminBoardManager(@PathVariable("user-id") String user){
-        return "This return admin Dashboard";
+    public Dashboard adminBoardManager(@PathVariable("user-id") String user){
+        return studentDao.adminBoardManager(user);
     }
 
     @PostMapping("/add-teacher")

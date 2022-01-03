@@ -1,5 +1,6 @@
 package com.oems.home.dao;
 
+import com.oems.home.model.Dashboard;
 import com.oems.home.model.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,6 +86,20 @@ public class StudentJdbcDao implements Dao<Student> {
             jdbcTemplate.update(q1,id);
             jdbcTemplate.update(q2,id);
         }
+    }
+    public Dashboard adminBoardManager(String id){
+        String q1= "select COUNT(*) from student";
+        String q2= "select COUNT(*) from teacher";
+        String q3 = "select COUNT(*) from department";
+        String q4 = "select COUNT(*) from exam where teacherId=?";
+        Dashboard dashboard = new Dashboard();
+        dashboard.setTotalStudents(jdbcTemplate.queryForObject(q1,Integer.class));
+        dashboard.setTotalTeachers(jdbcTemplate.queryForObject(q2,Integer.class));
+        dashboard.setTotalDepartments(jdbcTemplate.queryForObject(q3,Integer.class));
+        //todo...
+        //dashboard.setTotalUpComingExam(jdbcTemplate.queryForObject(q4,Integer.class));
+        return dashboard;
+
     }
 
 
