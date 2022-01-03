@@ -66,13 +66,13 @@ public class AdminController {
     }
 
     @PostMapping("/student/approve-student/approve/{student-id}")
-    public String approveStudent(@PathVariable("student-id") String sId){
-        return "Student who will be approved by admin now";
+    public void approveStudent(@PathVariable("student-id") String sId){
+        studentDao.approveOrDeleteStudent(sId,true);
     }
 
     @PostMapping("/student/approve-student/delete/{student-id}")
-    public String deleteStudent(@PathVariable("student-id") String sId){
-        return "Student who will not be approve instead of delete them";
+    public void deleteStudent(@PathVariable("student-id") String sId){
+        studentDao.approveOrDeleteStudent(sId,false);
     }
 
     @PostMapping("/courses/add-department/{department-details}")

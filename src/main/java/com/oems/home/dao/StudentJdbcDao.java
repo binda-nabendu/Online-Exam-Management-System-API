@@ -75,6 +75,18 @@ public class StudentJdbcDao implements Dao<Student> {
     public void update(Student student, String target) {
 
     }
+    public void approveOrDeleteStudent(String id,Boolean approve){
+        if(approve){
+            String q1= "update baseUser set adminApproval=1 where nid= ?";
+            jdbcTemplate.update(q1,id);
+        }else{
+            String q1="delete from student where stdId=?";
+            String q2 = "delete from baseUser where nid= ?";
+            jdbcTemplate.update(q1,id);
+            jdbcTemplate.update(q2,id);
+        }
+    }
+
 
     @Override
     public void delete(String target) {
