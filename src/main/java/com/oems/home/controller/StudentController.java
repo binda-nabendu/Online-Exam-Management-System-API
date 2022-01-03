@@ -1,22 +1,31 @@
 package com.oems.home.controller;
 
+import com.oems.home.dao.StudentJdbcDao;
+import com.oems.home.model.CourseDetails;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class StudentController {
+
+    @Autowired
+    StudentJdbcDao studentDao;
+
     @GetMapping("student-board/{id}")
     public String studentBoardManager(@PathVariable("id") String id){
 
         return "Student board manager";
     }
 
-    @GetMapping("/departmental-course/my-courses/{studentId}")
-    public String studentCurrentSubject(@PathVariable("studentId") String id){
-        return "All Courses";
+    @GetMapping("/my-courses/{studentId}")
+    public List<CourseDetails> studentCurrentSubject(@PathVariable("studentId") String stdId){
+        return studentDao.allRunningCourseDetails(stdId);
     }
     @GetMapping("/departmental-course/{deptId}")
-    public String allCourseOfThatDepartment(@PathVariable("deptId") String deptId){
-        return "All course of that department";
+    public List<CourseDetails> allCourseOfThatDepartment(@PathVariable("deptId") String deptId){
+        return studentDao.departmentalCourse(deptId);
     }
     @GetMapping("/departmental-course/completed/{studentId}")
     public String allCompletedCourseOfThatStudent(@PathVariable("studentId") String id){

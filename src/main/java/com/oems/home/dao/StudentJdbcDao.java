@@ -1,6 +1,8 @@
 package com.oems.home.dao;
 
+import com.oems.home.model.CourseDetails;
 import com.oems.home.model.Dashboard;
+import com.oems.home.model.Department;
 import com.oems.home.model.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,5 +108,25 @@ public class StudentJdbcDao implements Dao<Student> {
     @Override
     public void delete(String target) {
 
+    }
+
+    public List<CourseDetails> departmentalCourse(String dept){
+        String q1 ="select * from courses where deptId="+dept;
+        return jdbcTemplate.query(q1,(rs, rowNumber)->{
+           CourseDetails courseDetails = new CourseDetails();
+           courseDetails.setCourseCode(rs.getString("courseCode"));
+           courseDetails.setCourseName(rs.getString("courseName"));
+           courseDetails.setCourseSessions(rs.getString("courseCurrSession"));
+           return courseDetails;
+        });
+
+    }
+    public List<CourseDetails> allRunningCourseDetails(String stdId){
+        String q1 ="select courseCode from result where stdId="+stdId+" and cgpa="+-1;
+        return jdbcTemplate.query(q1,(rs, rowNumber)->{
+            CourseDetails courseDetails = new CourseDetails();
+            courseDetails.setCourseCode(rs.getString("courseCode"));
+            return courseDetails;
+        });
     }
 }
