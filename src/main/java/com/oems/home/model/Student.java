@@ -1,42 +1,38 @@
 package com.oems.home.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import com.fasterxml.jackson.databind.ser.Serializers;
 
+import javax.persistence.*;
 
-@Entity
-public class Student {
-	@Id
-	private String id;
+public class Student extends BaseUser{
 	private String deptId;
-	private int batch;
-	private int semister;
-	
-	public String getId() {
-		return id;
+	private int semester;
+
+	public Student(){
+		super();
 	}
-	public void setId(String id) {
-		this.id = id;
+
+	public Student(String nid, String userName, String fatherName, String motherName, int gender, String contactNo,
+				   String email, String dob, String address, String password, String role, String deptId, int semester) {
+		super(nid, userName, fatherName, motherName, gender, contactNo, email, dob, address, password, role);
+		this.deptId = deptId;
+		this.semester = semester;
 	}
+
+
 	public String getDeptId() {
 		return deptId;
 	}
+
 	public void setDeptId(String deptId) {
 		this.deptId = deptId;
 	}
-	public int getBatch() {
-		return batch;
+
+	public int getSemester() {
+		return semester;
 	}
-	public void setBatch(int batch) {
-		this.batch = batch;
+
+	public void setSemester(int semester) {
+		this.semester = semester;
 	}
-	public int getSemister() {
-		return semister;
-	}
-	public void setSemister(int semister) {
-		this.semister = semister;
-	}
-	
-	
 }
