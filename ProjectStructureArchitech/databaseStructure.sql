@@ -20,7 +20,7 @@ create table department(
 	deptId varchar(10) primary key,
 	deptName varchar(60) not null
 );
-create table  student(
+create table student(
 	stdId varchar(20) primary key,
 	deptId varchar(10) not null,
 	batch int(4),
@@ -71,7 +71,7 @@ create table questionAns(
 	questionId int(20),
 	optionNo varchar(2) not null,
 	optionValue varchar(200) not null,
-	ansStatus bool default false,
+	ansStatus boolean default false,
     constraint pk_questionAns primary key (examId,questionId),
     foreign key(examId) references examPaper(examId),
     foreign key(questionId) references question(questionId)
@@ -81,6 +81,7 @@ create table studentMark(
 	courseCode varchar(10),
 	examId int(10),
 	gotTotalMarks decimal(5,2) default 0.0,
+	review boolean default false,
     constraint pk_studentMark primary key (stdId,courseCode,examId),
     foreign key(stdId) references student(stdId),
     foreign key(courseCode) references courses(courseCode),
