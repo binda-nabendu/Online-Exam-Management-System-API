@@ -2,16 +2,18 @@ package com.oems.home.dao;
 
 import com.oems.home.model.CourseDetails;
 import com.oems.home.model.Dashboard;
-import com.oems.home.model.Department;
 import com.oems.home.model.Student;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,18 +92,55 @@ public class StudentJdbcDao implements Dao<Student> {
         }
     }
     public Dashboard adminBoardManager(String id){
-        String q1= "select COUNT(*) from student";
-        String q2= "select COUNT(*) from teacher";
+        String q1= "select COUNT(*) from teacher";
+        String q2= "select COUNT(*) from student";
         String q3 = "select COUNT(*) from department";
-        String q4 = "select COUNT(*) from exam where teacherId=?";
+
+        //todo... this query will have to write for upcoming not all
+        String q4 = "select COUNT(*) from examPaper where teacherId="+id;
+
         Dashboard dashboard = new Dashboard();
-        dashboard.setTotalStudents(jdbcTemplate.queryForObject(q1,Integer.class));
-        dashboard.setTotalTeachers(jdbcTemplate.queryForObject(q2,Integer.class));
-        dashboard.setTotalDepartments(jdbcTemplate.queryForObject(q3,Integer.class));
-        //todo...
-        //dashboard.setTotalUpComingExam(jdbcTemplate.queryForObject(q4,Integer.class));
+        dashboard.setCard1(jdbcTemplate.queryForObject(q1,Integer.class));
+        dashboard.setCard2(jdbcTemplate.queryForObject(q2,Integer.class));
+        dashboard.setCard3(jdbcTemplate.queryForObject(q3,Integer.class));
+        dashboard.setCard4(jdbcTemplate.queryForObject(q4,Integer.class));
         return dashboard;
 
+    }
+    public Dashboard studentBoardManager(String id){
+        String q1= "select COUNT(*) from result where stdId="+id+" and cgpa=-1";
+        String q2= "select COUNT(*) from result where stdId="+id+" and cgpa>0";
+
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+        String now = df.format(today);
+
+        String q3 = "select COUNT(*) " +
+                "from examPaper where courseCode=any(" +
+                "select courseCode from result where stdId="+id+" and cgpa=-1) and startingDateTime > "+now;
+
+        //todo
+        // this query will have to write for total not reviewed by teacher but he send
+        // String q4 = "select COUNT(*) from examPaper where teacherId="+id;
+
+        Dashboard dashboard = new Dashboard();
+        dashboard.setCard1(jdbcTemplate.queryForObject(q1,Integer.class));
+        dashboard.setCard2(jdbcTemplate.queryForObject(q2,Integer.class));
+        dashboard.setCard3(jdbcTemplate.queryForObject(q3,Integer.class));
+        //dashboard.setCard4(jdbcTemplate.queryForObject(q4,Integer.class));
+        return dashboard;
+    }
+
+    public List<CourseDetails> completedCoursesByStudent(String stdId){
+        String q1 = "select * form courses where courseCode=any(" +
+                "select courseCode from result where stdId="+stdId+" and cgpa>0)";
+        return jdbcTemplate.query(q1,(rs,rowNumber)->{
+            CourseDetails courseDetails = new CourseDetails();
+            courseDetails.setCourseCode(rs.getString("courseCode"));
+            courseDetails.setCourseName(rs.getString("courseName"));
+            courseDetails.setCourseSessions(rs.getString("courseCurrSession"));
+            return courseDetails;
+        });
     }
 
 
@@ -110,7 +149,7 @@ public class StudentJdbcDao implements Dao<Student> {
 
     }
 
-    public List<CourseDetails> departmentalCourse(String dept){
+    public List<CourseDetails> departmentalCourseSet(String dept){
         String q1 ="select * from courses where deptId="+dept;
         return jdbcTemplate.query(q1,(rs, rowNumber)->{
            CourseDetails courseDetails = new CourseDetails();

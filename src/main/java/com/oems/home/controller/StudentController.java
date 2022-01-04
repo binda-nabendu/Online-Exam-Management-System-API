@@ -2,6 +2,7 @@ package com.oems.home.controller;
 
 import com.oems.home.dao.StudentJdbcDao;
 import com.oems.home.model.CourseDetails;
+import com.oems.home.model.Dashboard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +15,9 @@ public class StudentController {
     StudentJdbcDao studentDao;
 
     @GetMapping("student-board/{id}")
-    public String studentBoardManager(@PathVariable("id") String id){
+    public Dashboard studentDashBoard(@PathVariable("id") String id){
 
-        return "Student board manager";
+        return studentDao.studentBoardManager(id);
     }
 
     @GetMapping("/my-courses/{studentId}")
@@ -25,11 +26,11 @@ public class StudentController {
     }
     @GetMapping("/departmental-course/{deptId}")
     public List<CourseDetails> allCourseOfThatDepartment(@PathVariable("deptId") String deptId){
-        return studentDao.departmentalCourse(deptId);
+        return studentDao.departmentalCourseSet(deptId);
     }
     @GetMapping("/departmental-course/completed/{studentId}")
-    public String allCompletedCourseOfThatStudent(@PathVariable("studentId") String id){
-        return "All completed course of that Student";
+    public List<CourseDetails> allCompletedCourseOfThatStudent(@PathVariable("studentId") String stdId){
+        return studentDao.completedCoursesByStudent(stdId);
     }
     @GetMapping("/exams/upcoming/{studentId}")
     public String upComingExamStudent(@PathVariable("studentId") String id){
