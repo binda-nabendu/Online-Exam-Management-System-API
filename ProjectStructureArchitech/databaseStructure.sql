@@ -58,23 +58,23 @@ create table examPaper(
     foreign key(teacherId) references teacher(teacherId)
 );
 create table question(
-	questionId int(20) auto_increment,
 	examId int(10),
+	questionNo int(20) ,
 	question varchar(200) not null,
 	questionImage blob,
 	mark decimal(4,2) not null,
-    constraint pk_question primary key (questionId,examId),
+    constraint pk_question primary key (examId, questionNo),
 	foreign key(examId) references examPaper(examId)
  );
 create table questionAns(
 	examId int(10),
-	questionId int(20),
+	questionNo int(20),
 	optionNo varchar(2) not null,
 	optionValue varchar(200) not null,
 	ansStatus boolean default false,
-    constraint pk_questionAns primary key (examId,questionId),
+    constraint pk_questionAns primary key (examId,questionNo,optionNo),
     foreign key(examId) references examPaper(examId),
-    foreign key(questionId) references question(questionId)
+    foreign key(questionNo) references question(questionNo)
 );
 create table studentMark(
 	stdId varchar(20),
@@ -90,13 +90,13 @@ create table studentMark(
 create table stdAnsScript(
 	stdId varchar(20),
 	examId int(10),
-	questionId int(20),
+	questionNo int(20),
 	optionNo varchar(2) default 'Z',
 	ansStatus bool default false,
-    constraint pk_stdAnsScript primary key (stdId,examId,questionId),
+    constraint pk_stdAnsScript primary key (stdId,examId,questionNo),
     foreign key(stdId) references student(stdId),
     foreign key(examId) references examPaper(examId),
-    foreign key(questionId) references question(questionId)
+    foreign key(questionNo) references question(questionNo)
 );
 create table result( 
 	stdId varchar(20),
