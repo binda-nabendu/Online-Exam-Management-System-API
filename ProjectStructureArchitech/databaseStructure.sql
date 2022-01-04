@@ -59,7 +59,7 @@ create table examPaper(
 );
 create table question(
 	examId int(10),
-	questionNo int(11) ,
+	questionNo int(20) ,
 	question varchar(200) not null,
 	questionImage blob,
 	mark decimal(4,2) not null,
