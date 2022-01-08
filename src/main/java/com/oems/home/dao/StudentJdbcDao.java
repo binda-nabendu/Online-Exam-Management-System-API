@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -47,7 +46,7 @@ public class StudentJdbcDao implements Dao<Student> {
         }
     }
 
-    RowMapper<Student> rowMapper = (rs,rowNumber)->{
+    private final RowMapper<Student> studentRowMapper = (rs, rowNumber)->{
         Student student = new Student();
         student.setNid(rs.getString("nid"));
         student.setUserName(rs.getString("userName"));
@@ -68,7 +67,7 @@ public class StudentJdbcDao implements Dao<Student> {
 
     public List<Student> listOfNonApprovedStudent(){
         String joinQueryForAllStudentInfo ="select * from baseUser b, student s where b.nid=s.stdId and adminApproval=0";
-        return jdbcTemplate.query(joinQueryForAllStudentInfo,rowMapper);
+        return jdbcTemplate.query(joinQueryForAllStudentInfo, studentRowMapper);
     }
 
     @Override
@@ -131,18 +130,19 @@ public class StudentJdbcDao implements Dao<Student> {
         return dashboard;
     }
 
-    public List<CourseDetails> completedCoursesByStudent(String stdId){
-        String q1 = "select * form courses where courseCode=any(" +
-                "select courseCode from result where stdId="+stdId+" and cgpa>0)";
-        return jdbcTemplate.query(q1,(rs,rowNumber)->{
-            CourseDetails courseDetails = new CourseDetails();
-            courseDetails.setCourseCode(rs.getString("courseCode"));
-            courseDetails.setCourseName(rs.getString("courseName"));
-            courseDetails.setCourseSessions(rs.getString("courseCurrSession"));
-            return courseDetails;
-        });
-    }
+    private final RowMapper<CourseDetails> crsDetailsRowMapper = (rs, rowNumber)->{
+        CourseDetails courseDetails = new CourseDetails();
+        courseDetails.setCourseCode(rs.getString("courseCode"));
+        courseDetails.setCourseName(rs.getString("courseName"));
+        courseDetails.setCourseSessions(rs.getString("courseCurrSession"));
+        return courseDetails;
+    };
 
+    public List<CourseDetails> completedCoursesByStudent(String stdId){
+        String q1 = "select * from courses where courseCode=any(" +
+                "select courseCode from result where stdId="+stdId+" and cgpa>0)";
+        return jdbcTemplate.query(q1,crsDetailsRowMapper);
+    }
 
     @Override
     public void delete(String target) {
@@ -151,13 +151,7 @@ public class StudentJdbcDao implements Dao<Student> {
 
     public List<CourseDetails> departmentalCourseSet(String dept){
         String q1 ="select * from courses where deptId="+dept;
-        return jdbcTemplate.query(q1,(rs, rowNumber)->{
-           CourseDetails courseDetails = new CourseDetails();
-           courseDetails.setCourseCode(rs.getString("courseCode"));
-           courseDetails.setCourseName(rs.getString("courseName"));
-           courseDetails.setCourseSessions(rs.getString("courseCurrSession"));
-           return courseDetails;
-        });
+        return jdbcTemplate.query(q1,crsDetailsRowMapper);
 
     }
     public List<CourseDetails> allRunningCourseDetails(String stdId){

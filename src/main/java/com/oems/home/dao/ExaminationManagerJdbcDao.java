@@ -64,8 +64,52 @@ public class ExaminationManagerJdbcDao implements Dao<QuestionPaper> {
     }
 
     @Override
-    public Optional<QuestionPaper> get(String target) {
-        return Optional.empty();
+    public Optional<QuestionPaper> get(String questionId) {
+        long examId = Long.parseLong(questionId);
+        String queryForQuestionHeader = "select * from examPaper where examId="+examId;
+        QuestionPaper finalQuestion = null;
+        try {
+            finalQuestion = jdbcTemplate.queryForObject(queryForQuestionHeader, (rs, rowNumber) -> {
+                QuestionPaper questionPaper=new QuestionPaper();
+                questionPaper.setExamId(rs.getInt("examId"));
+                questionPaper.setCourseCode(rs.getString("courseCode"));
+                questionPaper.setTeacherId(rs.getString("teacherId"));
+                questionPaper.setPercentageValue(rs.getDouble("percentageValue"));//may create problem
+                questionPaper.setStartingDateTime(rs.getString("startingDateTime"));//may create problem
+                questionPaper.setEndingDateTime(rs.getString("endingDateTime"));
+                questionPaper.setCourseSession(rs.getInt("courseSession"));
+                questionPaper.setTotal(rs.getDouble("total"));
+                return questionPaper;
+            });
+            if(finalQuestion != null){
+                finalQuestion.setAllIndividualQuestions(getAllQuestions(examId));
+                for (IndividualQuestion question:finalQuestion.getAllIndividualQuestions()) {
+                    //todo continue
+                    String queryForRetrieveOption = "select * from questionAns where examId="+finalQuestion.getExamId()+" and questionNo="+question.getQuestionNo();
+                    question.setAllOptions(jdbcTemplate.query(queryForRetrieveOption,(rss,rnn)->{
+                        QuestionAnswer answer = new QuestionAnswer();
+                        answer.setOptionNo(rss.getInt("optionNo"));
+                        answer.setOptionValue(rss.getString("optionValue"));
+                        answer.setAnsStatus(rss.getBoolean("ansStatus"));
+                        return answer;
+                    }));
+                }
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return Optional.ofNullable(finalQuestion);
+    }
+
+    private List<IndividualQuestion> getAllQuestions(long examId) {
+        String queryForQuestions = "select * from question where examId="+examId;
+        return jdbcTemplate.query(queryForQuestions,(rp,rn)->{
+            IndividualQuestion individualQuestion = new IndividualQuestion();
+            individualQuestion.setQuestionNo(rp.getInt("questionNo"));
+            individualQuestion.setQuestion(rp.getString("question"));
+            individualQuestion.setMark(rp.getDouble("mark"));
+            return individualQuestion;
+        });
     }
 
     @Override
