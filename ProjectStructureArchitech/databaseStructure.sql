@@ -76,7 +76,7 @@ create table questionAns(
 	ansStatus boolean default false,
     constraint pk_questionAns primary key (examId,questionNo,optionNo),
     foreign key(examId) references examPaper(examId),
-    foreign key(questionNo) references question(questionNo)
+    foreign key(examId, questionNo) references question(examId,questionNo)
 );
 create table studentMark(
 	stdId varchar(20),
@@ -97,8 +97,7 @@ create table stdAnsScript(
 	ansStatus bool default false,
     constraint pk_stdAnsScript primary key (stdId,examId,questionNo),
     foreign key(stdId) references student(stdId),
-    foreign key(examId) references examPaper(examId),
-    foreign key(questionNo) references question(questionNo)
+    foreign key(examId, questionNo) references question(examId,questionNo)
 );
 create table result( 
 	stdId varchar(20),
