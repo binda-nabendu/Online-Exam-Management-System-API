@@ -5,8 +5,11 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+
+import com.oems.home.model.Student;
 import com.oems.home.model.Teacher;
 
 @Component
@@ -53,7 +56,30 @@ public class TeacherJdbcDao implements Dao<Teacher> {
     public void delete(String target) {
 
     }
-	
+
+    RowMapper<Teacher> rowMapper = (rs,rowNumber)->{
+        Teacher teacher = new Teacher();
+        teacher.setNid(rs.getString("nid"));
+        teacher.setUserName(rs.getString("userName"));
+        teacher.setFatherName(rs.getString("fatherName"));
+        teacher.setMotherName(rs.getString("motherName"));
+        teacher.setGender(rs.getInt("gender"));
+        teacher.setContactNo(rs.getString("contactNo"));
+        teacher.setEmail(rs.getString("email"));
+        teacher.setDob(rs.getString("dob"));
+        teacher.setAddress(rs.getString("address"));
+        teacher.setEduQualification(rs.getString("eduQualification"));
+        teacher.setExpertise(rs.getString("expertise"));
+        teacher.setRole(rs.getString("role"));
+        teacher.setPassword(rs.getString("password"));
+        return teacher;
+    };
+	public List<Teacher> listOfNonApprovedTeacher() {
+		String joinQueryForAllPendingTeachers = "select * from baseUser b, teacher t where b.nid=t.teacherId and adminApproval=0";
+		return jdbcTemplate.query(joinQueryForAllPendingTeachers,rowMapper);
+	}
+
+
 	
 	
 	
