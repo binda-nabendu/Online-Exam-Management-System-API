@@ -63,7 +63,6 @@ public class TeacherController {
         return "Your"+qId+" Question is here";
     }
 
-
     @GetMapping("/exams/all-exams/{teacher-id}")
     public String getAllQuestionThatTeacherMade(@PathVariable("teacher-id") String tid){
         return "Here all of your question paper that teacher made can see";
