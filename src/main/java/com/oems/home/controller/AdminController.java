@@ -27,16 +27,16 @@ public class AdminController {
         return studentDao.adminBoardManager(user);
     }
 
+  //-----------For teacher approve-------------
     @PostMapping("/add-teacher")
     public Teacher addTeacher(Teacher teacher){
         teacherDao.create(teacher);
         return teacher;
     }
 
-    //-----------For teacher approve-------------
     @GetMapping("/teachers/approve-teachers/list")
-    public String approveTeacher(){
-        return "All teacher list who are request for approve";
+    public List<Teacher> approveTeacher(){
+        return teacherDao.listOfNonApprovedTeacher();
     }
 
     @PostMapping("/teachers/approve-teachers/approve/{teacher-id}")
