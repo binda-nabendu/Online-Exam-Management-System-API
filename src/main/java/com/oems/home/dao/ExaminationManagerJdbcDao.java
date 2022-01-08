@@ -30,6 +30,9 @@ public class ExaminationManagerJdbcDao implements Dao<QuestionPaper> {
 
     @Override
     public void create(QuestionPaper questionPaper) {
+
+        questionPaper.calculateTotal();
+
         String sqlQueryForExamPaper = "insert into examPaper" +
                 "(examId, courseCode, teacherId, percentageValue, startingDateTime, endingDateTime, courseSession, total)" +
                 "values("+questionPaper.getExamId()+","+questionPaper.getCourseCode()+","+questionPaper.getTeacherId()+","+

@@ -2,8 +2,10 @@ package com.oems.home.model;
 
 public class CourseDetails {
     private String courseCode;
+    private String deptId;
     private String courseName;
-    private String courseSessions;
+    private String teacherId;
+    private int courseSessions=-33;
 
     public String getCourseCode() {
         return courseCode;
@@ -21,11 +23,27 @@ public class CourseDetails {
         this.courseName = courseName;
     }
 
-    public String getCourseSessions() {
+    public int getCourseSessions() {
         return courseSessions;
     }
 
-    public void setCourseSessions(String courseCurrSessions) {
+    public void setCourseSessions(int courseCurrSessions) {
         this.courseSessions = courseCurrSessions;
+    }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(String teacherId) {
+        this.teacherId = teacherId;
     }
 }

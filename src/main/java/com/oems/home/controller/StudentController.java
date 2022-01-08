@@ -1,5 +1,6 @@
 package com.oems.home.controller;
 
+import com.oems.home.dao.AdminJdbcDao;
 import com.oems.home.dao.StudentJdbcDao;
 import com.oems.home.model.CourseDetails;
 import com.oems.home.model.Dashboard;
@@ -13,13 +14,18 @@ public class StudentController {
 
     @Autowired
     StudentJdbcDao studentDao;
+    @Autowired
+    AdminJdbcDao adminJdbcDao;
 
     @GetMapping("student-board/{id}")
     public Dashboard studentDashBoard(@PathVariable("id") String id){
 
         return studentDao.studentBoardManager(id);
     }
-
+    @PostMapping("/request-for-courses")
+    public void reqCourseList(List<CourseDetails> courses, String stdId){
+        adminJdbcDao.requestedCourseAdd(courses, stdId);
+    }
     @GetMapping("/my-courses/{studentId}")
     public List<CourseDetails> studentCurrentSubject(@PathVariable("studentId") String stdId){
         return studentDao.allRunningCourseDetails(stdId);
