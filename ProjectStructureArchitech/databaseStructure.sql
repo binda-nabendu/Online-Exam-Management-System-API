@@ -14,7 +14,10 @@ create table baseUser(
 	address varchar(200) not null,
 	adminApproval tinyint(3) default 0,
 	role varchar(10)  not null,
-	password varchar(100)  not null
+	password varchar(100)  not null,
+    check (role='ADMIN' OR role='TEACHER' OR role='STUDENT'),
+    check (adminApproval=0 or adminApproval=1),
+    check (email like '%@%')
 );
 create table department(
 	deptId varchar(10) primary key,
@@ -45,7 +48,7 @@ create table courses(
     foreign key(teacherId) references teacher(teacherId)
 );
 create table examPaper(
-	examId int(10) auto_increment,
+	examId int(10),
 	courseCode varchar(10),
     teacherId varchar(20),
 	percentageValue decimal(5,2) not null,

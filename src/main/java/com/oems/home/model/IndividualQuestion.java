@@ -1,12 +1,48 @@
 package com.oems.home.model;
 
+import org.springframework.stereotype.Component;
+
 import java.sql.Blob;
 import java.util.ArrayList;
+import java.util.List;
 
+@Component
 public class IndividualQuestion {
-    private int examId;
+    private int questionNo;
     private String question;
-    private Blob questionImage;
+    //Blob questionImage;
     private double mark;
-    ArrayList<QuestionAnswer> allOptions;
+    private List<QuestionAnswer> allOptions=new ArrayList<>();
+
+    public int getQuestionNo() {
+        return questionNo;
+    }
+
+    public void setQuestionNo(int questionNo) {
+        this.questionNo = questionNo;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public double getMark() {
+        return mark;
+    }
+
+    public void setMark(double mark) {
+        this.mark = mark;
+    }
+
+    public List<QuestionAnswer> getAllOptions() {
+        return allOptions;
+    }
+
+    public void setAllOptions(List<QuestionAnswer> allOptions) {
+        this.allOptions = allOptions;
+    }
 }

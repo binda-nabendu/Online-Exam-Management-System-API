@@ -1,7 +1,12 @@
 package com.oems.home.controller;
 
+import com.oems.home.model.IndividualQuestion;
+import com.oems.home.model.QuestionAnswer;
 import com.oems.home.model.QuestionPaper;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Date;
+import java.util.ArrayList;
 
 @RestController
 public class TeacherController {
@@ -31,9 +36,26 @@ public class TeacherController {
         return "All student list of that Courses of That teacher";
     }
 
-    @PostMapping("/exams/questions/{question-paper}")
-    public String QuestionPaper(@PathVariable("question-paper") QuestionPaper questionPaper){
-        return "Your Question will set successful";
+    @PostMapping("/exams/question")
+    public QuestionPaper QuestionPaper(@RequestBody QuestionPaper questionPaper){
+//        questionPaper.setExamId(121);
+//        questionPaper.setTeacherId("2323");
+//        questionPaper.setCourseCode("CSE121");
+//        questionPaper.setPercentageValue(0.5);
+//        questionPaper.setStartingDateTime("2020-03-04 18:12:30");
+//
+//        questionPaper.setEndingDateTime("2020-03-04 18:12:30");
+//        questionPaper.setCourseSession(2);
+//        questionPaper.setTotal(5);
+//        IndividualQuestion iq = new IndividualQuestion();
+//        iq.question="what is your name";
+//        iq.questionNo=1;
+//        iq.mark =1;
+//        iq.allOptions.add(new QuestionAnswer(1,"erio",true));
+//        iq.allOptions.add(new QuestionAnswer(2,"dfdf",false));
+//        iq.allOptions.add(new QuestionAnswer(3,"fdfer",false));
+//        questionPaper.allIndividualQuestions.add(iq);
+        return questionPaper;
     }
 
     @GetMapping("/exams/questions/{question-paper-id}")
