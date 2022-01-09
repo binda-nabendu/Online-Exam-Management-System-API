@@ -75,7 +75,7 @@ create table questionAns(
 	optionValue varchar(200) not null,
 	ansStatus boolean default false,
     constraint pk_questionAns primary key (examId,questionNo,optionNo),
-    foreign key(examId) references examPaper(examId),
+
     foreign key(examId, questionNo) references question(examId,questionNo)
 );
 create table studentMark(

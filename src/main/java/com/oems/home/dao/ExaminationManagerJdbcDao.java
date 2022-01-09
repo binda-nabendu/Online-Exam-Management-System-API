@@ -23,6 +23,7 @@ public class ExaminationManagerJdbcDao implements Dao<QuestionPaper> {
     }
 
 
+
     @Override
     public List<QuestionPaper> listOfAll() {
         return null;
@@ -87,7 +88,6 @@ public class ExaminationManagerJdbcDao implements Dao<QuestionPaper> {
             if(finalQuestion != null){
                 finalQuestion.setAllIndividualQuestions(getAllQuestions(examId));
                 for (IndividualQuestion question:finalQuestion.getAllIndividualQuestions()) {
-                    //todo continue
                     String queryForRetrieveOption = "select * from questionAns where examId="+finalQuestion.getExamId()+" and questionNo="+question.getQuestionNo();
                     question.setAllOptions(jdbcTemplate.query(queryForRetrieveOption,(rss,rnn)->{
                         QuestionAnswer answer = new QuestionAnswer();

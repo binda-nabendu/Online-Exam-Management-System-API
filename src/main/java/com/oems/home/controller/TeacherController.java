@@ -1,10 +1,10 @@
 package com.oems.home.controller;
 
+import com.oems.home.ExamManagementSystemApplication;
+import com.oems.home.dao.ExaminationManagerJdbcDao;
 import com.oems.home.dao.TeacherJdbcDao;
 import com.oems.home.model.CourseDetails;
 import com.oems.home.model.Dashboard;
-import com.oems.home.model.IndividualQuestion;
-import com.oems.home.model.QuestionAnswer;
 import com.oems.home.model.QuestionPaper;
 
 import com.oems.home.model.Student;
@@ -15,14 +15,14 @@ import com.oems.home.model.Review;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class TeacherController {
 	@Autowired
     TeacherJdbcDao teacherDao;
+    @Autowired
+    ExaminationManagerJdbcDao examDao;
 	
     @GetMapping("/teacher-board/{id}")
     public Dashboard TeacherBoardManager(@PathVariable("id") String id){
@@ -44,10 +44,11 @@ public class TeacherController {
     public List<Student> allStudentOfThatCourse(@PathVariable("course-code")String courseCode){
     	return teacherDao.listOfAllStudentOfThatCourse(courseCode);
     }
-
+    // !---------- must be full details of exam paper needed-----------!
     @PostMapping("/exams/question")
     public QuestionPaper QuestionPaper(@RequestBody QuestionPaper questionPaper){
-
+        questionPaper.setExamId();
+        examDao.create(questionPaper);
         return questionPaper;
     }
 
@@ -66,14 +67,14 @@ public class TeacherController {
     }
     @GetMapping("/exams/receive-review/{teacher-id}")
     public List<Review> ReviewList(@PathVariable("teacher-id") String tid){
-        return teacherDao.studentReviewList(tid);
+        return teacherDao.studentExamPaperReviewList(tid);
     }
     @GetMapping("/terms-and-condition")
     public String termsAndCondition(){
-        return "All terms and condition here";
+        return "All terms and condition here done by afzal";
     }
     @GetMapping("/faq")
     public String faq(){
-        return "Your Question and Answer here...";
+        return "Your Question and Answer here... doneby afzal";
     }
 }
