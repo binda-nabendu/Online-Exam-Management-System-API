@@ -35,8 +35,8 @@ public class AdminController {
     }
 
     @GetMapping("/teachers/approve-teachers/list")
-    public String approveTeacher(){
-        return "All teacher list who are request for approve";
+    public List<Teacher> approveTeacher(){
+        return teacherDao.listOfNonApprovedTeacher();
     }
 
     @PostMapping("/teachers/approve-teachers/approve/{teacher-id}")
