@@ -1,11 +1,9 @@
 package com.oems.home.controller;
 
+import com.oems.home.dao.AdminJdbcDao;
 import com.oems.home.dao.StudentJdbcDao;
 import com.oems.home.dao.TeacherJdbcDao;
-import com.oems.home.model.CourseDetails;
-import com.oems.home.model.Dashboard;
-import com.oems.home.model.Student;
-import com.oems.home.model.Teacher;
+import com.oems.home.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,7 +18,9 @@ public class AdminController {
     @Autowired
     StudentJdbcDao studentDao;
     @Autowired
-    TeacherJdbcDao teacherDao; 
+    TeacherJdbcDao teacherDao;
+    @Autowired
+    AdminJdbcDao adminJdbcDao;
 
     @GetMapping("/admin-board/{user-id}")
     public Dashboard adminBoardManager(@PathVariable("user-id") String user){
@@ -80,7 +80,27 @@ public class AdminController {
 
     @PostMapping("/courses/add-courses/{course-details}")
     public String addCourse(@PathVariable("course-details") CourseDetails details){
+        adminJdbcDao.addACourses(details);
         return "Course Added Successful";
+    }
+
+    @PostMapping("/admin/action/changeSemester")
+    public String changeAndGoNextSemester(UserVerificationModel model){
+        if(adminJdbcDao.checkUserAndPassword(model)){
+            adminJdbcDao.updateSemester();
+            return "Successful...Enjoy new semester";
+        }
+        return "Failed... You are not authorized";
+    }
+
+    @GetMapping("/admin/requested-courses")
+    public List<RequestCourse> allRequested(){
+        return adminJdbcDao.listOfRequestedCourses();
+    }
+
+    @PostMapping("/admin/requested-courses")
+    public void approveCrsRequest(List<RequestCourse> list){
+        adminJdbcDao.approveCoursesForStudent(list);
     }
 
 

@@ -82,7 +82,12 @@ public class QuestionPaper {
     public double getTotal() {
         return total;
     }
-
+    public void calculateTotal() {
+        total = 0;
+        for (IndividualQuestion question: allIndividualQuestions) {
+            total+=question.getMark();
+        }
+    }
     public void setTotal(double total) {
         this.total = total;
     }

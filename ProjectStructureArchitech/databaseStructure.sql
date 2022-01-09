@@ -109,3 +109,13 @@ create table result(
     foreign key(stdId) references student(stdId),
     foreign key(courseCode) references courses(courseCode)
 );
+create table requestCourse
+(
+    stdId varchar(20),
+    courseCode varchar(10),
+    constraint pk_requestCourse primary key(stdId, courseCode),
+    foreign key(stdId) references student(stdId),
+    foreign key(courseCode) references courses(courseCode)
+);
+
+
