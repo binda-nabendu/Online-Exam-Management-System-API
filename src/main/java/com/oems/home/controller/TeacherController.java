@@ -3,10 +3,12 @@ package com.oems.home.controller;
 import com.oems.home.model.IndividualQuestion;
 import com.oems.home.model.QuestionAnswer;
 import com.oems.home.model.QuestionPaper;
+import com.oems.home.model.Review;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class TeacherController {
@@ -38,23 +40,7 @@ public class TeacherController {
 
     @PostMapping("/exams/question")
     public QuestionPaper QuestionPaper(@RequestBody QuestionPaper questionPaper){
-//        questionPaper.setExamId(121);
-//        questionPaper.setTeacherId("2323");
-//        questionPaper.setCourseCode("CSE121");
-//        questionPaper.setPercentageValue(0.5);
-//        questionPaper.setStartingDateTime("2020-03-04 18:12:30");
-//
-//        questionPaper.setEndingDateTime("2020-03-04 18:12:30");
-//        questionPaper.setCourseSession(2);
-//        questionPaper.setTotal(5);
-//        IndividualQuestion iq = new IndividualQuestion();
-//        iq.question="what is your name";
-//        iq.questionNo=1;
-//        iq.mark =1;
-//        iq.allOptions.add(new QuestionAnswer(1,"erio",true));
-//        iq.allOptions.add(new QuestionAnswer(2,"dfdf",false));
-//        iq.allOptions.add(new QuestionAnswer(3,"fdfer",false));
-//        questionPaper.allIndividualQuestions.add(iq);
+
         return questionPaper;
     }
 
@@ -71,9 +57,9 @@ public class TeacherController {
     public String getAllResultThatTeacherPublished(@PathVariable("teacher-id") String tid){
         return "Here all of your subject result you can see";
     }
-    @GetMapping("/exams/receive-review/{courseId}/{examId}")
-    public String RequestReview(@PathVariable("courseId")String id ,@PathVariable("examId") int examId){
-        return "Review Request Send..";
+    @GetMapping("/exams/receive-review/{teacher-id}")
+    public List<Review> ReviewList(@PathVariable("teacher-id") String tid){
+        return teacherDao.studentReviewList(tid);
     }
     @GetMapping("/terms-and-condition")
     public String termsAndCondition(){
