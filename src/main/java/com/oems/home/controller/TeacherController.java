@@ -16,6 +16,7 @@ import com.oems.home.model.Review;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class TeacherController {
@@ -46,15 +47,15 @@ public class TeacherController {
     }
     // !---------- must be full details of exam paper needed-----------!
     @PostMapping("/exams/question")
-    public QuestionPaper QuestionPaper(@RequestBody QuestionPaper questionPaper){
-        questionPaper.setExamId();
+    public QuestionPaper QuestionPaperHandler(@RequestBody QuestionPaper questionPaper){
+        questionPaper.setExamId(examDao.getLastExamId()+1);
         examDao.create(questionPaper);
         return questionPaper;
     }
 
     @GetMapping("/exams/questions/{question-paper-id}")
-    public String QuestionPaper(@PathVariable("question-paper-id") int qId){
-        return "Your"+qId+" Question is here";
+    public Optional<QuestionPaper> QuestionPaperHandler(@PathVariable("question-paper-id") String qId){
+        return examDao.get(qId);
     }
 
     @GetMapping("/exams/all-exams/{teacher-id}")
@@ -75,6 +76,6 @@ public class TeacherController {
     }
     @GetMapping("/faq")
     public String faq(){
-        return "Your Question and Answer here... doneby afzal";
+        return "Your Question and Answer here... done by afzal";
     }
 }

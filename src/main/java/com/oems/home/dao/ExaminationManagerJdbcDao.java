@@ -69,7 +69,7 @@ public class ExaminationManagerJdbcDao implements Dao<QuestionPaper> {
 
     @Override
     public Optional<QuestionPaper> get(String questionId) {
-        long examId = Long.parseLong(questionId);
+        int examId = Integer.parseInt(questionId);
         String queryForQuestionHeader = "select * from examPaper where examId="+examId;
         QuestionPaper finalQuestion = null;
         try {
@@ -123,5 +123,11 @@ public class ExaminationManagerJdbcDao implements Dao<QuestionPaper> {
     @Override
     public void delete(String target) {
 
+    }
+
+    public int getLastExamId() {
+        String s = "select max(examId) from examPaper";
+        int i=jdbcTemplate.queryForObject(s,Integer.class);
+        return i;
     }
 }
