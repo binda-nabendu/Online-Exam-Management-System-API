@@ -40,13 +40,13 @@ public class AdminController {
     }
 
     @PostMapping("/teachers/approve-teachers/approve/{teacher-id}")
-    public String approveTeacher(@PathVariable("teacher-id") String tId){
-        return "Teacher who will be approved by admin now";
+    public void approveTeacher(@PathVariable("teacher-id") String tId){
+    	teacherDao.approveOrDeleteTeacher(tId, true);
     }
 
     @PostMapping("/teachers/approve-teachers/delete/{teacher-id}")
-    public String deleteTeacher(@PathVariable("teacher-id") String tId){
-        return "Teacher who will be deleted by admin now";
+    public void deleteTeacher(@PathVariable("teacher-id") String tId){
+    	teacherDao.approveOrDeleteTeacher(tId, false);
     }
 
     //-----------For student approve-------------
@@ -55,11 +55,8 @@ public class AdminController {
 //        String encodedPassword = new BCryptPasswordEncoder().encode(student.getPassword());
 //        student.setPassword(encodedPassword);
         studentDao.create(student);
-
-
         return student;
     }
-
 
     @GetMapping("/student/approve-student/list")
     public List<Student> approveStudent(){
