@@ -72,7 +72,7 @@ create table question(
 create table questionAns(
 	examId int(10),
 	questionNo int(20),
-	optionNo varchar(2) not null,
+	optionNo int(2) not null,
 	optionValue varchar(200) not null,
 	ansStatus boolean default false,
     constraint pk_questionAns primary key (examId,questionNo,optionNo),
