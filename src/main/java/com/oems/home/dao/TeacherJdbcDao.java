@@ -137,10 +137,21 @@ public class TeacherJdbcDao implements Dao<Teacher> {
         return jdbcTemplate.query(queryForAllStudentOfThatCourse, studentRowMapper);
 	}
 
-	public Dashboard teacherBoardManager(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Dashboard teacherBoardManager(String tId) {
+		String q1= "select COUNT(*) from teacher";
+        String q2= "select count(*) from result where courseCode in" +
+        	    " (Select courseCode from course where teacherId="+tId+" ) and cgpa=-1";
+        String q3 = "select COUNT(*) from department";
+        String q4 = "select COUNT(*) from examPaper where teacherId="+tId;
+
+        Dashboard dashboard = new Dashboard();
+        dashboard.setCard1(jdbcTemplate.queryForObject(q1,Integer.class));
+        dashboard.setCard2(jdbcTemplate.queryForObject(q2,Integer.class));
+        dashboard.setCard3(jdbcTemplate.queryForObject(q3,Integer.class));
+        dashboard.setCard4(jdbcTemplate.queryForObject(q4,Integer.class));
+        return dashboard;
 	}
+
 
     private final RowMapper<Review> reviewMapper = (rs, rowNumber)->{
         Review review = new Review();
@@ -151,7 +162,6 @@ public class TeacherJdbcDao implements Dao<Teacher> {
         return review;
     };
     public List<Review> studentExamPaperReviewList(String tid) {
-
         String queryForReviewedStudentList = "select * from studentMark" +
                 " where courseCode in (" +
                 "select courseCode from courses " +

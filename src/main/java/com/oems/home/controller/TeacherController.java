@@ -26,8 +26,8 @@ public class TeacherController {
     ExaminationManagerJdbcDao examDao;
 	
     @GetMapping("/teacher-board/{id}")
-    public Dashboard TeacherBoardManager(@PathVariable("id") String id){
-    	return teacherDao.teacherBoardManager(id);
+    public Dashboard TeacherBoardManager(@PathVariable("id") String tId){
+    	return teacherDao.teacherBoardManager(tId);
     }
     @GetMapping("/teachers/all-teachers")
     public List<Teacher> allTeachers(){
