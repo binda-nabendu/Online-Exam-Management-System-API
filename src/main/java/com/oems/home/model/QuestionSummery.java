@@ -1,6 +1,7 @@
 package com.oems.home.model;
 
 public class QuestionSummery {
+
 	private String courseCode;
 	private String teacherId;
 	private Double percentageValue;

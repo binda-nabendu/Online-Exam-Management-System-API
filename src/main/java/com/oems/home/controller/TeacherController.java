@@ -3,15 +3,9 @@ package com.oems.home.controller;
 import com.oems.home.ExamManagementSystemApplication;
 import com.oems.home.dao.ExaminationManagerJdbcDao;
 import com.oems.home.dao.TeacherJdbcDao;
-import com.oems.home.model.CourseDetails;
-import com.oems.home.model.Dashboard;
-import com.oems.home.model.QuestionPaper;
-
-import com.oems.home.model.Student;
-import com.oems.home.model.Teacher;
+import com.oems.home.model.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import com.oems.home.model.Review;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -58,12 +52,12 @@ public class TeacherController {
         return examDao.get(qId);
     }
 
-    @GetMapping("/exams/all-exams/{teacher-id}")
-    public String getAllQuestionThatTeacherMade(@PathVariable("teacher-id") String tid){
-        return "Here all of your question paper that teacher made can see";
+    @GetMapping("/exams/all-questions/{teacher-id}")
+    public List<QuestionSummery> getAllQuestionThatTeacherMade(@PathVariable("teacher-id") String tid){
+        return examDao.returnAllQuestionAccordingToTeacher(tid);
     }
     @GetMapping("/exams/all-result/{teacher-id}")
-    public String getAllResultThatTeacherPublished(@PathVariable("teacher-id") String tid){
+    public String ResultTeacherHaveToPublish(@PathVariable("teacher-id") String tid){
         return "Here all of your subject result you can see";
     }
     @GetMapping("/exams/receive-review/{teacher-id}")

@@ -3,6 +3,7 @@ package com.oems.home.dao;
 import com.oems.home.model.IndividualQuestion;
 import com.oems.home.model.QuestionAnswer;
 import com.oems.home.model.QuestionPaper;
+import com.oems.home.model.QuestionSummery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -129,5 +130,20 @@ public class ExaminationManagerJdbcDao implements Dao<QuestionPaper> {
         String s = "select max(examId) from examPaper";
         int i=jdbcTemplate.queryForObject(s,Integer.class);
         return i;
+    }
+
+    public List<QuestionSummery> returnAllQuestionAccordingToTeacher(String tid) {
+        String queryForReturnQuestionHeader = "select * from examPaper " +
+                "where teacherId="+tid+" order by startingDateTime";
+        return jdbcTemplate.query(queryForReturnQuestionHeader,(rs,rn)->{
+            QuestionSummery question = new QuestionSummery();
+            //question.setExamId(rs.getString("examId");
+            question.setCourseCode(rs.getString("courseCode"));
+            question.setTeacherId(rs.getString("teacherId"));
+            question.setPercentageValue(rs.getDouble("percentageValue"));
+            question.setStartingDateTime(rs.getString("startingDateTime"));
+            question.setTotal(rs.getDouble("total"));
+            return question;
+        });
     }
 }
