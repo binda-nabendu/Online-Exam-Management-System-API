@@ -134,7 +134,7 @@ public class StudentJdbcDao implements Dao<Student> {
         CourseDetails courseDetails = new CourseDetails();
         courseDetails.setCourseCode(rs.getString("courseCode"));
         courseDetails.setCourseName(rs.getString("courseName"));
-        courseDetails.setCourseSessions(rs.getString("courseCurrSession"));
+        courseDetails.setCourseSessions(rs.getInt("courseCurrSession"));
         return courseDetails;
     };
 
