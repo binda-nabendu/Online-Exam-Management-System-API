@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import com.oems.home.model.CourseDetails;
+import com.oems.home.model.Dashboard;
 import com.oems.home.model.Student;
 import com.oems.home.model.Teacher;
 
@@ -57,7 +59,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 
     }
 
-    RowMapper<Teacher> rowMapper = (rs,rowNumber)->{
+    private final RowMapper<Teacher> teacherRowMapper = (rs,rowNumber)->{
         Teacher teacher = new Teacher();
         teacher.setNid(rs.getString("nid"));
         teacher.setUserName(rs.getString("userName"));
@@ -74,9 +76,74 @@ public class TeacherJdbcDao implements Dao<Teacher> {
         teacher.setPassword(rs.getString("password"));
         return teacher;
     };
+    
 	public List<Teacher> listOfNonApprovedTeacher() {
 		String joinQueryForAllPendingTeachers = "select * from baseUser b, teacher t where b.nid=t.teacherId and adminApproval=0";
-		return jdbcTemplate.query(joinQueryForAllPendingTeachers,rowMapper);
+		return jdbcTemplate.query(joinQueryForAllPendingTeachers,teacherRowMapper);
+	}
+
+	public void approveOrDeleteTeacher(String tId, boolean approve) {
+		if(approve){
+            String q1= "update baseUser set adminApproval=1 where nid= ?";
+            jdbcTemplate.update(q1,tId);
+        }else{
+            String q1="delete from teacher where teacherId=?";
+            String q2 = "delete from baseUser where nid= ?";
+            jdbcTemplate.update(q1,tId);
+            jdbcTemplate.update(q2,tId);
+        }
+	}
+	
+	public List<Teacher> listOfAllTeacher() {
+		String queryForListOfAllTeacher = "select * from baseUser b, teacher t where b.nid=t.teacherId";
+		return jdbcTemplate.query(queryForListOfAllTeacher,teacherRowMapper);
+	}
+	
+	private final RowMapper<CourseDetails> crsDetailsRowMapper = (rs, rowNumber)->{
+        CourseDetails courseDetails = new CourseDetails();
+        courseDetails.setCourseCode(rs.getString("courseCode"));
+        courseDetails.setCourseName(rs.getString("courseName"));
+        courseDetails.setCourseSessions(rs.getString("courseCurrSession"));
+        return courseDetails;
+    };
+
+	public List<CourseDetails> listOfAllCoursesOfAllDept() {
+		String queryForListOfAllCoursesOfAllDept = "select * from courses";
+		return jdbcTemplate.query(queryForListOfAllCoursesOfAllDept,crsDetailsRowMapper);
+	}
+
+	public List<CourseDetails> currCoursesOfTeacher(String tId) {
+		String queryForCurrCoursesOfTeacher = "select * from courses where teacherId="+tId;
+		return jdbcTemplate.query(queryForCurrCoursesOfTeacher,crsDetailsRowMapper);
+	}
+	
+	private final RowMapper<Student> studentRowMapper = (rs, rowNumber)->{
+        Student student = new Student();
+        student.setNid(rs.getString("nid"));
+        student.setUserName(rs.getString("userName"));
+        student.setFatherName(rs.getString("fatherName"));
+        student.setMotherName(rs.getString("motherName"));
+        student.setGender(rs.getInt("gender"));
+        student.setContactNo(rs.getString("contactNo"));
+        student.setEmail(rs.getString("email"));
+        student.setDob(rs.getString("dob"));
+        student.setAddress(rs.getString("address"));
+        student.setDeptId(rs.getString("deptId"));
+        student.setSemester(rs.getInt("semester"));
+        //here we have to add batch later
+        student.setRole(rs.getString("role"));
+        student.setPassword(rs.getString("password"));
+        return student;
+    };
+
+	public List<Student> listOfAllStudentOfThatCourse(String courseCode) {
+		String queryForAllStudentOfThatCourse ="select * from result where courseCode="+courseCode+" and cgpa=-1";
+        return jdbcTemplate.query(queryForAllStudentOfThatCourse, studentRowMapper);
+	}
+
+	public Dashboard teacherBoardManager(String id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
