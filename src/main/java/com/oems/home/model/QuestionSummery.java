@@ -6,18 +6,19 @@ public class QuestionSummery {
 	private Double percentageValue;
 	private String startingDateTime;
     private double total;
-    
+    private int examId;
 	public QuestionSummery() {
 		super();
 	}
 	public QuestionSummery(String courseCode, String teacherId, Double percentageValue, String startingDateTime,
-			double total) {
+			double total, int examId) {
 		super();
 		this.courseCode = courseCode;
 		this.teacherId = teacherId;
 		this.percentageValue = percentageValue;
 		this.startingDateTime = startingDateTime;
 		this.total = total;
+		this.examId = examId;
 	}
 	public String getCourseCode() {
 		return courseCode;
@@ -49,6 +50,14 @@ public class QuestionSummery {
 	public void setTotal(double total) {
 		this.total = total;
 	}
+	public int getExamId() {
+		return examId;
+	}
+	public void setExamId(int examId) {
+		this.examId = examId;
+	}
+    
+	
     
     
 }
