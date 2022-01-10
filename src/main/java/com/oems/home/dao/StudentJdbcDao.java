@@ -151,7 +151,7 @@ public class StudentJdbcDao implements Dao<Student> {
     }
 
     public List<CourseDetails> departmentalCourseSet(String dept){
-        String q1 ="select * from courses where deptId="+dept;
+        String q1 ="select * from courses where deptId="+dept+" and teacherId != 'Not assigned' ";
         return jdbcTemplate.query(q1,crsDetailsRowMapper);
 
     }
@@ -198,6 +198,12 @@ public class StudentJdbcDao implements Dao<Student> {
 		
         return jdbcTemplate.query(q1,questionSummaryMapper);
 	}
+
+    public void requestForReview(String stdId, int examId) {
+        String queryForActiveReviewFlag = "update studentmark set review=true" +
+                " where stdId=? and examId=?";
+        jdbcTemplate.update(queryForActiveReviewFlag,stdId,examId);
+    }
 }
 
 

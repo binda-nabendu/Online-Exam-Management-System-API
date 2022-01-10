@@ -49,9 +49,9 @@ public class StudentController {
     public List<QuestionSummery> previousExamStudent(@PathVariable("studentId") String stdId){
     	return studentDao.prevExamForStudent(stdId);
     }
-    @PostMapping("/exams/send-review/{studentId}/{examId}")
-    public String RequestReview(@PathVariable("studentId")String id ,@PathVariable("examId") int examId){
-        return "Review Request Sand..";
+    @PostMapping("/exams/send-review/")
+    public void RequestReview(String stdId ,int examId){
+        studentDao.requestForReview(stdId,examId);
     }
     
     //@GetMapping("give-post-exam/{studentId}")
