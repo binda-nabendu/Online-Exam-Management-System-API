@@ -6,6 +6,7 @@ import com.oems.home.model.CourseDetails;
 import com.oems.home.model.Dashboard;
 import com.oems.home.model.QuestionPaper;
 
+import com.oems.home.model.QuestionSummery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,16 +42,16 @@ public class StudentController {
         return studentDao.completedCoursesByStudent(stdId);
     }
     @GetMapping("/exams/upcoming/{studentId}")
-    public List<CourseDetails> upComingExamStudent(@PathVariable("studentId") String stdId){
+    public List<QuestionSummery> upComingExamStudent(@PathVariable("studentId") String stdId){
     	return studentDao.upcomingExamForStudent(stdId);
     }
     @GetMapping("/exams/previous/{studentId}")
-    public List<CourseDetails> previusExamStudent(@PathVariable("studentId") String stdId){
+    public List<QuestionSummery> previousExamStudent(@PathVariable("studentId") String stdId){
     	return studentDao.prevExamForStudent(stdId);
     }
-    @PostMapping("/exams/send-review/{studentId}/{examId}")
-    public String RequestReview(@PathVariable("studentId")String id ,@PathVariable("examId") int examId){
-        return "Review Request Sand..";
+    @PostMapping("/exams/send-review/")
+    public void RequestReview(String stdId ,int examId){
+        studentDao.requestForReview(stdId,examId);
     }
     
     //@GetMapping("give-post-exam/{studentId}")

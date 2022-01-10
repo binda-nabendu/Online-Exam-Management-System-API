@@ -100,11 +100,13 @@ create table stdAnsScript(
     foreign key(examId, questionNo) references question(examId,questionNo)
 );
 create table result( 
-	stdId varchar(20),
-	courseCode varchar(10),
+	stdId varchar(20) not null,
+	courseCode varchar(10) not null,
+    courseSession int not null,
 	cgpa decimal(3,2) default -1,
 	grade varchar(3) default 'X',
-	semester int,
+	semester int not null,
+    previousSemCrs bool default false,
     constraint pk_result primary key (stdId,courseCode),
     foreign key(stdId) references student(stdId),
     foreign key(courseCode) references courses(courseCode)

@@ -6,6 +6,7 @@ import com.oems.home.model.QuestionPaper;
 import com.oems.home.model.QuestionSummery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -67,6 +68,18 @@ public class ExaminationManagerJdbcDao implements Dao<QuestionPaper> {
             int optionAddingStatus = jdbcTemplate.update(sqlQueryFoAddAllOption);
         }
     }
+
+    protected final RowMapper<QuestionSummery> questionSummaryMapper = (rs,rn)->{
+        QuestionSummery question = new QuestionSummery();
+        question.setExamId(rs.getInt("examId"));
+        question.setCourseCode(rs.getString("courseCode"));
+        question.setTeacherId(rs.getString("teacherId"));
+        question.setPercentageValue(rs.getDouble("percentageValue"));
+        question.setStartingDateTime(rs.getString("startingDateTime"));
+        question.setEndingDateTime(rs.getString("endingDateTime"));
+        question.setTotal(rs.getDouble("total"));
+        return question;
+    };
 
     @Override
     public Optional<QuestionPaper> get(String questionId) {
@@ -135,15 +148,6 @@ public class ExaminationManagerJdbcDao implements Dao<QuestionPaper> {
     public List<QuestionSummery> returnAllQuestionAccordingToTeacher(String tid) {
         String queryForReturnQuestionHeader = "select * from examPaper " +
                 "where teacherId="+tid+" order by startingDateTime";
-        return jdbcTemplate.query(queryForReturnQuestionHeader,(rs,rn)->{
-            QuestionSummery question = new QuestionSummery();
-            //question.setExamId(rs.getString("examId");
-            question.setCourseCode(rs.getString("courseCode"));
-            question.setTeacherId(rs.getString("teacherId"));
-            question.setPercentageValue(rs.getDouble("percentageValue"));
-            question.setStartingDateTime(rs.getString("startingDateTime"));
-            question.setTotal(rs.getDouble("total"));
-            return question;
-        });
+        return jdbcTemplate.query(queryForReturnQuestionHeader,questionSummaryMapper);
     }
 }
