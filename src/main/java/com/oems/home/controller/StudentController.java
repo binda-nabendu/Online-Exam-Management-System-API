@@ -4,6 +4,8 @@ import com.oems.home.dao.AdminJdbcDao;
 import com.oems.home.dao.StudentJdbcDao;
 import com.oems.home.model.CourseDetails;
 import com.oems.home.model.Dashboard;
+import com.oems.home.model.QuestionPaper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,16 +41,24 @@ public class StudentController {
         return studentDao.completedCoursesByStudent(stdId);
     }
     @GetMapping("/exams/upcoming/{studentId}")
-    public String upComingExamStudent(@PathVariable("studentId") String id){
-        //return "List of upcoming exam";
-    	
+    public List<CourseDetails> upComingExamStudent(@PathVariable("studentId") String stdId){
+    	return studentDao.upcomingExamForStudent(stdId);
     }
     @GetMapping("/exams/previous/{studentId}")
-    public String previusExamStudent(@PathVariable("studentId") String id){
-        return "List of previous exam up to 2 semester";
+    public List<CourseDetails> previusExamStudent(@PathVariable("studentId") String stdId){
+    	return studentDao.prevExamForStudent(stdId);
     }
     @PostMapping("/exams/send-review/{studentId}/{examId}")
     public String RequestReview(@PathVariable("studentId")String id ,@PathVariable("examId") int examId){
         return "Review Request Sand..";
     }
+    
+    //@GetMapping("give-post-exam/{studentId}")
+   // public String giveOrPostExam(QuestionPaper qPaper) {
+    //	return "";
+   // }
+   // @PostMapping()
+   // public String giveOrPostExam(QuestionPaper qPaper) {
+    //	return "";
+    //}
 }

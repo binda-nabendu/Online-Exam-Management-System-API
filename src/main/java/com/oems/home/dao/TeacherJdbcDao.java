@@ -81,7 +81,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 		String joinQueryForAllPendingTeachers = "select * from baseUser b, teacher t where b.nid=t.teacherId and adminApproval=0";
 		return jdbcTemplate.query(joinQueryForAllPendingTeachers,teacherRowMapper);
 	}
-
+	
 	public void approveOrDeleteTeacher(String tId, boolean approve) {
 		if(approve){
             String q1= "update baseUser set adminApproval=1 where nid= ?";
@@ -144,7 +144,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 	public Dashboard teacherBoardManager(String tId) {
 		String q1= "select COUNT(*) from teacher";
         String q2= "select count(*) from result where courseCode in" +
-        	    " (Select courseCode from course where teacherId="+tId+" ) and cgpa=-1";
+        	    " (Select courseCode from courses where teacherId="+tId+" ) and cgpa=-1";
         String q3 = "select COUNT(*) from department";
         String q4 = "select COUNT(*) from examPaper where teacherId="+tId;
 

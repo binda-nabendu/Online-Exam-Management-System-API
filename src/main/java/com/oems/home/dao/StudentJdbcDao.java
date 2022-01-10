@@ -162,4 +162,39 @@ public class StudentJdbcDao implements Dao<Student> {
             return courseDetails;
         });
     }
+    
+	public List<CourseDetails> upcomingExamForStudent(String stdId) {
+		String q1 ="select courseCode from result where stdId="+stdId+"ei course gulor modhe jegulor starting date greater than today";
+		
+        return jdbcTemplate.query(q1,crsDetailsRowMapper);
+	}
+
+	public List<CourseDetails> prevExamForStudent(String stdId) {
+		String q1 ="select courseCode from result where stdId="+stdId+"ei course gulor modhe jegulor starting date less than today";
+		
+        return jdbcTemplate.query(q1,crsDetailsRowMapper);
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
