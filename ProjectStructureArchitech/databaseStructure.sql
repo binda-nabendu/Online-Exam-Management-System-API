@@ -56,6 +56,8 @@ create table examPaper(
 	endingDateTime datetime not null,
     courseSession int not null,
 	total decimal(5,2) not null,
+    published bool default false,
+    
     foreign key(courseCode) references courses(courseCode),
     foreign key(teacherId) references teacher(teacherId)
 );
@@ -71,7 +73,7 @@ create table question(
 create table questionAns(
 	examId int,
 	questionNo int,
-	optionNo int not null,
+	optionNo tinyint not null,
 	optionValue varchar(200) not null,
 	ansStatus boolean default false,
     constraint pk_questionAns primary key (examId,questionNo,optionNo),
@@ -93,7 +95,7 @@ create table stdAnsScript(
 	stdId varchar(20),
 	examId int,
 	questionNo int,
-	optionNo t default 0,
+	optionNo tinyint default 0,
 	ansStatus bool default false,
     constraint pk_stdAnsScript primary key (stdId,examId,questionNo),
     foreign key(stdId) references student(stdId),
