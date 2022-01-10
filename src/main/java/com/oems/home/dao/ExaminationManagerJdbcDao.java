@@ -3,6 +3,7 @@ package com.oems.home.dao;
 import com.oems.home.model.IndividualQuestion;
 import com.oems.home.model.QuestionAnswer;
 import com.oems.home.model.QuestionPaper;
+import com.oems.home.model.QuestionSummery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ public class ExaminationManagerJdbcDao implements Dao<QuestionPaper> {
     public ExaminationManagerJdbcDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
 
 
     @Override
@@ -68,7 +70,7 @@ public class ExaminationManagerJdbcDao implements Dao<QuestionPaper> {
 
     @Override
     public Optional<QuestionPaper> get(String questionId) {
-        long examId = Long.parseLong(questionId);
+        int examId = Integer.parseInt(questionId);
         String queryForQuestionHeader = "select * from examPaper where examId="+examId;
         QuestionPaper finalQuestion = null;
         try {
@@ -87,7 +89,6 @@ public class ExaminationManagerJdbcDao implements Dao<QuestionPaper> {
             if(finalQuestion != null){
                 finalQuestion.setAllIndividualQuestions(getAllQuestions(examId));
                 for (IndividualQuestion question:finalQuestion.getAllIndividualQuestions()) {
-                    //todo continue
                     String queryForRetrieveOption = "select * from questionAns where examId="+finalQuestion.getExamId()+" and questionNo="+question.getQuestionNo();
                     question.setAllOptions(jdbcTemplate.query(queryForRetrieveOption,(rss,rnn)->{
                         QuestionAnswer answer = new QuestionAnswer();
@@ -123,5 +124,26 @@ public class ExaminationManagerJdbcDao implements Dao<QuestionPaper> {
     @Override
     public void delete(String target) {
 
+    }
+
+    public int getLastExamId() {
+        String s = "select max(examId) from examPaper";
+        int i=jdbcTemplate.queryForObject(s,Integer.class);
+        return i;
+    }
+
+    public List<QuestionSummery> returnAllQuestionAccordingToTeacher(String tid) {
+        String queryForReturnQuestionHeader = "select * from examPaper " +
+                "where teacherId="+tid+" order by startingDateTime";
+        return jdbcTemplate.query(queryForReturnQuestionHeader,(rs,rn)->{
+            QuestionSummery question = new QuestionSummery();
+            //question.setExamId(rs.getString("examId");
+            question.setCourseCode(rs.getString("courseCode"));
+            question.setTeacherId(rs.getString("teacherId"));
+            question.setPercentageValue(rs.getDouble("percentageValue"));
+            question.setStartingDateTime(rs.getString("startingDateTime"));
+            question.setTotal(rs.getDouble("total"));
+            return question;
+        });
     }
 }

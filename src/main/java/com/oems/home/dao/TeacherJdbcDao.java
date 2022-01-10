@@ -3,16 +3,12 @@ package com.oems.home.dao;
 import java.util.List;
 import java.util.Optional;
 
+import com.oems.home.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-
-import com.oems.home.model.CourseDetails;
-import com.oems.home.model.Dashboard;
-import com.oems.home.model.Student;
-import com.oems.home.model.Teacher;
 
 @Component
 @Repository
@@ -156,22 +152,21 @@ public class TeacherJdbcDao implements Dao<Teacher> {
         return dashboard;
 	}
 
-	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+    private final RowMapper<Review> reviewMapper = (rs, rowNumber)->{
+        Review review = new Review();
+        review.setCourseCode(rs.getString("courseCode"));
+        review.setExamId(rs.getInt("examId"));
+        review.setStdId(rs.getString("stdId"));
+        review.setGotTotalMarks(rs.getDouble("gotTotalMarks"));
+        return review;
+    };
+    public List<Review> studentExamPaperReviewList(String tid) {
+        String queryForReviewedStudentList = "select * from studentMark" +
+                " where courseCode in (" +
+                "select courseCode from courses " +
+                "where teacherId ="+tid+") and review = true ";
+
+        return jdbcTemplate.query(queryForReviewedStudentList,reviewMapper);
+    }
 }

@@ -1,28 +1,23 @@
 package com.oems.home.controller;
 
+import com.oems.home.ExamManagementSystemApplication;
+import com.oems.home.dao.ExaminationManagerJdbcDao;
 import com.oems.home.dao.TeacherJdbcDao;
-import com.oems.home.model.CourseDetails;
-import com.oems.home.model.Dashboard;
-import com.oems.home.model.IndividualQuestion;
-import com.oems.home.model.QuestionAnswer;
-import com.oems.home.model.QuestionPaper;
-
-import com.oems.home.model.Student;
-import com.oems.home.model.Teacher;
+import com.oems.home.model.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import com.oems.home.model.Review;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class TeacherController {
 	@Autowired
     TeacherJdbcDao teacherDao;
+    @Autowired
+    ExaminationManagerJdbcDao examDao;
 	
     @GetMapping("/teacher-board/{id}")
     public Dashboard TeacherBoardManager(@PathVariable("id") String tId){
@@ -44,36 +39,37 @@ public class TeacherController {
     public List<Student> allStudentOfThatCourse(@PathVariable("course-code")String courseCode){
     	return teacherDao.listOfAllStudentOfThatCourse(courseCode);
     }
-
+    // !---------- must be full details of exam paper needed-----------!
     @PostMapping("/exams/question")
-    public QuestionPaper QuestionPaper(@RequestBody QuestionPaper questionPaper){
-
+    public QuestionPaper QuestionPaperHandler(@RequestBody QuestionPaper questionPaper){
+        questionPaper.setExamId(examDao.getLastExamId()+1);
+        examDao.create(questionPaper);
         return questionPaper;
     }
 
     @GetMapping("/exams/questions/{question-paper-id}")
-    public String QuestionPaper(@PathVariable("question-paper-id") int qId){
-        return "Your"+qId+" Question is here";
+    public Optional<QuestionPaper> QuestionPaperHandler(@PathVariable("question-paper-id") String qId){
+        return examDao.get(qId);
     }
 
-    @GetMapping("/exams/all-exams/{teacher-id}")
-    public String getAllQuestionThatTeacherMade(@PathVariable("teacher-id") String tid){
-        return "Here all of your question paper that teacher made can see";
+    @GetMapping("/exams/all-questions/{teacher-id}")
+    public List<QuestionSummery> getAllQuestionThatTeacherMade(@PathVariable("teacher-id") String tid){
+        return examDao.returnAllQuestionAccordingToTeacher(tid);
     }
     @GetMapping("/exams/all-result/{teacher-id}")
-    public String getAllResultThatTeacherPublished(@PathVariable("teacher-id") String tid){
+    public String ResultTeacherHaveToPublish(@PathVariable("teacher-id") String tid){
         return "Here all of your subject result you can see";
     }
     @GetMapping("/exams/receive-review/{teacher-id}")
     public List<Review> ReviewList(@PathVariable("teacher-id") String tid){
-        return teacherDao.studentReviewList(tid);
+        return teacherDao.studentExamPaperReviewList(tid);
     }
     @GetMapping("/terms-and-condition")
     public String termsAndCondition(){
-        return "All terms and condition here";
+        return "All terms and condition here done by afzal";
     }
     @GetMapping("/faq")
     public String faq(){
-        return "Your Question and Answer here...";
+        return "Your Question and Answer here... done by afzal";
     }
 }

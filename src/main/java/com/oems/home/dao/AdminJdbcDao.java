@@ -1,6 +1,7 @@
 package com.oems.home.dao;
 
 import com.oems.home.model.CourseDetails;
+import com.oems.home.model.Department;
 import com.oems.home.model.RequestCourse;
 import com.oems.home.model.UserVerificationModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,5 +93,12 @@ public class AdminJdbcDao {
                 "values(?,?,?,?,?)";
         jdbcTemplate.update(queryForAddCourse,details.getCourseCode(),details.getDeptId(),details.getCourseName(),details.getTeacherId(),details.getCourseSessions());
 
+    }
+
+    public void addADepartment(Department department) {
+        String queryForAddDept = "insert into department " +
+                "(deptId, deptName)" +
+                "values(?,?)";
+        jdbcTemplate.update(queryForAddDept, department.getDeptId(), department.getDeptName());
     }
 }
