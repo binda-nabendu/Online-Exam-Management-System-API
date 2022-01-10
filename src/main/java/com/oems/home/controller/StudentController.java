@@ -65,4 +65,9 @@ public class StudentController {
     public void sendAnswer(AnswerScript answerScript) {
         studentDao.ReceiveAnswer(answerScript);
     }
+
+    @GetMapping("get-answer-script/")
+    public Optional<QuestionPaper> provideAnswerScript(String stdId, String examId){
+        return examDao.answerScriptCreator(stdId,examId);
+    }
 }

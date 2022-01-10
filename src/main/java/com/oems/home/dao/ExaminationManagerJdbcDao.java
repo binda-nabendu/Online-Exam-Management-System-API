@@ -1,10 +1,8 @@
 package com.oems.home.dao;
 
-import com.oems.home.model.IndividualQuestion;
-import com.oems.home.model.QuestionAnswer;
-import com.oems.home.model.QuestionPaper;
-import com.oems.home.model.QuestionSummery;
+import com.oems.home.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -149,5 +147,26 @@ public class ExaminationManagerJdbcDao implements Dao<QuestionPaper> {
         String queryForReturnQuestionHeader = "select * from examPaper " +
                 "where teacherId="+tid+" order by startingDateTime";
         return jdbcTemplate.query(queryForReturnQuestionHeader,questionSummaryMapper);
+    }
+
+    public Optional<QuestionPaper> answerScriptCreator(String stdId, String examId) {
+        Optional<QuestionPaper> questionPaper = get(examId);
+
+        questionPaper.ifPresent(e->{
+            List<IndividualQuestion> l=e.getAllIndividualQuestions();
+            for(IndividualQuestion iq: l){
+                String s1="select optionNo from questionAns where examId="+e.getExamId()
+                        +" and questionNo="+iq.getQuestionNo()+" and ansStatus= true";
+                String s2="select optionNo from stdAnsScript where stdId="+stdId+
+                        " and examId="+e.getExamId()+" and questionNo="+iq.getQuestionNo();
+                iq.setCorrectOption(jdbcTemplate.query(s1,(rs,rn)->{
+                    return rs.getInt("optionNo");
+                }));
+                iq.setSelectedOption(jdbcTemplate.query(s2,(rs,rn)->{
+                    return rs.getInt("optionNo");
+                }));
+            }
+        });
+        return questionPaper;
     }
 }
