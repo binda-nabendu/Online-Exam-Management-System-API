@@ -1,5 +1,8 @@
 package com.oems.home.model;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Review {
     private String courseCode;
     private int examId;

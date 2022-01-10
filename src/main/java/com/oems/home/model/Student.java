@@ -1,9 +1,11 @@
 package com.oems.home.model;
 
 import com.fasterxml.jackson.databind.ser.Serializers;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
+@Component
 public class Student extends BaseUser{
 	private String deptId;
 	private int semester;

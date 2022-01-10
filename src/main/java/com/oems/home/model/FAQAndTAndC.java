@@ -1,5 +1,8 @@
 package com.oems.home.model;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class FAQAndTAndC {
     public String faq ="1.  What is online exam management system?\n" +
             "\n" +

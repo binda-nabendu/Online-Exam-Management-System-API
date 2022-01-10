@@ -1,9 +1,11 @@
 package com.oems.home.model;
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-
+@Component
 public class Teacher extends BaseUser{
 	private String eduQualification;
 	private String expertise;
