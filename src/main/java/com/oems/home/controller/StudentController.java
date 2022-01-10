@@ -1,16 +1,15 @@
 package com.oems.home.controller;
 
 import com.oems.home.dao.AdminJdbcDao;
+import com.oems.home.dao.ExaminationManagerJdbcDao;
 import com.oems.home.dao.StudentJdbcDao;
-import com.oems.home.model.CourseDetails;
-import com.oems.home.model.Dashboard;
-import com.oems.home.model.QuestionPaper;
+import com.oems.home.model.*;
 
-import com.oems.home.model.QuestionSummery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class StudentController {
@@ -19,6 +18,8 @@ public class StudentController {
     StudentJdbcDao studentDao;
     @Autowired
     AdminJdbcDao adminJdbcDao;
+    @Autowired
+    ExaminationManagerJdbcDao examDao;
 
     @GetMapping("student-board/{id}")
     public Dashboard studentDashBoard(@PathVariable("id") String id){
@@ -54,12 +55,14 @@ public class StudentController {
         studentDao.requestForReview(stdId,examId);
     }
     
-    //@GetMapping("give-post-exam/{studentId}")
-   // public String giveOrPostExam(QuestionPaper qPaper) {
-    //	return "";
-   // }
-   // @PostMapping()
-   // public String giveOrPostExam(QuestionPaper qPaper) {
-    //	return "";
-    //}
+    @GetMapping("give-post-exam/")
+    public Optional<QuestionPaper> getQuestion(String questionId) {
+        Optional<QuestionPaper> questionPaper = examDao.get(questionId);
+        questionPaper.ifPresent(QuestionPaper::removeAnsStatus);
+    	return questionPaper;
+    }
+    @PostMapping("give-post-exam/")
+    public void sendAnswer(AnswerScript answerScript) {
+        studentDao.ReceiveAnswer(answerScript);
+    }
 }

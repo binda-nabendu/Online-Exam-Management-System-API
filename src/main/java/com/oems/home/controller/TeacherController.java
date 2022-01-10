@@ -66,10 +66,10 @@ public class TeacherController {
     }
     @GetMapping("/terms-and-condition")
     public String termsAndCondition(){
-        return "All terms and condition here done by afzal";
+        return new FAQAndTAndC().termsAndCondition;
     }
     @GetMapping("/faq")
     public String faq(){
-        return "Your Question and Answer here... done by afzal";
+        return new FAQAndTAndC().faq;
     }
 }

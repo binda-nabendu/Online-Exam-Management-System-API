@@ -1,9 +1,6 @@
 package com.oems.home.dao;
 
-import com.oems.home.model.CourseDetails;
-import com.oems.home.model.Dashboard;
-import com.oems.home.model.QuestionSummery;
-import com.oems.home.model.Student;
+import com.oems.home.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -196,13 +193,33 @@ public class StudentJdbcDao implements Dao<Student> {
                 " where cgpa=-1 or previousSemCrs = true" +
                 ")  and endingDateTime<"+presentDateTime;
 		
-        return jdbcTemplate.query(q1,questionSummaryMapper);
+        List<QuestionSummery> l1= jdbcTemplate.query(q1,questionSummaryMapper);
+
+        for(QuestionSummery qs:l1){
+        String pubQuery = "select published from examPaper where examId="+qs.getExamId();
+        Boolean published=jdbcTemplate.queryForObject(pubQuery,Boolean.class);
+            if(Boolean.TRUE.equals(published)){
+                String queryForGettingMark = " select gotTotalMarks from studentmark where stdId= "+stdId;
+                double mark = jdbcTemplate.queryForObject(queryForGettingMark, Double.class);
+                qs.setObtainMark(mark);
+            }
+        }
+        return l1;
 	}
 
     public void requestForReview(String stdId, int examId) {
         String queryForActiveReviewFlag = "update studentmark set review=true" +
                 " where stdId=? and examId=?";
         jdbcTemplate.update(queryForActiveReviewFlag,stdId,examId);
+    }
+
+    public void ReceiveAnswer(AnswerScript ansScript) {
+        for(QuestionOptionPair qp : ansScript.getAllQuestionAnswer()) {
+            String s = "insert into stdAnsScript " +
+                    "(stdId, examId, questionNo, optionNo) " +
+                    "values(?,?,?,?)";
+            jdbcTemplate.update(s, ansScript.getStdId(), ansScript.getExamId(), qp.getQuestionNo(), qp.getQuestionNo());
+        }
     }
 }
 
