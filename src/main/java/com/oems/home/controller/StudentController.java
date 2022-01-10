@@ -40,7 +40,8 @@ public class StudentController {
     }
     @GetMapping("/exams/upcoming/{studentId}")
     public String upComingExamStudent(@PathVariable("studentId") String id){
-        return "List of upcoming exam";
+        //return "List of upcoming exam";
+    	
     }
     @GetMapping("/exams/previous/{studentId}")
     public String previusExamStudent(@PathVariable("studentId") String id){
