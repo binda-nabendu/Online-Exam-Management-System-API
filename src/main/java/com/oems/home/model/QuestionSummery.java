@@ -2,12 +2,13 @@ package com.oems.home.model;
 
 public class QuestionSummery {
 
+    private int examId;
 	private String courseCode;
 	private String teacherId;
 	private Double percentageValue;
 	private String startingDateTime;
+	private String endingDateTime;
     private double total;
-    private int examId;
 	public QuestionSummery() {
 		super();
 	}
@@ -19,6 +20,12 @@ public class QuestionSummery {
 		this.percentageValue = percentageValue;
 		this.startingDateTime = startingDateTime;
 		this.total = total;
+		this.examId = examId;
+	}
+	public int getExamId() {
+		return examId;
+	}
+	public void setExamId(int examId) {
 		this.examId = examId;
 	}
 	public String getCourseCode() {
@@ -45,17 +52,20 @@ public class QuestionSummery {
 	public void setStartingDateTime(String startingDateTime) {
 		this.startingDateTime = startingDateTime;
 	}
+
+	public String getEndingDateTime() {
+		return endingDateTime;
+	}
+
+	public void setEndingDateTime(String endingDateTime) {
+		this.endingDateTime = endingDateTime;
+	}
+
 	public double getTotal() {
 		return total;
 	}
 	public void setTotal(double total) {
 		this.total = total;
-	}
-	public int getExamId() {
-		return examId;
-	}
-	public void setExamId(int examId) {
-		this.examId = examId;
 	}
     
 	
