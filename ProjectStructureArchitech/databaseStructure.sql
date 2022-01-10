@@ -93,7 +93,7 @@ create table stdAnsScript(
 	stdId varchar(20),
 	examId int,
 	questionNo int,
-	optionNo varchar(2) default 'Z',
+	optionNo t default 0,
 	ansStatus bool default false,
     constraint pk_stdAnsScript primary key (stdId,examId,questionNo),
     foreign key(stdId) references student(stdId),
