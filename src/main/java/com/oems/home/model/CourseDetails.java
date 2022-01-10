@@ -1,5 +1,8 @@
 package com.oems.home.model;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class CourseDetails {
     private String courseCode;
     private String deptId;

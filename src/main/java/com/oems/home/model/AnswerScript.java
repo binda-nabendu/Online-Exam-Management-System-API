@@ -1,7 +1,10 @@
 package com.oems.home.model;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 
+@Component
 public class AnswerScript {
     private String stdId;
     private int examId;
