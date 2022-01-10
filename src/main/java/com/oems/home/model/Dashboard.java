@@ -1,5 +1,8 @@
 package com.oems.home.model;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Dashboard {
     private int card1;
     private int card2;

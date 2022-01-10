@@ -13,6 +13,8 @@ public class IndividualQuestion {
     //Blob questionImage;
     private double mark;
     private List<QuestionAnswer> allOptions=new ArrayList<>();
+    private List<Integer> selectedOption;
+    private List<Integer> correctOption;
 
     public int getQuestionNo() {
         return questionNo;
@@ -44,5 +46,21 @@ public class IndividualQuestion {
 
     public void setAllOptions(List<QuestionAnswer> allOptions) {
         this.allOptions = allOptions;
+    }
+
+    public List<Integer> getSelectedOption() {
+        return selectedOption;
+    }
+
+    public void setSelectedOption(List<Integer> selectedOption) {
+        this.selectedOption = selectedOption;
+    }
+
+    public List<Integer> getCorrectOption() {
+        return correctOption;
+    }
+
+    public void setCorrectOption(List<Integer> correctOption) {
+        this.correctOption = correctOption;
     }
 }
