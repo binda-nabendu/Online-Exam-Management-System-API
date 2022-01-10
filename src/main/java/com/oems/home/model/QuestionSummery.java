@@ -9,19 +9,8 @@ public class QuestionSummery {
 	private String startingDateTime;
 	private String endingDateTime;
     private double total;
-	public QuestionSummery() {
-		super();
-	}
-	public QuestionSummery(String courseCode, String teacherId, Double percentageValue, String startingDateTime,
-			double total, int examId) {
-		super();
-		this.courseCode = courseCode;
-		this.teacherId = teacherId;
-		this.percentageValue = percentageValue;
-		this.startingDateTime = startingDateTime;
-		this.total = total;
-		this.examId = examId;
-	}
+	private double obtainMark;
+
 	public int getExamId() {
 		return examId;
 	}
@@ -67,8 +56,12 @@ public class QuestionSummery {
 	public void setTotal(double total) {
 		this.total = total;
 	}
-    
-	
-    
-    
+
+	public double getObtainMark() {
+		return obtainMark;
+	}
+
+	public void setObtainMark(double obtainMark) {
+		this.obtainMark = obtainMark;
+	}
 }
