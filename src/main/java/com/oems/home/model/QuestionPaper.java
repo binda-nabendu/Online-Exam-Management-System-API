@@ -99,4 +99,10 @@ public class QuestionPaper {
     public void setAllIndividualQuestions(List<IndividualQuestion> allIndividualQuestions) {
         this.allIndividualQuestions = allIndividualQuestions;
     }
+    public void removeAnsStatus(){
+        for(IndividualQuestion question : allIndividualQuestions){
+            for(QuestionAnswer qa:question.getAllOptions())
+                qa.setAnsStatus(false);
+        }
+    }
 }

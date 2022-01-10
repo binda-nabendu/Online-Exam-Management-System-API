@@ -73,8 +73,9 @@ public class AdminController {
         studentDao.approveOrDeleteStudent(sId,false);
     }
 
-    @PostMapping("/courses/add-department/{department-details}")
-    public String addDepartment(@PathVariable("department-details") CourseDetails department){
+    @PostMapping("/courses/add-department/")
+    public String addDepartment(Department department){
+        adminJdbcDao.addADepartment(department);
         return "department Added Successful";
     }
 
