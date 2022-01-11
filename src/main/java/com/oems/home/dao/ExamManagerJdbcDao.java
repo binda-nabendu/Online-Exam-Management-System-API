@@ -2,7 +2,6 @@ package com.oems.home.dao;
 
 import com.oems.home.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -64,6 +63,9 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
                     "(examId,questionNo,optionNo,optionValue,ansStatus)" +
                     "values("+examId+","+questionNo+","+option.getOptionNo()+","+option.getOptionValue()+","+option.isAnsStatus()+")";
             int optionAddingStatus = jdbcTemplate.update(sqlQueryFoAddAllOption);
+            if(optionAddingStatus<=0){
+                System.out.println("Option didn't add.");
+            }
         }
     }
 
@@ -139,7 +141,9 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
 
     public int getLastExamId() {
         String s = "select max(examId) from examPaper";
-        int i=jdbcTemplate.queryForObject(s,Integer.class);
+        int i = 0;
+        Integer value = jdbcTemplate.queryForObject(s, Integer.class);
+        if (value != null) i = value;
         return i;
     }
 
@@ -159,12 +163,8 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
                         +" and questionNo="+iq.getQuestionNo()+" and ansStatus= true";
                 String s2="select optionNo from stdAnsScript where stdId="+stdId+
                         " and examId="+e.getExamId()+" and questionNo="+iq.getQuestionNo();
-                iq.setCorrectOption(jdbcTemplate.query(s1,(rs,rn)->{
-                    return rs.getInt("optionNo");
-                }));
-                iq.setSelectedOption(jdbcTemplate.query(s2,(rs,rn)->{
-                    return rs.getInt("optionNo");
-                }));
+                iq.setCorrectOption(jdbcTemplate.query(s1,(rs,rn)-> rs.getInt("optionNo")));
+                iq.setSelectedOption(jdbcTemplate.query(s2,(rs,rn)-> rs.getInt("optionNo")));
             }
         });
         return questionPaper;
