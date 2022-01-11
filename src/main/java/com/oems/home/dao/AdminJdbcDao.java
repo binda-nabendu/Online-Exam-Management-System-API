@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Repository
@@ -21,15 +22,13 @@ public class AdminJdbcDao{
         String q1= "select COUNT(*) from teacher";
         String q2= "select COUNT(*) from student";
         String q3= "select COUNT(*) from department";
-
-        //todo... this query will have to write for upcoming not all
         String q4 = "select COUNT(*) from examPaper where teacherId="+id;
 
         Dashboard dashboard = new Dashboard();
-        dashboard.setCard1(jdbcTemplate.queryForObject(q1,Integer.class));
-        dashboard.setCard2(jdbcTemplate.queryForObject(q2,Integer.class));
-        dashboard.setCard3(jdbcTemplate.queryForObject(q3,Integer.class));
-        dashboard.setCard4(jdbcTemplate.queryForObject(q4,Integer.class));
+        dashboard.setCard1(Optional.ofNullable(jdbcTemplate.queryForObject(q1, Integer.class)).orElse(0));
+        dashboard.setCard2(Optional.ofNullable(jdbcTemplate.queryForObject(q2, Integer.class)).orElse(0));
+        dashboard.setCard3(Optional.ofNullable(jdbcTemplate.queryForObject(q3, Integer.class)).orElse(0));
+        dashboard.setCard4(Optional.ofNullable(jdbcTemplate.queryForObject(q4, Integer.class)).orElse(0));
         return dashboard;
 
     }
@@ -78,10 +77,10 @@ public class AdminJdbcDao{
                                                             +requestedCourse.getStdId()+" and courseCode="
                                                             +requestedCourse.getCourseCode();
             String queryForAddSub = " insert into result " +
-                                    "(stdId, courseCode,semester) " +
-                                    "values (?,?,?)";
+                                    "(stdId, courseCode,courseSession,semester) " +
+                                    "values (?,?,?,?)";
             jdbcTemplate.update(queryForRemoveFormRequestedCourseTable);
-            jdbcTemplate.update(queryForAddSub, requestedCourse.getStdId(),requestedCourse.getCourseCode(),requestedCourse.getSemester());
+            jdbcTemplate.update(queryForAddSub, requestedCourse.getStdId(),requestedCourse.getCourseCode(),requestedCourse.getCourseCurrSession(),requestedCourse.getSemester());
         }
     }
 
