@@ -8,7 +8,6 @@ public class FAQAndTAndC {
             "\n" +
             "Online Exam Management is Quiz & Education Results Management system. Its' Based on Laravel Framework. You can create and manage the unlimited exams for students and publish exam results. ... Student can take exam his own time or manage students and assign roll numbers to each student.\n" +
             "\n" +
-            "\n" +
             "2.  What are the type of Exam Management System?  \n" +
             "\n" +
             "•\tMultiple choice exams. Multiple choice questions usually include a phrase or stem followed by three to five options. ...\n" +
@@ -20,26 +19,14 @@ public class FAQAndTAndC {
             "3. Is online Examination batter then offline Examination?\n" +
             "Online examinations are comparatively manageable than offline exams as a dedicated team handles the entire process, even providing a secure connection and webcam. These facilities ensure that teachers have to be less concerned about fraudulent practices during an online examination.\n" +
             "\n" +
-            "4. What programming language did you use to create the software?\n" +
-            "\n" +
-            "\n" +
-            "\n" +
-            "\n" +
-            "\n" +
-            "5. what you had use in software for cyber security?\n" +
-            "\n" +
-            "\n" +
-            "\n" +
-            "6. How much did you charge for this software?\n" +
+            "4. How much did you charge for this software?\n" +
             "100000 Lakh taka only.\n" +
             "\n" +
-            "\n" +
-            "7. what should I bring with me to my exam?\n" +
+            "5. what should I bring with me to my exam?\n" +
             "This depends on your exam. Your educational institution will provide you with these details ahead of exam day.\n" +
             "\n" +
-            "8. How easy it is to use?\n" +
-            "It is very easy to use and very important for the digital world.\n" +
-            "9\n";
+            "6. How easy it is to use?\n" +
+            "It is very easy to use and very important for the digital world.";
     public String termsAndCondition ="This page states the Terms and Conditions under which you (Visitor) may visit this website (“Website”). Please read this page carefully. If you do not accept the Terms and Conditions stated here, we would request you to exit this site. The business, any of its business divisions and / or its subsidiaries, associate companies or subsidiaries to subsidiaries or such other investment companies (in India or abroad) reserve their respective rights to revise these Terms and Conditions at any time by updating this posting. You should visit this page periodically to re-appraise yourself of the Terms and Conditions because they are binding on all users of this Website.\n" +
             "\n" +
             "Use Of Content\n" +
