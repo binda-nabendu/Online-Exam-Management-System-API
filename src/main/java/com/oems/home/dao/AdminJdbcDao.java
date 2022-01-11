@@ -17,6 +17,23 @@ public class AdminJdbcDao{
     public AdminJdbcDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+    public Dashboard adminBoardManager(String id){
+        String q1= "select COUNT(*) from teacher";
+        String q2= "select COUNT(*) from student";
+        String q3= "select COUNT(*) from department";
+
+        //todo... this query will have to write for upcoming not all
+        String q4 = "select COUNT(*) from examPaper where teacherId="+id;
+
+        Dashboard dashboard = new Dashboard();
+        dashboard.setCard1(jdbcTemplate.queryForObject(q1,Integer.class));
+        dashboard.setCard2(jdbcTemplate.queryForObject(q2,Integer.class));
+        dashboard.setCard3(jdbcTemplate.queryForObject(q3,Integer.class));
+        dashboard.setCard4(jdbcTemplate.queryForObject(q4,Integer.class));
+        return dashboard;
+
+    }
+
     public boolean checkUserAndPassword(UserVerificationModel userDetails){
         String verifier = "select nid, email, password,role from " +
                           "baseUser where nid ="+userDetails.getNid();

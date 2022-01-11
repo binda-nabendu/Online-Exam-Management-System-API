@@ -1,6 +1,4 @@
 package com.oems.home.controller;
-
-import com.oems.home.dao.AdminJdbcDao;
 import com.oems.home.dao.ExamManagerJdbcDao;
 import com.oems.home.dao.StudentJdbcDao;
 import com.oems.home.model.*;
