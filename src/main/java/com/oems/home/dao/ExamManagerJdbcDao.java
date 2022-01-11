@@ -13,12 +13,12 @@ import java.util.Optional;
 
 @Component
 @Repository
-public class ExaminationManagerJdbcDao implements Dao<QuestionPaper> {
+public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
 
     @Autowired
     private final JdbcTemplate jdbcTemplate;
 
-    public ExaminationManagerJdbcDao(JdbcTemplate jdbcTemplate) {
+    public ExamManagerJdbcDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

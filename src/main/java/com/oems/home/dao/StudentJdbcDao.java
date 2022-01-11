@@ -116,15 +116,13 @@ public class StudentJdbcDao implements Dao<Student> {
                 "from examPaper where courseCode=any(" +
                 "select courseCode from result where stdId="+id+" and cgpa=-1) and startingDateTime > "+now;
 
-        //todo
-        // this query will have to write for total not reviewed by teacher but he send
-        // String q4 = "select COUNT(*) from examPaper where teacherId="+id;
+        String q4 = "select COUNT(*) from studentMark where review=true";
 
         Dashboard dashboard = new Dashboard();
         dashboard.setCard1(jdbcTemplate.queryForObject(q1,Integer.class));
         dashboard.setCard2(jdbcTemplate.queryForObject(q2,Integer.class));
         dashboard.setCard3(jdbcTemplate.queryForObject(q3,Integer.class));
-        //dashboard.setCard4(jdbcTemplate.queryForObject(q4,Integer.class));
+        dashboard.setCard4(jdbcTemplate.queryForObject(q4,Integer.class));
         return dashboard;
     }
 
@@ -140,6 +138,16 @@ public class StudentJdbcDao implements Dao<Student> {
         String q1 = "select * from courses where courseCode=any(" +
                 "select courseCode from result where stdId="+stdId+" and cgpa>0)";
         return jdbcTemplate.query(q1,crsDetailsRowMapper);
+    }
+
+    public void requestedCourseAdd(List<CourseDetails> all, String stdId) {
+        for (CourseDetails course:all) {
+
+            String q1="Insert into requestCourse" +
+                    "(stdId, courseCode)" +
+                    "values("+stdId+", "+course.getCourseCode()+")";
+            jdbcTemplate.update(q1);
+        }
     }
 
     @Override
