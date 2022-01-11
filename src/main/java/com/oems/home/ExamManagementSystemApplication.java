@@ -13,7 +13,7 @@ public class ExamManagementSystemApplication {
 	private static Dao<Teacher> teacherDao;
 
 	public ExamManagementSystemApplication(Dao<Student> studentDao, Dao<Teacher> teacherDao) {
-		ExamManagementSystemApplication.studentDao = studentDao;
+		this.studentDao = studentDao;
 		ExamManagementSystemApplication.teacherDao = teacherDao;
 	}
 
