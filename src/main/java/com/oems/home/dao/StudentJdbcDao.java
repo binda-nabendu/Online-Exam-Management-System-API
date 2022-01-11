@@ -97,9 +97,8 @@ public class StudentJdbcDao implements Dao<Student> {
         Date today = Calendar.getInstance().getTime();
         String now = df.format(today);
 
-        String q3 = "select COUNT(*) " +
-                "from examPaper where courseCode=any(" +
-                "select courseCode from result where stdId="+id+" and cgpa=-1) and startingDateTime > "+now;
+        String q3 = "select COUNT(*) from examPaper where courseCode = any( " +
+                "select courseCode from result where stdId= "+id+" and cgpa=-1) and startingDateTime > '"+now+"'";
 
         String q4 = "select COUNT(*) from studentMark where review=true";
 
@@ -128,10 +127,10 @@ public class StudentJdbcDao implements Dao<Student> {
     public void requestedCourseAdd(List<CourseDetails> all, String stdId) {
         for (CourseDetails course:all) {
 
-            String q1="Insert into requestCourse" +
-                    "(stdId, courseCode)" +
-                    "values("+stdId+", "+course.getCourseCode()+")";
-            jdbcTemplate.update(q1);
+            String queryForInsIntoReq="Insert into requestCourse" +
+                    "(stdId, courseCode, deptId)" +
+                    "values(?,?,?)";
+            jdbcTemplate.update(queryForInsIntoReq,stdId,course.getCourseCode(),course.getDeptId());
         }
     }
 
@@ -172,7 +171,7 @@ public class StudentJdbcDao implements Dao<Student> {
         String q1 =" select * from exampaper where (courseCode, courseSession) in(" +
                 "select courseCode, courseSession from result" +
                 " where cgpa=-1 and stdId="+stdId+
-                ")  and exampaper.startingDateTime>"+presentDateTime;
+                ")  and exampaper.startingDateTime> '"+presentDateTime+"'";
 
         return jdbcTemplate.query(q1,questionSummaryMapper);
     }
@@ -184,7 +183,7 @@ public class StudentJdbcDao implements Dao<Student> {
         String q1 =" select * from exampaper where (courseCode, courseSession) in(" +
                 "select courseCode, courseSession from result" +
                 " where (cgpa=-1 or previousSemCrs = true) and stdId= "+stdId +
-                ") and endingDateTime<"+presentDateTime;
+                ") and endingDateTime< '"+presentDateTime+"'";
 
         List<QuestionSummery> l1= jdbcTemplate.query(q1,questionSummaryMapper);
 
@@ -192,7 +191,7 @@ public class StudentJdbcDao implements Dao<Student> {
             String pubQuery = "select published from examPaper where examId="+qs.getExamId();
             Boolean published=jdbcTemplate.queryForObject(pubQuery,Boolean.class);
             if(Boolean.TRUE.equals(published)){
-                String queryForGettingMark = " select gotTotalMarks from studentmark where stdId= "+stdId;
+                String queryForGettingMark = " select gotTotalMarks from studentmark where examId= "+qs.getExamId();
                 double mark = Optional.ofNullable(jdbcTemplate.queryForObject(queryForGettingMark, Double.class)).orElse(0.00);
                 qs.setObtainMark(mark);
             }

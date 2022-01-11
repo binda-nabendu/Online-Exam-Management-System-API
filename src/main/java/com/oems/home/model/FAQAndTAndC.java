@@ -19,13 +19,10 @@ public class FAQAndTAndC {
             "3. Is online Examination batter then offline Examination?\n" +
             "Online examinations are comparatively manageable than offline exams as a dedicated team handles the entire process, even providing a secure connection and webcam. These facilities ensure that teachers have to be less concerned about fraudulent practices during an online examination.\n" +
             "\n" +
-            "4. How much did you charge for this software?\n" +
-            "100000 Lakh taka only.\n" +
-            "\n" +
-            "5. what should I bring with me to my exam?\n" +
+            "4. what should I bring with me to my exam?\n" +
             "This depends on your exam. Your educational institution will provide you with these details ahead of exam day.\n" +
             "\n" +
-            "6. How easy it is to use?\n" +
+            "5. How easy it is to use?\n" +
             "It is very easy to use and very important for the digital world.";
     public String termsAndCondition ="This page states the Terms and Conditions under which you (Visitor) may visit this website (“Website”). Please read this page carefully. If you do not accept the Terms and Conditions stated here, we would request you to exit this site. The business, any of its business divisions and / or its subsidiaries, associate companies or subsidiaries to subsidiaries or such other investment companies (in India or abroad) reserve their respective rights to revise these Terms and Conditions at any time by updating this posting. You should visit this page periodically to re-appraise yourself of the Terms and Conditions because they are binding on all users of this Website.\n" +
             "\n" +

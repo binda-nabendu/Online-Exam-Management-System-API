@@ -35,8 +35,8 @@ public class TeacherController {
     	return teacherDao.currCoursesOfTeacher(tId);
     }
     @GetMapping("/teacher/courses/my-students/{course-code}")
-    public List<Student> allStudentOfThatCourse(@PathVariable("course-code")String courseCode){
-    	return teacherDao.listOfAllStudentOfThatCourse(courseCode);
+    public List<Student> allStudentOfThatCourse(@PathVariable("course-code")String courseCode,String deptId){
+    	return teacherDao.listOfAllStudentOfThatCourse(courseCode, deptId);
     }
     // !---------- must be full details of exam paper needed-----------!
     @PostMapping("/teacher/create-exams/question")

@@ -13,8 +13,8 @@ public class IndividualQuestion {
     //Blob questionImage;
     private double mark;
     private List<QuestionAnswer> allOptions=new ArrayList<>();
-    private List<Integer> selectedOption;
-    private List<Integer> correctOption;
+    private List<Integer> selectedOption=new ArrayList<>();
+    private List<Integer> correctOption=new ArrayList<>();
 
     public int getQuestionNo() {
         return questionNo;

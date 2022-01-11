@@ -22,10 +22,6 @@ public class StudentController {
 
         return studentDao.studentBoardManager(id);
     }
-    @PostMapping("/student/request-for-courses")
-    public void reqCourseList(List<CourseDetails> courses, String stdId){
-        studentDao.requestedCourseAdd(courses, stdId);
-    }
     @GetMapping("/student/my-courses/{studentId}")
     public List<CourseDetails> studentCurrentSubject(@PathVariable("studentId") String stdId){
         return studentDao.allRunningCourseDetails(stdId);
@@ -37,6 +33,11 @@ public class StudentController {
     @GetMapping("/student/departmental-course/completed/{studentId}")
     public List<CourseDetails> allCompletedCourseOfThatStudent(@PathVariable("studentId") String stdId){
         return studentDao.completedCoursesByStudent(stdId);
+    }
+    @PostMapping("/student/request-for-courses/{stdId}")
+    public List<CourseDetails> reqCourseList(@RequestBody List<CourseDetails> courses,@PathVariable("stdId") String stdId){
+        studentDao.requestedCourseAdd(courses, stdId);
+        return courses;
     }
     @GetMapping("/student/exams/upcoming/{studentId}")
     public List<QuestionSummery> upComingExamStudent(@PathVariable("studentId") String stdId){
@@ -53,17 +54,19 @@ public class StudentController {
     
     @GetMapping("/student/give-post-exam/")
     public Optional<QuestionPaper> getQuestion(String questionId) {
+        // String examDateTime = examDao.getExamDate(questionId);
+        // if(examDateTime>presentDateTime) return Optional.empty();
         Optional<QuestionPaper> questionPaper = examDao.get(questionId);
         questionPaper.ifPresent(QuestionPaper::removeAnsStatus);
     	return questionPaper;
     }
     @PostMapping("/student/give-post-exam/")
-    public void sendAnswer(AnswerScript answerScript) {
+    public void sendAnswer(@RequestBody AnswerScript answerScript) {
         studentDao.ReceiveAnswer(answerScript);
     }
 
     @GetMapping("/get-answer-script/")
-    public Optional<QuestionPaper> provideAnswerScript(String stdId, String examId){
-        return examDao.answerScriptCreator(stdId,examId);
+    public Optional<QuestionPaper> provideAnswerScript(String stdId, String questionId){
+        return examDao.answerScriptCreator(stdId,questionId);
     }
 }

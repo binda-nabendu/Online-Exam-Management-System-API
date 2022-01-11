@@ -89,6 +89,10 @@ public class AdminController {
         }
         return "Failed... You are not authorized";
     }
+    @PostMapping("/admin/course/assign-teacher")
+    public void assignTeacher(String courseCode, String teacherId){
+
+    }
 
     @GetMapping("/admin/requested-courses")
     public List<RequestCourse> allRequested(){
