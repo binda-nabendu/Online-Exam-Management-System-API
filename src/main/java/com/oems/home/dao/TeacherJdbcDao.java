@@ -100,6 +100,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
         courseDetails.setCourseCode(rs.getString("courseCode"));
         courseDetails.setCourseName(rs.getString("courseName"));
         courseDetails.setCourseSessions(rs.getInt("courseCurrSession"));
+        courseDetails.setDeptId(rs.getString("deptId"));
         return courseDetails;
     };
 
@@ -132,8 +133,9 @@ public class TeacherJdbcDao implements Dao<Teacher> {
         return student;
     };
 
-	public List<Student> listOfAllStudentOfThatCourse(String courseCode) {
-		String queryForAllStudentOfThatCourse ="select * from result where courseCode="+courseCode+" and cgpa=-1";
+	public List<Student> listOfAllStudentOfThatCourse(String courseCode, String deptId) {
+		String queryForAllStudentOfThatCourse ="select * from baseUser b, student s where b.nid=s.stdId and s.stdId = any " +
+                "(select stdId from result where courseCode='"+courseCode+"' and deptId='"+deptId+"' and cgpa=-1)";
         return jdbcTemplate.query(queryForAllStudentOfThatCourse, studentRowMapper);
 	}
 
