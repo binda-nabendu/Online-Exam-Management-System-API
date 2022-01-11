@@ -138,9 +138,13 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 	}
 
 	public Dashboard teacherBoardManager(String tId) {
-		String q1= "select COUNT(*) from teacher";
-        String q2= "select count(*) from result where courseCode in" +
-        	    " (Select courseCode from courses where teacherId="+tId+" ) and cgpa=-1";
+		String q1="select COUNT(*) from studentMark s, courses c where s.courseCode = c.courseCode " +
+                  "and review=true and s.courseCode = any(" +
+                  "select c.courseCode from courses where c.teacherId="+tId+")";
+        String q2= "select count(*) from result where courseCode in " +
+                   "(select courseCode from courses where teacherId="+tId+" ) " +
+                   "and cgpa=-1";
+
         String q3 = "select COUNT(*) from department";
         String q4 = "select COUNT(*) from examPaper where teacherId="+tId;
 

@@ -22,35 +22,35 @@ public class AdminController {
     @Autowired
     AdminJdbcDao adminJdbcDao;
 
-    @GetMapping("/admin-board/{user-id}")
+    @GetMapping("/admin/board/{user-id}")
     public Dashboard adminBoardManager(@PathVariable("user-id") String user){
         return studentDao.adminBoardManager(user);
     }
 
   //-----------For teacher approve-------------
-    @PostMapping("/add-teacher")
+    @PostMapping("/admin/add-teacher")
     public Teacher addTeacher(Teacher teacher){
         teacherDao.create(teacher);
         return teacher;
     }
 
-    @GetMapping("/teachers/approve-teachers/list")
+    @GetMapping("/admin/approve-teachers/list")
     public List<Teacher> approveTeacher(){
         return teacherDao.listOfNonApprovedTeacher();
     }
 
-    @PostMapping("/teachers/approve-teachers/approve/{teacher-id}")
+    @PostMapping("/admin/approve-teachers/approve/{teacher-id}")
     public void approveTeacher(@PathVariable("teacher-id") String tId){
     	teacherDao.approveOrDeleteTeacher(tId, true);
     }
 
-    @PostMapping("/teachers/approve-teachers/delete/{teacher-id}")
+    @PostMapping("/admin/approve-teachers/delete/{teacher-id}")
     public void deleteTeacher(@PathVariable("teacher-id") String tId){
     	teacherDao.approveOrDeleteTeacher(tId, false);
     }
 
     //-----------For student approve-------------
-    @PostMapping("/add-student")
+    @PostMapping("/admin/add-student")
     public Student addStudent(Student student){
 //        String encodedPassword = new BCryptPasswordEncoder().encode(student.getPassword());
 //        student.setPassword(encodedPassword);
@@ -58,28 +58,28 @@ public class AdminController {
         return student;
     }
 
-    @GetMapping("/student/approve-student/list")
+    @GetMapping("/admin/approve-student/list")
     public List<Student> approveStudent(){
         return studentDao.listOfNonApprovedStudent();
     }
 
-    @PostMapping("/student/approve-student/approve/{student-id}")
+    @PostMapping("/admin/approve-student/approve/{student-id}")
     public void approveStudent(@PathVariable("student-id") String sId){
         studentDao.approveOrDeleteStudent(sId,true);
     }
 
-    @PostMapping("/student/approve-student/delete/{student-id}")
+    @PostMapping("/admin/approve-student/delete/{student-id}")
     public void deleteStudent(@PathVariable("student-id") String sId){
         studentDao.approveOrDeleteStudent(sId,false);
     }
 
-    @PostMapping("/courses/add-department/")
+    @PostMapping("/admin/courses/add-department/")
     public String addDepartment(Department department){
         adminJdbcDao.addADepartment(department);
         return "department Added Successful";
     }
 
-    @PostMapping("/courses/add-courses/{course-details}")
+    @PostMapping("/admin/add-courses/{course-details}")
     public String addCourse(@PathVariable("course-details") CourseDetails details){
         adminJdbcDao.addACourses(details);
         return "Course Added Successful";

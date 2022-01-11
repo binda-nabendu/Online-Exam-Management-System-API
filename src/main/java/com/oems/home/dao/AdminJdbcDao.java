@@ -1,9 +1,6 @@
 package com.oems.home.dao;
 
-import com.oems.home.model.CourseDetails;
-import com.oems.home.model.Department;
-import com.oems.home.model.RequestCourse;
-import com.oems.home.model.UserVerificationModel;
+import com.oems.home.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -13,7 +10,7 @@ import java.util.List;
 
 @Component
 @Repository
-public class AdminJdbcDao {
+public class AdminJdbcDao{
     @Autowired
     private final JdbcTemplate jdbcTemplate;
 
@@ -22,7 +19,7 @@ public class AdminJdbcDao {
     }
     public boolean checkUserAndPassword(UserVerificationModel userDetails){
         String verifier = "select nid, email, password,role from " +
-                "baseUser where nid ="+userDetails.getNid();
+                          "baseUser where nid ="+userDetails.getNid();
 
         UserVerificationModel modelUser;
         modelUser = jdbcTemplate.queryForObject(verifier,(rs, rowNumber)->{
@@ -46,16 +43,6 @@ public class AdminJdbcDao {
 
     public void updateSemester() {
 
-    }
-
-    public void requestedCourseAdd(List<CourseDetails> all, String stdId) {
-        for (CourseDetails course:all) {
-
-        String q1="Insert into requestCourse" +
-                "(stdId, courseCode)" +
-                "values("+stdId+", "+course.getCourseCode()+")";
-        jdbcTemplate.update(q1);
-        }
     }
 
     public List<RequestCourse> listOfRequestedCourses() {
