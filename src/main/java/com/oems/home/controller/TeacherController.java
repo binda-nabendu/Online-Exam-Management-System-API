@@ -35,8 +35,8 @@ public class TeacherController {
     	return teacherDao.currCoursesOfTeacher(tId);
     }
     @GetMapping("/teacher/courses/my-students/{course-code}")
-    public List<Student> allStudentOfThatCourse(@PathVariable("course-code")String courseCode){
-    	return teacherDao.listOfAllStudentOfThatCourse(courseCode);
+    public List<Student> allStudentOfThatCourse(@PathVariable("course-code")String courseCode,String deptId){
+    	return teacherDao.listOfAllStudentOfThatCourse(courseCode, deptId);
     }
     // !---------- must be full details of exam paper needed-----------!
     @PostMapping("/teacher/create-exams/question")
@@ -55,9 +55,9 @@ public class TeacherController {
     public List<QuestionSummery> getAllQuestionThatTeacherMade(@PathVariable("teacher-id") String tid){
         return examDao.returnAllQuestionAccordingToTeacher(tid);
     }
-    @GetMapping("/teacher/all-panding-result/{teacher-id}")
+    @GetMapping("/teacher/all-pending-result/{teacher-id}")
     public String ResultTeacherHaveToPublish(@PathVariable("teacher-id") String tid){
-        return "Here all of your subject result you can see";
+        return "Here all of your subject result you can see"+tid;
     }
     @GetMapping("/teacher/receive-review/{teacher-id}")
     public List<Review> ReviewList(@PathVariable("teacher-id") String tid){

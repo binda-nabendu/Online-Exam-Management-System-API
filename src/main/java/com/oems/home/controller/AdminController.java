@@ -5,11 +5,7 @@ import com.oems.home.dao.StudentJdbcDao;
 import com.oems.home.dao.TeacherJdbcDao;
 import com.oems.home.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.ws.rs.Path;
 import java.util.List;
 
 @RestController
@@ -20,11 +16,11 @@ public class AdminController {
     @Autowired
     TeacherJdbcDao teacherDao;
     @Autowired
-    AdminJdbcDao adminJdbcDao;
+    AdminJdbcDao adminDao;
 
     @GetMapping("/admin/board/{user-id}")
     public Dashboard adminBoardManager(@PathVariable("user-id") String user){
-        return studentDao.adminBoardManager(user);
+        return adminDao.adminBoardManager(user);
     }
 
   //-----------For teacher approve-------------
@@ -75,33 +71,37 @@ public class AdminController {
 
     @PostMapping("/admin/courses/add-department/")
     public String addDepartment(Department department){
-        adminJdbcDao.addADepartment(department);
+        adminDao.addADepartment(department);
         return "department Added Successful";
     }
 
     @PostMapping("/admin/add-courses/{course-details}")
     public String addCourse(@PathVariable("course-details") CourseDetails details){
-        adminJdbcDao.addACourses(details);
+        adminDao.addACourses(details);
         return "Course Added Successful";
     }
 
     @PostMapping("/admin/action/changeSemester")
     public String changeAndGoNextSemester(UserVerificationModel model){
-        if(adminJdbcDao.checkUserAndPassword(model)){
-            adminJdbcDao.updateSemester();
+        if(adminDao.checkUserAndPassword(model)){
+            adminDao.updateSemester();
             return "Successful...Enjoy new semester";
         }
         return "Failed... You are not authorized";
     }
+    @PostMapping("/admin/course/assign-teacher")
+    public void assignTeacher(String courseCode, String teacherId){
+
+    }
 
     @GetMapping("/admin/requested-courses")
     public List<RequestCourse> allRequested(){
-        return adminJdbcDao.listOfRequestedCourses();
+        return adminDao.listOfRequestedCourses();
     }
 
     @PostMapping("/admin/requested-courses")
     public void approveCrsRequest(List<RequestCourse> list){
-        adminJdbcDao.approveCoursesForStudent(list);
+        adminDao.approveCoursesForStudent(list);
     }
 
 

@@ -97,6 +97,7 @@ insert into courses(courseCode, deptId, courseName, teacherId)
 values ('CSE315', '2019', 'Computer Architceture', '6118194062'),
        ('EEE255', '2020', 'Electrical Circuit and design', '6118194063'),
        ('CSE341', '3019', 'Theory of computing', '6118194068'),
+       ('CSE341', '2019', 'Theory of computing', '6118194068'),
        ('CSE344', '3021', 'Mathmatical analysis for computer science', '6118194069'),
        ('EEE281', '4011', 'Electical circuit', '6118194066'),
        ('EEE285', '4012', 'Servo Motor and its applyance', '6118194066'),
@@ -280,12 +281,12 @@ values (1, 1, 1, 'ADD', true),
        (5, 5, 3, 'Output name', false),
        (5, 5, 4, 'ID', false)
 ;
-insert into studentMark(stdId, courseCode, examId, gotTotalMarks)
-values ('6118194051', 'CSE315', 1, 18),
-       ('6118194052', 'EEE255', 2, 18),
-       ('6118194053', 'CSE341', 3, 16),
-       ('6118194054', 'CSE344', 4, 14),
-       ('6118194055', 'EEE281', 5, 14)
+insert into studentMark(stdId, courseCode,deptId, examId, gotTotalMarks)
+values ('6118194051', 'CSE315','2019', 1, 18),
+       ('6118194052', 'EEE255','2020', 2, 18),
+       ('6118194053', 'CSE341','3019', 3, 16),
+       ('6118194054', 'CSE344','3021', 4, 14),
+       ('6118194055', 'EEE281','4011', 5, 14)
 ;
 
 insert into stdAnsScript(stdId, examId, questionNo, optionNo, ansStatus)
@@ -296,10 +297,10 @@ values ('6118194051', 1, 1, 3, false),
        ('6118194055', 5, 3, 3, true)
 ;
 
-insert into result(stdId, courseCode, courseSession, cgpa, grade, semester)
-values ('6118194051', 'CSE315', 1, 3.75, 'A', 2),
-       ('6118194052', 'EEE255', 1, 3.95, 'A+', 2),
-       ('6118194053', 'CSE341', 1, 3.00, 'B', 3),
-       ('6118194054', 'CSE344', 2, 2.50, 'C+', 3),
-       ('6118194055', 'EEE281', 3, 4.00, 'A+', 4)
+insert into result(stdId, courseCode, deptId, courseSession, cgpa, grade, semester)
+values ('6118194051', 'CSE315','2019', 1, 3.75, 'A', 2),
+       ('6118194052', 'EEE255','2020', 1, 3.95, 'A+', 2),
+       ('6118194053', 'CSE341','3019', 1, 3.00, 'B', 3),
+       ('6118194054', 'CSE344','3021', 2, 2.50, 'C+', 3),
+       ('6118194055', 'EEE281','4011', 3, 4.00, 'A+', 4)
 ;
