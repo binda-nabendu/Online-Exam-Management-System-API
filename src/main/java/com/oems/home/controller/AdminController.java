@@ -24,7 +24,7 @@ public class AdminController {
     }
 
   //-----------For teacher approve-------------
-    @PostMapping("/admin/add-teacher")
+    @PostMapping("/request-to-add-teacher")
     public Teacher addTeacher(Teacher teacher){
         teacherDao.create(teacher);
         return teacher;
@@ -46,12 +46,17 @@ public class AdminController {
     }
 
     //-----------For student approve-------------
-    @PostMapping("/admin/add-student")
+    @PostMapping("/request-to-join-as-student")
     public Student addStudent(Student student){
 //        String encodedPassword = new BCryptPasswordEncoder().encode(student.getPassword());
 //        student.setPassword(encodedPassword);
         studentDao.create(student);
         return student;
+    }
+
+    @GetMapping("/get-available-dept")
+    public List<Department> generateAllDepartment(){
+        return studentDao.getAllDept();
     }
 
     @GetMapping("/admin/approve-student/list")
@@ -75,8 +80,8 @@ public class AdminController {
         return "department Added Successful";
     }
 
-    @PostMapping("/admin/add-courses/{course-details}")
-    public String addCourse(@PathVariable("course-details") CourseDetails details){
+    @PostMapping("/admin/add-courses/")
+    public String addCourse(CourseDetails details){
         adminDao.addACourses(details);
         return "Course Added Successful";
     }
@@ -90,8 +95,8 @@ public class AdminController {
         return "Failed... You are not authorized";
     }
     @PostMapping("/admin/course/assign-teacher")
-    public void assignTeacher(String courseCode, String teacherId){
-
+    public String assignTeacher(String courseCode, String teacherId){
+        return courseCode+" Get Its teacher whose teacher id is:"+teacherId;
     }
 
     @GetMapping("/admin/requested-courses")
@@ -99,9 +104,13 @@ public class AdminController {
         return adminDao.listOfRequestedCourses();
     }
 
-    @PostMapping("/admin/requested-courses")
-    public void approveCrsRequest(List<RequestCourse> list){
-        adminDao.approveCoursesForStudent(list);
+    @PostMapping("/admin/requested-courses/approve")
+    public void approveCrsRequest(@RequestBody RequestCourse list){
+        adminDao.approveCoursesForStudent(list,false);
+    }
+    @PostMapping("/admin/requested-courses/delete")
+    public void DeleteCrsRequest(@RequestBody RequestCourse list){
+        adminDao.approveCoursesForStudent(list,true);
     }
 
 

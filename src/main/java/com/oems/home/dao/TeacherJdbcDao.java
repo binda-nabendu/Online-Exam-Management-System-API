@@ -35,9 +35,9 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 				teacher.getMotherName(), teacher.getGender(), teacher.getContactNo(), teacher.getEmail(),teacher.getDob(),
 				teacher.getAddress(),teacher.getRole(),teacher.getPassword());
 		int teacherStatus = jdbcTemplate.update(sqlQueryForTeacher,teacher.getNid(),teacher.getEduQualification() ,teacher.getExpertise());
-		if (baseUserStatus==1 && teacherStatus==1){
-            System.out.println("Get success");
-        }
+//		if (baseUserStatus==1 && teacherStatus==1){
+//            System.out.println("Get success");
+//      }
 	}
 	
 	@Override
