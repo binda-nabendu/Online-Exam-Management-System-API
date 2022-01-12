@@ -214,4 +214,13 @@ public class StudentJdbcDao implements Dao<Student> {
         }
     }
 
+    public List<Department> getAllDept() {
+        String queryForGettingAllDept =" select  * from department";
+        return jdbcTemplate.query(queryForGettingAllDept,(rs,rt)->{
+            Department dept = new Department();
+            dept.setDeptId(rs.getString("deptId"));
+            dept.setDeptName(rs.getString("deptName"));
+            return dept;
+        });
+    }
 }
