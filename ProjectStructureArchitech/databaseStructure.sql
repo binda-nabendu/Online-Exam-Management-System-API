@@ -83,12 +83,13 @@ create table questionAns(
 create table studentMark(
 	stdId varchar(20),
 	courseCode varchar(10),
+    deptId varchar(10),
 	examId int,
 	gotTotalMarks decimal(5,2) default 0.0,
 	review boolean default false,
-    constraint pk_studentMark primary key (stdId,courseCode,examId),
+    constraint pk_studentMark primary key (stdId,courseCode,deptId,examId),
     foreign key(stdId) references student(stdId),
-    foreign key(courseCode) references courses(courseCode),
+    foreign key(courseCode,deptId) references courses(courseCode,deptId),
     foreign key(examId) references examPaper(examId)
 );
 create table stdAnsScript(
@@ -102,24 +103,26 @@ create table stdAnsScript(
     foreign key(examId, questionNo) references question(examId,questionNo)
 );
 create table result( 
-	stdId varchar(20) not null,
-	courseCode varchar(10) not null,
+	stdId varchar(20),
+	courseCode varchar(10),
+    deptId varchar(10),
     courseSession int not null,
 	cgpa decimal(3,2) default -1,
 	grade varchar(3) default 'X',
 	semester int not null,
     previousSemCrs bool default false,
-    constraint pk_result primary key (stdId,courseCode),
+    constraint pk_result primary key (stdId,courseCode,deptId),
     foreign key(stdId) references student(stdId),
-    foreign key(courseCode) references courses(courseCode)
+    foreign key(courseCode,deptId) references courses(courseCode,deptId)
 );
 create table requestCourse
 (
     stdId varchar(20),
     courseCode varchar(10),
-    constraint pk_requestCourse primary key(stdId, courseCode),
+    deptId varchar(10),
+    constraint pk_requestCourse primary key(stdId, courseCode,deptId),
     foreign key(stdId) references student(stdId),
-    foreign key(courseCode) references courses(courseCode)
+    foreign key(courseCode, deptId) references courses(courseCode, deptId)
 );
 
 

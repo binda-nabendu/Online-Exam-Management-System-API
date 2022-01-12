@@ -2,7 +2,6 @@ package com.oems.home.dao;
 
 import com.oems.home.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -36,10 +35,10 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
 
         String sqlQueryForExamPaper = "insert into examPaper" +
                 "(examId, courseCode, teacherId, percentageValue, startingDateTime, endingDateTime, courseSession, total)" +
-                "values("+questionPaper.getExamId()+","+questionPaper.getCourseCode()+","+questionPaper.getTeacherId()+","+
-                    questionPaper.getPercentageValue()+","+questionPaper.getStartingDateTime()+","+questionPaper.getEndingDateTime()+","+
-                    questionPaper.getCourseSession()+","+questionPaper.getTotal()+")";
-        int addingStatus = jdbcTemplate.update(sqlQueryForExamPaper);
+                "values(?,?,?,?,?,?,?,?)";
+        int addingStatus = jdbcTemplate.update(sqlQueryForExamPaper,questionPaper.getExamId(),questionPaper.getCourseCode(),
+                questionPaper.getTeacherId(), questionPaper.getPercentageValue(),questionPaper.getStartingDateTime(),
+                questionPaper.getEndingDateTime(), questionPaper.getCourseSession(),questionPaper.getTotal());
         if(addingStatus>0){
             addAllIndividualQuestions(questionPaper.getExamId(), questionPaper.getAllIndividualQuestions());
         }
@@ -49,8 +48,9 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
         for (IndividualQuestion question : allIndividualQuestions) {
             String sqlQueryForIndividualQuestions = "insert into question" +
                     "(examId, questionNo, question, mark)" +
-                    "values("+examId+","+question.getQuestionNo()+","+question.getQuestion()+","+question.getMark()+")";
-            int status = jdbcTemplate.update(sqlQueryForIndividualQuestions);
+                    "values(?,?,?,?)";
+            int status = jdbcTemplate.update(sqlQueryForIndividualQuestions,examId,question.getQuestionNo(),
+                    question.getQuestion(),question.getMark());
             if(status>0){
                 addAllOptionOfThatQuestion(examId, question.getQuestionNo(), question.getAllOptions());
             }
@@ -62,8 +62,12 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
         for (QuestionAnswer option:allOptions) {
             String sqlQueryFoAddAllOption = "insert into questionAns" +
                     "(examId,questionNo,optionNo,optionValue,ansStatus)" +
-                    "values("+examId+","+questionNo+","+option.getOptionNo()+","+option.getOptionValue()+","+option.isAnsStatus()+")";
-            int optionAddingStatus = jdbcTemplate.update(sqlQueryFoAddAllOption);
+                    "values(?,?,?,?,?)";
+            int optionAddingStatus = jdbcTemplate.update(sqlQueryFoAddAllOption,examId,questionNo,
+                    option.getOptionNo(),option.getOptionValue(),option.isAnsStatus());
+            if(optionAddingStatus<=0){
+                System.out.println("Option didn't add.");
+            }
         }
     }
 
@@ -139,7 +143,9 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
 
     public int getLastExamId() {
         String s = "select max(examId) from examPaper";
-        int i=jdbcTemplate.queryForObject(s,Integer.class);
+        int i = 0;
+        Integer value = jdbcTemplate.queryForObject(s, Integer.class);
+        if (value != null) i = value;
         return i;
     }
 
@@ -149,24 +155,21 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
         return jdbcTemplate.query(queryForReturnQuestionHeader,questionSummaryMapper);
     }
 
-    public Optional<QuestionPaper> answerScriptCreator(String stdId, String examId) {
-        Optional<QuestionPaper> questionPaper = get(examId);
+    public Optional<QuestionPaper> answerScriptCreator(String stdId, String questionId) {
+        System.out.println(questionId);
+        Optional<QuestionPaper> questionPaper = get(questionId);
 
         questionPaper.ifPresent(e->{
-            List<IndividualQuestion> l=e.getAllIndividualQuestions();
-            for(IndividualQuestion iq: l){
+            for(IndividualQuestion iq: e.getAllIndividualQuestions()){
                 String s1="select optionNo from questionAns where examId="+e.getExamId()
                         +" and questionNo="+iq.getQuestionNo()+" and ansStatus= true";
                 String s2="select optionNo from stdAnsScript where stdId="+stdId+
                         " and examId="+e.getExamId()+" and questionNo="+iq.getQuestionNo();
-                iq.setCorrectOption(jdbcTemplate.query(s1,(rs,rn)->{
-                    return rs.getInt("optionNo");
-                }));
-                iq.setSelectedOption(jdbcTemplate.query(s2,(rs,rn)->{
-                    return rs.getInt("optionNo");
-                }));
+                iq.setCorrectOption(jdbcTemplate.query(s1,(rs,rn)-> rs.getInt("optionNo")));
+                iq.setSelectedOption(jdbcTemplate.query(s2,(rs,rn)-> rs.getInt("optionNo")));
             }
         });
         return questionPaper;
+
     }
 }

@@ -36,7 +36,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 				teacher.getAddress(),teacher.getRole(),teacher.getPassword());
 		int teacherStatus = jdbcTemplate.update(sqlQueryForTeacher,teacher.getNid(),teacher.getEduQualification() ,teacher.getExpertise());
 		if (baseUserStatus==1 && teacherStatus==1){
-            //todo here
+            System.out.println("Get success");
         }
 	}
 	
@@ -100,6 +100,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
         courseDetails.setCourseCode(rs.getString("courseCode"));
         courseDetails.setCourseName(rs.getString("courseName"));
         courseDetails.setCourseSessions(rs.getInt("courseCurrSession"));
+        courseDetails.setDeptId(rs.getString("deptId"));
         return courseDetails;
     };
 
@@ -132,8 +133,9 @@ public class TeacherJdbcDao implements Dao<Teacher> {
         return student;
     };
 
-	public List<Student> listOfAllStudentOfThatCourse(String courseCode) {
-		String queryForAllStudentOfThatCourse ="select * from result where courseCode="+courseCode+" and cgpa=-1";
+	public List<Student> listOfAllStudentOfThatCourse(String courseCode, String deptId) {
+		String queryForAllStudentOfThatCourse ="select * from baseUser b, student s where b.nid=s.stdId and s.stdId = any " +
+                "(select stdId from result where courseCode='"+courseCode+"' and deptId='"+deptId+"' and cgpa=-1)";
         return jdbcTemplate.query(queryForAllStudentOfThatCourse, studentRowMapper);
 	}
 
@@ -149,10 +151,10 @@ public class TeacherJdbcDao implements Dao<Teacher> {
         String q4 = "select COUNT(*) from examPaper where teacherId="+tId;
 
         Dashboard dashboard = new Dashboard();
-        dashboard.setCard1(jdbcTemplate.queryForObject(q1,Integer.class));
-        dashboard.setCard2(jdbcTemplate.queryForObject(q2,Integer.class));
-        dashboard.setCard3(jdbcTemplate.queryForObject(q3,Integer.class));
-        dashboard.setCard4(jdbcTemplate.queryForObject(q4,Integer.class));
+        dashboard.setCard1(Optional.ofNullable(jdbcTemplate.queryForObject(q1, Integer.class)).orElse(0));
+        dashboard.setCard2(Optional.ofNullable(jdbcTemplate.queryForObject(q2, Integer.class)).orElse(0));
+        dashboard.setCard3(Optional.ofNullable(jdbcTemplate.queryForObject(q3, Integer.class)).orElse(0));
+        dashboard.setCard4(Optional.ofNullable(jdbcTemplate.queryForObject(q4, Integer.class)).orElse(0));
         return dashboard;
 	}
 
