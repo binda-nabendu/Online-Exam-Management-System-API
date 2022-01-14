@@ -145,7 +145,7 @@ public class StudentJdbcDao implements Dao<Student> {
 
     }
     public List<CourseDetails> allRunningCourseDetails(String stdId){
-        String q1 ="select courseCode from result where stdId="+stdId+" and cgpa="+-1;
+        String q1 ="select courseCode from result where stdId="+stdId+" and cgpa=-1";
         return jdbcTemplate.query(q1,(rs, rowNumber)->{
             CourseDetails courseDetails = new CourseDetails();
             courseDetails.setCourseCode(rs.getString("courseCode"));
@@ -210,7 +210,7 @@ public class StudentJdbcDao implements Dao<Student> {
             String s = "insert into stdAnsScript " +
                     "(stdId, examId, questionNo, optionNo) " +
                     "values(?,?,?,?)";
-            jdbcTemplate.update(s, ansScript.getStdId(), ansScript.getExamId(), qp.getQuestionNo(), qp.getQuestionNo());
+            jdbcTemplate.update(s, ansScript.getStdId(), ansScript.getExamId(), qp.getQuestionNo(), qp.getOptionNo());
         }
     }
 

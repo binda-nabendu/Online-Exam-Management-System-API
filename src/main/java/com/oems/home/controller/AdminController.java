@@ -100,7 +100,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin/requested-courses")
-    public List<RequestCourse> allRequested(){
+    public List<RequestCourse> allRequestedCourses(){
         return adminDao.listOfRequestedCourses();
     }
 
