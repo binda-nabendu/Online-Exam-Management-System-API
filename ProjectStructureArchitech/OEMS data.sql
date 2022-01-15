@@ -48,7 +48,9 @@ values ('6118194051', 'Rohan', 'Kobir Hossain', 'Rohima', 1, '19857629', 'rohan@
        ('6118194069', 'Roksana Akter', 'Selim AKter', 'Maimuna Akter', 2, '197382837', 'roksana@yahoo@.com',
         '1990-04-29', '1/1-e, (1st Fr.) Block-c, Lalmatia', 1, 'ADMIN', '7382'),
        ('6118194070', 'Abdul Mueez', 'Ahsan Ali', 'Poly Akter', 1, '192793749', 'mueez@yahoo@.com', '1992-07-03',
-        'Suite#704, 55-A, Purana Pltan, P.O. Box: 1000', 1, 'ADMIN', '8293');
+        'Suite#704, 55-A, Purana Pltan, P.O. Box: 1000', 1, 'ADMIN', '8293'),
+       ('Not Assigned','Not Assigned','Not Assigned','Not Assigned',5,'Not Assigned','Not @ Assigned','2222-12-12',
+        'Not Assigned',1,'TEACHER','123123');
 
 
 
@@ -89,7 +91,9 @@ values ('6118194061', 'MSC in EEE', 'Machine'),
        ('6118194067', 'BSC in EEE', 'Survay Motor'),
        ('6118194068', 'MSC in CSE', 'Networking'),
        ('6118194069', 'MSC in CSE', 'Database'),
-       ('6118194070', 'MSC in CSE', 'Database');
+       ('6118194070', 'MSC in CSE', 'Database'),
+       ('Not Assigned','Not Assigned','Not Assigned');
+
 
 
 
