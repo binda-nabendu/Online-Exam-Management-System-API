@@ -21,12 +21,12 @@ public class LoginJdbcDao {
 
 
     public String searchUserByUsername(String username) {
-        String s1= "select nid from baseuser where nid="+username;
+        String s1= "select nid from baseuser where nid="+username+" and adminApproval= 1";
         return Optional.ofNullable(jdbcTemplate.queryForObject(s1, String.class)).orElse("UNKNOWN");
     }
 
     public String searchPasswordByUsername(String username) {
-        String s1= "select password from baseuser where nid="+username;
+        String s1= "select password from baseuser where nid="+username+" and adminApproval= 1";
         return Optional.ofNullable(jdbcTemplate.queryForObject(s1, String.class)).orElse("UNKNOWN");
     }
 
