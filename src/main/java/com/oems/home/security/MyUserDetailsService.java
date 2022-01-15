@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import static java.util.Collections.singleton;
@@ -22,11 +21,13 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        return new User("Foo","Foo",new ArrayList<>());
         String s=loginJdbcDao.searchPasswordByUsername(username);
-        System.out.println(findRoleByUsername(username));
+
+
+        System.out.println("Password:"+s+"     Role:"+findRoleByUsername(username));
 //        return new User(loginJdbcDao.searchUserByUsername(username),loginJdbcDao.searchPasswordByUsername(username),new ArrayList<>());
-       return new User(loginJdbcDao.searchUserByUsername(username),loginJdbcDao.searchPasswordByUsername(username),findRoleByUsername(username));
+
+        return new User(loginJdbcDao.searchUserByUsername(username),loginJdbcDao.searchPasswordByUsername(username),findRoleByUsername(username));
     }
 
     private Collection<? extends GrantedAuthority> findRoleByUsername(String username) {
