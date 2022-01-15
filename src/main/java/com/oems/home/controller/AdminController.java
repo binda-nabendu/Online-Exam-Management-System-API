@@ -24,7 +24,7 @@ public class AdminController {
     }
 
   //-----------For teacher approve-------------
-    @PostMapping("/request-to-add-teacher")
+    @PostMapping("/public/request-to-join-as-teacher")
     public Teacher addTeacher(Teacher teacher){
         teacherDao.create(teacher);
         return teacher;
@@ -46,7 +46,7 @@ public class AdminController {
     }
 
     //-----------For student approve-------------
-    @PostMapping("/request-to-join-as-student")
+    @PostMapping("/public/request-to-join-as-student")
     public Student addStudent(Student student){
 //        String encodedPassword = new BCryptPasswordEncoder().encode(student.getPassword());
 //        student.setPassword(encodedPassword);
@@ -54,7 +54,7 @@ public class AdminController {
         return student;
     }
 
-    @GetMapping("/get-available-dept")
+    @GetMapping("/public/get-available-dept")
     public List<Department> generateAllDepartment(){
         return studentDao.getAllDept();
     }

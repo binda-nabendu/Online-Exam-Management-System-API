@@ -22,7 +22,7 @@ public class TeacherController {
     public Dashboard TeacherBoardManager(@PathVariable("id") String tId){
     	return teacherDao.teacherBoardManager(tId);
     }
-    @GetMapping("/teachers/all-teachers")
+    @GetMapping("/teacher/all-teachers")
     public List<Teacher> allTeachers(){
     	return teacherDao.listOfAllTeacher();
     }
@@ -63,11 +63,11 @@ public class TeacherController {
     public List<Review> ReviewList(@PathVariable("teacher-id") String tid){
         return teacherDao.studentExamPaperReviewList(tid);
     }
-    @GetMapping("/terms-and-condition")
+    @GetMapping("/public/terms-and-condition")
     public String termsAndCondition(){
         return new FAQAndTAndC().termsAndCondition;
     }
-    @GetMapping("/faq")
+    @GetMapping("/public/faq")
     public String faq(){
         return new FAQAndTAndC().faq;
     }
