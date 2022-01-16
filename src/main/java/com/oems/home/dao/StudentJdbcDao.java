@@ -1,17 +1,16 @@
 package com.oems.home.dao;
 
-import com.oems.home.model.CourseDetails;
-import com.oems.home.model.Dashboard;
-import com.oems.home.model.Department;
-import com.oems.home.model.Student;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.oems.home.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,11 +40,11 @@ public class StudentJdbcDao implements Dao<Student> {
                 student.getAddress(),student.getRole(),student.getPassword());
         int studentStatus = jdbcTemplate.update(sqlQueryForStudent,student.getNid(),student.getDeptId(),student.getSemester());
         if (baseUserStatus==1 && studentStatus==1){
-            //todo here
+            System.out.println("Student inserted");
         }
     }
 
-    RowMapper<Student> rowMapper = (rs,rowNumber)->{
+    private final RowMapper<Student> studentRowMapper = (rs, rowNumber)->{
         Student student = new Student();
         student.setNid(rs.getString("nid"));
         student.setUserName(rs.getString("userName"));
@@ -66,7 +65,7 @@ public class StudentJdbcDao implements Dao<Student> {
 
     public List<Student> listOfNonApprovedStudent(){
         String joinQueryForAllStudentInfo ="select * from baseUser b, student s where b.nid=s.stdId and adminApproval=0";
-        return jdbcTemplate.query(joinQueryForAllStudentInfo,rowMapper);
+        return jdbcTemplate.query(joinQueryForAllStudentInfo, studentRowMapper);
     }
 
     @Override
@@ -89,44 +88,139 @@ public class StudentJdbcDao implements Dao<Student> {
             jdbcTemplate.update(q2,id);
         }
     }
-    public Dashboard adminBoardManager(String id){
-        String q1= "select COUNT(*) from student";
-        String q2= "select COUNT(*) from teacher";
-        String q3 = "select COUNT(*) from department";
-        String q4 = "select COUNT(*) from exam where teacherId=?";
-        Dashboard dashboard = new Dashboard();
-        dashboard.setTotalStudents(jdbcTemplate.queryForObject(q1,Integer.class));
-        dashboard.setTotalTeachers(jdbcTemplate.queryForObject(q2,Integer.class));
-        dashboard.setTotalDepartments(jdbcTemplate.queryForObject(q3,Integer.class));
-        //todo...
-        //dashboard.setTotalUpComingExam(jdbcTemplate.queryForObject(q4,Integer.class));
-        return dashboard;
 
+    public Dashboard studentBoardManager(String id){
+        String q1= "select COUNT(*) from result where stdId="+id+" and cgpa=-1";
+        String q2= "select COUNT(*) from result where stdId="+id+" and cgpa>0";
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+        String now = df.format(today);
+
+        String q3 = "select COUNT(*) from examPaper where courseCode = any( " +
+                "select courseCode from result where stdId= "+id+" and cgpa=-1) and startingDateTime > '"+now+"'";
+
+        String q4 = "select COUNT(*) from studentMark where review=true";
+
+        Dashboard dashboard = new Dashboard();
+        dashboard.setCard1(Optional.ofNullable(jdbcTemplate.queryForObject(q1, Integer.class)).orElse(0));
+        dashboard.setCard2(Optional.ofNullable(jdbcTemplate.queryForObject(q2, Integer.class)).orElse(0));
+        dashboard.setCard3(Optional.ofNullable(jdbcTemplate.queryForObject(q3, Integer.class)).orElse(0));
+        dashboard.setCard4(Optional.ofNullable(jdbcTemplate.queryForObject(q4, Integer.class)).orElse(0));
+        return dashboard;
     }
 
+    private final RowMapper<CourseDetails> crsDetailsRowMapper = (rs, rowNumber)->{
+        CourseDetails courseDetails = new CourseDetails();
+        courseDetails.setCourseCode(rs.getString("courseCode"));
+        courseDetails.setCourseName(rs.getString("courseName"));
+        courseDetails.setCourseSessions(rs.getInt("courseCurrSession"));
+        return courseDetails;
+    };
+
+    public List<CourseDetails> completedCoursesByStudent(String stdId){
+        String q1 = "select * from courses where courseCode=any(" +
+                "select courseCode from result where stdId="+stdId+" and cgpa>0)";
+        return jdbcTemplate.query(q1,crsDetailsRowMapper);
+    }
+
+    public void requestedCourseAdd(List<CourseDetails> all, String stdId) {
+        for (CourseDetails course:all) {
+
+            String queryForInsIntoReq="Insert into requestCourse" +
+                    "(stdId, courseCode, deptId)" +
+                    "values(?,?,?)";
+            jdbcTemplate.update(queryForInsIntoReq,stdId,course.getCourseCode(),course.getDeptId());
+        }
+    }
 
     @Override
     public void delete(String target) {
 
     }
 
-    public List<CourseDetails> departmentalCourse(String dept){
-        String q1 ="select * from courses where deptId="+dept;
-        return jdbcTemplate.query(q1,(rs, rowNumber)->{
-           CourseDetails courseDetails = new CourseDetails();
-           courseDetails.setCourseCode(rs.getString("courseCode"));
-           courseDetails.setCourseName(rs.getString("courseName"));
-           courseDetails.setCourseSessions(rs.getString("courseCurrSession"));
-           return courseDetails;
-        });
+    public List<CourseDetails> departmentalCourseSet(String dept){
+        String q1 ="select * from courses where deptId="+dept+" and teacherId != 'Not assigned' ";
+        return jdbcTemplate.query(q1,crsDetailsRowMapper);
 
     }
     public List<CourseDetails> allRunningCourseDetails(String stdId){
-        String q1 ="select courseCode from result where stdId="+stdId+" and cgpa="+-1;
+        String q1 ="select courseCode from result where stdId="+stdId+" and cgpa=-1";
         return jdbcTemplate.query(q1,(rs, rowNumber)->{
             CourseDetails courseDetails = new CourseDetails();
             courseDetails.setCourseCode(rs.getString("courseCode"));
             return courseDetails;
+        });
+    }
+    protected final RowMapper<QuestionSummery> questionSummaryMapper = (rs, rn)->{
+        QuestionSummery question = new QuestionSummery();
+        question.setExamId(rs.getInt("examId"));
+        question.setCourseCode(rs.getString("courseCode"));
+        question.setTeacherId(rs.getString("teacherId"));
+        question.setPercentageValue(rs.getDouble("percentageValue"));
+        question.setStartingDateTime(rs.getString("startingDateTime"));
+        question.setEndingDateTime(rs.getString("endingDateTime"));
+        question.setTotal(rs.getDouble("total"));
+        return question;
+    };
+
+    public List<QuestionSummery> upcomingExamForStudent(String stdId) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+        String presentDateTime = df.format(today);
+        String q1 =" select * from exampaper where (courseCode, courseSession) in(" +
+                "select courseCode, courseSession from result" +
+                " where cgpa=-1 and stdId="+stdId+
+                ")  and exampaper.startingDateTime> '"+presentDateTime+"'";
+
+        return jdbcTemplate.query(q1,questionSummaryMapper);
+    }
+
+    public List<QuestionSummery> prevExamForStudent(String stdId) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+        String presentDateTime = df.format(today);
+        String q1 =" select * from exampaper where (courseCode, courseSession) in(" +
+                "select courseCode, courseSession from result" +
+                " where (cgpa=-1 or previousSemCrs = true) and stdId= "+stdId +
+                ") and endingDateTime< '"+presentDateTime+"'";
+
+        List<QuestionSummery> l1= jdbcTemplate.query(q1,questionSummaryMapper);
+
+        for(QuestionSummery qs:l1){
+            String pubQuery = "select published from examPaper where examId="+qs.getExamId();
+            Boolean published=jdbcTemplate.queryForObject(pubQuery,Boolean.class);
+            if(Boolean.TRUE.equals(published)){
+                String queryForGettingMark = " select gotTotalMarks from studentmark where examId= "+qs.getExamId();
+                double mark = Optional.ofNullable(jdbcTemplate.queryForObject(queryForGettingMark, Double.class)).orElse(0.00);
+                qs.setObtainMark(mark);
+            }
+        }
+        return l1;
+    }
+
+    public void requestForReview(String stdId, int examId) {
+        String queryForActiveReviewFlag = "update studentmark set review=true" +
+                " where stdId=? and examId=?";
+        jdbcTemplate.update(queryForActiveReviewFlag,stdId,examId);
+    }
+
+    public void ReceiveAnswer(AnswerScript ansScript) {
+        for(QuestionOptionPair qp : ansScript.getAllQuestionAnswer()) {
+            String s = "insert into stdAnsScript " +
+                    "(stdId, examId, questionNo, optionNo) " +
+                    "values(?,?,?,?)";
+            jdbcTemplate.update(s, ansScript.getStdId(), ansScript.getExamId(), qp.getQuestionNo(), qp.getOptionNo());
+        }
+    }
+
+    public List<Department> getAllDept() {
+        String queryForGettingAllDept =" select  * from department";
+        return jdbcTemplate.query(queryForGettingAllDept,(rs,rt)->{
+            Department dept = new Department();
+            dept.setDeptId(rs.getString("deptId"));
+            dept.setDeptName(rs.getString("deptName"));
+            return dept;
         });
     }
 }
