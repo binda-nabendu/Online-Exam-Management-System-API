@@ -136,9 +136,9 @@ public class AdminJdbcDao{
                 "values(?,?)";
         jdbcTemplate.update(queryForAddDept, department.getDeptId(), department.getDeptName());
     }
-	public void assignTeacherToCourse(String courseCode, String teacherId) {
-		String q1 = "update courses set teacherId ="+teacherId+"where courseCode="+courseCode;
-		jdbcTemplate.update(q1);
+	public void assignTeacherToCourse(String courseCode, String deptId, String teacherId) {
+		String q1 = "update courses set teacherId =? where courseCode=? and deptId=?";
+		jdbcTemplate.update(q1,teacherId,courseCode,deptId);
 	}
 }
 

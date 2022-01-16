@@ -87,7 +87,7 @@ public class AdminController {
     }
 
     @PostMapping("/admin/action/changeSemester")
-    public String changeAndGoNextSemester(UserVerificationModel model){ // ************
+    public String changeAndGoNextSemester(UserVerificationModel model){
         if(adminDao.checkUserAndPassword(model)){
             adminDao.updateSemester();
             return "Successful...Enjoy new semester";
@@ -95,9 +95,9 @@ public class AdminController {
         return "Failed... You are not authorized";
     }
     @PostMapping("/admin/course/assign-teacher")
-    public void assignTeacher(String courseCode, String teacherId){ //************
-        //return courseCode+" Get Its teacher whose teacher id is:"+teacherId;
-    	adminDao.assignTeacherToCourse(courseCode, teacherId);
+    public void assignTeacher(String courseCode, String deptId, String teacherId){
+    	
+    	adminDao.assignTeacherToCourse(courseCode, deptId, teacherId);
     }
 
     @GetMapping("/admin/requested-courses")
