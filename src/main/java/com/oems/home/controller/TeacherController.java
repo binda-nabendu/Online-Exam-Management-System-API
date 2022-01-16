@@ -64,11 +64,14 @@ public class TeacherController {
     public List<Student> allPendingResultStdList(@PathVariable("exam-id") int examId){
         return teacherDao.listOfAllPendingResultStdList(examId);
     }
-    @GetMapping("/teacher/{course-code}")
+    @GetMapping("/teacher/assign-cgpa/{course-code}")
     public List<Student> readyStudentForCgpaOfThatCourse(@PathVariable("course-code") String courseCode){
         return teacherDao.listOfReadyStudentForCgpaOfThatCourse(courseCode);
     }
-    
+    @PostMapping("/teacher/assign-cgpa")
+    public void assignCgpa(String stdId, String courseCode, String deptId, String cgpa, String grade) {
+    	teacherDao.assignStdCgpa(stdId, courseCode, deptId, cgpa, grade);
+    }
     
     
     

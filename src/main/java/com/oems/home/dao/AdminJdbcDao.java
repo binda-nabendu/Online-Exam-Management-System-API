@@ -38,7 +38,7 @@ public class AdminJdbcDao{
                           "baseUser where nid ="+userDetails.getNid();
 
         UserVerificationModel modelUser;
-        modelUser = jdbcTemplate.queryForObject(verifier,(rs, rowNumber)->{
+        modelUser = Optional.ofNullable (jdbcTemplate.queryForObject(verifier,(rs, rowNumber)->{
             UserVerificationModel model=new UserVerificationModel();
             model.setNid(rs.getString("nid"));
             model.setEmail(rs.getString("email"));
@@ -46,15 +46,12 @@ public class AdminJdbcDao{
             model.setRole(rs.getString("role"));
 
             return model;
-        });
-        if(modelUser==null)
-            return false;
-        else{
-            return userDetails.getNid().equals(modelUser.getNid()) &&
+        })).orElse(new UserVerificationModel());
+        System.out.println(modelUser.toString());
+        return userDetails.getNid().equals(modelUser.getNid()) &&
                     userDetails.getPassword().equals(modelUser.getPassword()) &&
-                    userDetails.getEmail().equals(modelUser.getEmail()) &&
                     modelUser.getRole().equals("ADMIN");
-        }
+       
     }
 
     public void updateSemester() {

@@ -179,13 +179,14 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 
         return jdbcTemplate.query(queryForReviewedStudentList,reviewMapper);
     }
-//t
+
 	public List<QuestionSummery> listOfAllPendingResult(String tId) {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date today = Calendar.getInstance().getTime();
         String presentDateTime = df.format(today);
+        
 		String pendingList = "select * from examPaper where teacherId="+tId+" and published=false and "+ 
-				"endingDateTime <"+ presentDateTime;
+				"endingDateTime < '"+ presentDateTime+"'";
 
 		return jdbcTemplate.query(pendingList,(rs, rn)->{
 	        QuestionSummery question = new QuestionSummery();
@@ -210,8 +211,14 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 
 	public List<Student> listOfReadyStudentForCgpaOfThatCourse(String courseCode) {
 		String query = "select * from baseUser b, student s where b.nid=s.stdId and s.stdId = "+ 
-				"any(select stdId from result where courseCode= "+courseCode+" and cgpa=-2)";
+				"any (select stdId from result where courseCode= '"+courseCode+"' and cgpa=-2)";
 		return jdbcTemplate.query(query, studentRowMapper);
+	}
+
+	public void assignStdCgpa(String stdId, String courseCode, String deptId, String cgpa, String grade) {
+		
+		String query = "update result set cgpa = ?, grade = ? where stdId = ? and courseCode = ? and deptId = ?";
+		jdbcTemplate.update(query, cgpa, grade, stdId, courseCode, deptId);
 	}
 	
 }

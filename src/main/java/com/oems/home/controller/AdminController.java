@@ -87,8 +87,13 @@ public class AdminController {
     }
 
     @PostMapping("/admin/action/changeSemester")
-    public String changeAndGoNextSemester(UserVerificationModel model){
-        if(adminDao.checkUserAndPassword(model)){
+    public String changeAndGoNextSemester(String nid, String password){
+    	
+    	UserVerificationModel model =  new UserVerificationModel();
+    	model.setNid(nid);
+    	model.setPassword(password);
+    	
+    	if(adminDao.checkUserAndPassword(model)){
             adminDao.updateSemester();
             return "Successful...Enjoy new semester";
         }
