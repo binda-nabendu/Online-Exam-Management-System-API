@@ -60,7 +60,6 @@ public class AdminJdbcDao{
     public void updateSemester() {
     	String q1 = "update student set semester=semester+1";
     	String q2 = "update result set previousSemCrs=false";
-    	
     	String q3 = "update result set previousSemCrs=true where cgpa=-1";
     	String q4 = "update result set cgpa=-2 where cgpa=-1";
     	String q5 = "update courses set courseCurrSession=courseCurrSession+1 where teacherId !='Not assigned'";
@@ -69,6 +68,7 @@ public class AdminJdbcDao{
     	jdbcTemplate.update(q2);
     	jdbcTemplate.update(q3);
     	jdbcTemplate.update(q4);
+    	jdbcTemplate.update(q5);
     }
 
     public List<RequestCourse> listOfRequestedCourses() {
