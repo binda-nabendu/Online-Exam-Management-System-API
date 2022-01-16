@@ -52,13 +52,29 @@ public class TeacherController {
     }
 
     @GetMapping("/teacher/all-questions/{teacher-id}")
-    public List<QuestionSummery> getAllQuestionThatTeacherMade(@PathVariable("teacher-id") String tid){
-        return examDao.returnAllQuestionAccordingToTeacher(tid);
+    public List<QuestionSummery> getAllQuestionThatTeacherMade(@PathVariable("teacher-id") String tId){
+        return examDao.returnAllQuestionAccordingToTeacher(tId);
     }
+    //t
     @GetMapping("/teacher/all-pending-result/{teacher-id}")
-    public String ResultTeacherHaveToPublish(@PathVariable("teacher-id") String tid){
-        return "Here all of your subject result you can see"+tid;
+    public List<QuestionSummery> allPendingResult(@PathVariable("teacher-id") String tId){
+        return teacherDao.listOfAllPendingResult(tId);
     }
+    @GetMapping("/teacher/all-pending-result/student-list/{exam-id}")
+    public List<Student> allPendingResultStdList(@PathVariable("exam-id") int examId){
+        return teacherDao.listOfAllPendingResultStdList(examId);
+    }
+    @GetMapping("/teacher/assign-cgpa/{course-code}")
+    public List<Student> readyStudentForCgpaOfThatCourse(@PathVariable("course-code") String courseCode){
+        return teacherDao.listOfReadyStudentForCgpaOfThatCourse(courseCode);
+    }
+    @PostMapping("/teacher/assign-cgpa")
+    public void assignCgpa(String stdId, String courseCode, String deptId, String cgpa, String grade) {
+    	teacherDao.assignStdCgpa(stdId, courseCode, deptId, cgpa, grade);
+    }
+    
+    
+    
     @GetMapping("/teacher/receive-review/{teacher-id}")
     public List<Review> ReviewList(@PathVariable("teacher-id") String tid){
         return teacherDao.studentExamPaperReviewList(tid);
