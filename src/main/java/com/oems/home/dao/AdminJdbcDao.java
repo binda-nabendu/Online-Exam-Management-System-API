@@ -38,7 +38,7 @@ public class AdminJdbcDao{
                           "baseUser where nid ="+userDetails.getNid();
 
         UserVerificationModel modelUser;
-        modelUser = jdbcTemplate.queryForObject(verifier,(rs, rowNumber)->{
+        modelUser = Optional.ofNullable (jdbcTemplate.queryForObject(verifier,(rs, rowNumber)->{
             UserVerificationModel model=new UserVerificationModel();
             model.setNid(rs.getString("nid"));
             model.setEmail(rs.getString("email"));
@@ -46,19 +46,26 @@ public class AdminJdbcDao{
             model.setRole(rs.getString("role"));
 
             return model;
-        });
-        if(modelUser==null)
-            return false;
-        else{
-            return userDetails.getNid().equals(modelUser.getNid()) &&
+        })).orElse(new UserVerificationModel());
+        System.out.println(modelUser.toString());
+        return userDetails.getNid().equals(modelUser.getNid()) &&
                     userDetails.getPassword().equals(modelUser.getPassword()) &&
-                    userDetails.getEmail().equals(modelUser.getEmail()) &&
                     modelUser.getRole().equals("ADMIN");
-        }
+       
     }
 
     public void updateSemester() {
+    	String q1 = "update student set semester=semester+1";
+    	String q2 = "update result set previousSemCrs=false";
+    	String q3 = "update result set previousSemCrs=true where cgpa=-1";
+    	String q4 = "update result set cgpa=-2 where cgpa=-1";
+    	String q5 = "update courses set courseCurrSession=courseCurrSession+1 where teacherId !='Not assigned'";
 
+    	jdbcTemplate.update(q1);
+    	jdbcTemplate.update(q2);
+    	jdbcTemplate.update(q3);
+    	jdbcTemplate.update(q4);
+    	jdbcTemplate.update(q5);
     }
 
     public List<RequestCourse> listOfRequestedCourses() {
@@ -126,4 +133,25 @@ public class AdminJdbcDao{
                 "values(?,?)";
         jdbcTemplate.update(queryForAddDept, department.getDeptId(), department.getDeptName());
     }
+	public void assignTeacherToCourse(String courseCode, String deptId, String teacherId) {
+		String q1 = "update courses set teacherId =? where courseCode=? and deptId=?";
+		jdbcTemplate.update(q1,teacherId,courseCode,deptId);
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
