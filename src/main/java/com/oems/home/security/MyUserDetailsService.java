@@ -24,7 +24,7 @@ public class MyUserDetailsService implements UserDetailsService {
         String s=loginJdbcDao.searchPasswordByUsername(username);
 
 
-        System.out.println("Password:"+s+"     Role:"+findRoleByUsername(username));
+        System.out.println(username+" Password:"+s+"     Role:"+findRoleByUsername(username));
 //        return new User(loginJdbcDao.searchUserByUsername(username),loginJdbcDao.searchPasswordByUsername(username),new ArrayList<>());
 
         return new User(loginJdbcDao.searchUserByUsername(username),loginJdbcDao.searchPasswordByUsername(username),findRoleByUsername(username));
