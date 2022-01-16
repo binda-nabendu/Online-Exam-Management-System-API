@@ -1,46 +1,72 @@
 package com.oems.home.controller;
-
+import com.oems.home.dao.ExamManagerJdbcDao;
 import com.oems.home.dao.StudentJdbcDao;
-import com.oems.home.model.CourseDetails;
+import com.oems.home.model.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class StudentController {
 
     @Autowired
     StudentJdbcDao studentDao;
+    @Autowired
+    ExamManagerJdbcDao examDao;
 
-    @GetMapping("student-board/{id}")
-    public String studentBoardManager(@PathVariable("id") String id){
+    @GetMapping("/student/board/{id}")
+    public Dashboard studentDashBoard(@PathVariable("id") String id){
 
-        return "Student board manager";
+        return studentDao.studentBoardManager(id);
     }
-
-    @GetMapping("/my-courses/{studentId}")
+    @GetMapping("/student/my-courses/{studentId}")
     public List<CourseDetails> studentCurrentSubject(@PathVariable("studentId") String stdId){
         return studentDao.allRunningCourseDetails(stdId);
     }
-    @GetMapping("/departmental-course/{deptId}")
+    @GetMapping("/student/departmental-course/{deptId}")
     public List<CourseDetails> allCourseOfThatDepartment(@PathVariable("deptId") String deptId){
-        return studentDao.departmentalCourse(deptId);
+        return studentDao.departmentalCourseSet(deptId);
     }
-    @GetMapping("/departmental-course/completed/{studentId}")
-    public String allCompletedCourseOfThatStudent(@PathVariable("studentId") String id){
-        return "All completed course of that Student";
+    @GetMapping("/student/departmental-course/completed/{studentId}")
+    public List<CourseDetails> allCompletedCourseOfThatStudent(@PathVariable("studentId") String stdId){
+        return studentDao.completedCoursesByStudent(stdId);
     }
-    @GetMapping("/exams/upcoming/{studentId}")
-    public String upComingExamStudent(@PathVariable("studentId") String id){
-        return "List of upcoming exam";
+    @PostMapping("/student/request-for-courses/{stdId}")
+    public List<CourseDetails> reqCourseList(@RequestBody List<CourseDetails> courses,@PathVariable("stdId") String stdId){
+        studentDao.requestedCourseAdd(courses, stdId);
+        return courses;
     }
-    @GetMapping("/exams/previous/{studentId}")
-    public String previusExamStudent(@PathVariable("studentId") String id){
-        return "List of previous exam up to 2 semester";
+    @GetMapping("/student/exams/upcoming/{studentId}")
+    public List<QuestionSummery> upComingExamStudent(@PathVariable("studentId") String stdId){
+    	return studentDao.upcomingExamForStudent(stdId);
     }
-    @PostMapping("/exams/send-review/{studentId}/{examId}")
-    public String RequestReview(@PathVariable("studentId")String id ,@PathVariable("examId") int examId){
-        return "Review Request Sand..";
+    @GetMapping("/student/exams/previous/{studentId}")
+    public List<QuestionSummery> previousExamStudent(@PathVariable("studentId") String stdId){
+    	return studentDao.prevExamForStudent(stdId);
+    }
+    @PostMapping("/student/exams/send-review/")
+    public void RequestReview(String stdId ,int examId){
+        studentDao.requestForReview(stdId,examId);
+    }
+    
+    @GetMapping("/student/give-post-exam/")
+    public Optional<QuestionPaper> getQuestion(String questionId) {
+        // String examDateTime = examDao.getExamDate(questionId);
+        // if(examDateTime>presentDateTime) return Optional.empty();
+        Optional<QuestionPaper> questionPaper = examDao.get(questionId);
+        questionPaper.ifPresent(QuestionPaper::removeAnsStatus);
+    	return questionPaper;
+    }
+    @PostMapping("/student/give-post-exam/")
+    public void sendAnswer(@RequestBody AnswerScript answerScript) {
+        studentDao.ReceiveAnswer(answerScript);
+    }
+
+    @GetMapping("/get-answer-script/")
+    public Optional<QuestionPaper> provideAnswerScript(String stdId, String questionId){
+        return examDao.answerScriptCreator(stdId,questionId);
     }
 }

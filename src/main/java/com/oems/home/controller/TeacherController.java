@@ -1,65 +1,90 @@
 package com.oems.home.controller;
 
-import com.oems.home.model.QuestionPaper;
+import com.oems.home.dao.ExamManagerJdbcDao;
+import com.oems.home.dao.TeacherJdbcDao;
+import com.oems.home.model.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class TeacherController {
-    @GetMapping("/teacher-board/{id}")
-    public String TeacherBoardManager(@PathVariable("id") String id){
-
-        return "Teacher board manager";
+	@Autowired
+    TeacherJdbcDao teacherDao;
+    @Autowired
+    ExamManagerJdbcDao examDao;
+	
+    @GetMapping("/teacher/board/{id}")
+    public Dashboard TeacherBoardManager(@PathVariable("id") String tId){
+    	return teacherDao.teacherBoardManager(tId);
     }
-    @GetMapping("/teachers/all-teachers")
-    public String allTeachers(){
-
-        return "All teacher list";
+    @GetMapping("/teacher/all-teachers")
+    public List<Teacher> allTeachers(){
+    	return teacherDao.listOfAllTeacher();
     }
-    @GetMapping("/all-courses")
-    public String allCoursesOfAllDept(){
-
-        return "All Courses of all department";
+    @GetMapping("/teacher/all-courses")
+    public List<CourseDetails> allCoursesOfAllDept(){
+    	return teacherDao.listOfAllCoursesOfAllDept();
     }
-    @GetMapping("/courses/{teacherId}")
-    public String allCurrentCrsOfThatTeacher(@PathVariable("teacherId")String tId){
-
-        return "All Current Courses of That teacher";
+    @GetMapping("/teacher/courses/{teacherId}")
+    public List<CourseDetails> allCurrentCrsOfThatTeacher(@PathVariable("teacherId")String tId){
+    	return teacherDao.currCoursesOfTeacher(tId);
     }
-    @GetMapping("/courses/my-students/{course-code}")
-    public String allStudentOfThatCourse(@PathVariable("course-code")String courseCode){
-
-        return "All student list of that Courses of That teacher";
+    @GetMapping("/teacher/courses/my-students/{course-code}")
+    public List<Student> allStudentOfThatCourse(@PathVariable("course-code")String courseCode,String deptId){
+    	return teacherDao.listOfAllStudentOfThatCourse(courseCode, deptId);
     }
-
-    @PostMapping("/exams/questions/{question-paper}")
-    public String QuestionPaper(@PathVariable("question-paper") QuestionPaper questionPaper){
-        return "Your Question will set successful";
-    }
-
-    @GetMapping("/exams/questions/{question-paper-id}")
-    public String QuestionPaper(@PathVariable("question-paper-id") int qId){
-        return "Your"+qId+" Question is here";
+    // !---------- must be full details of exam paper needed-----------!
+    @PostMapping("/teacher/create-exams/question")
+    public QuestionPaper QuestionPaperHandler(@RequestBody QuestionPaper questionPaper){
+        questionPaper.setExamId(examDao.getLastExamId()+1);
+        examDao.create(questionPaper);
+        return questionPaper;
     }
 
+    @GetMapping("/teacher/see-questions/{question-paper-id}")
+    public Optional<QuestionPaper> QuestionPaperHandler(@PathVariable("question-paper-id") String qId){
+        return examDao.get(qId);
+    }
 
-    @GetMapping("/exams/all-exams/{teacher-id}")
-    public String getAllQuestionThatTeacherMade(@PathVariable("teacher-id") String tid){
-        return "Here all of your question paper that teacher made can see";
+    @GetMapping("/teacher/all-questions/{teacher-id}")
+    public List<QuestionSummery> getAllQuestionThatTeacherMade(@PathVariable("teacher-id") String tId){
+        return examDao.returnAllQuestionAccordingToTeacher(tId);
     }
-    @GetMapping("/exams/all-result/{teacher-id}")
-    public String getAllResultThatTeacherPublished(@PathVariable("teacher-id") String tid){
-        return "Here all of your subject result you can see";
+    //t
+    @GetMapping("/teacher/all-pending-result/{teacher-id}")
+    public List<QuestionSummery> allPendingResult(@PathVariable("teacher-id") String tId){
+        return teacherDao.listOfAllPendingResult(tId);
     }
-    @GetMapping("/exams/receive-review/{courseId}/{examId}")
-    public String RequestReview(@PathVariable("courseId")String id ,@PathVariable("examId") int examId){
-        return "Review Request Send..";
+    @GetMapping("/teacher/all-pending-result/student-list/{exam-id}")
+    public List<Student> allPendingResultStdList(@PathVariable("exam-id") int examId){
+        return teacherDao.listOfAllPendingResultStdList(examId);
     }
-    @GetMapping("/terms-and-condition")
+    @GetMapping("/teacher/assign-cgpa/{course-code}")
+    public List<Student> readyStudentForCgpaOfThatCourse(@PathVariable("course-code") String courseCode){
+        return teacherDao.listOfReadyStudentForCgpaOfThatCourse(courseCode);
+    }
+    @PostMapping("/teacher/assign-cgpa")
+    public void assignCgpa(String stdId, String courseCode, String deptId, String cgpa, String grade) {
+    	teacherDao.assignStdCgpa(stdId, courseCode, deptId, cgpa, grade);
+    }
+    
+    
+    
+    @GetMapping("/teacher/receive-review/{teacher-id}")
+    public List<Review> ReviewList(@PathVariable("teacher-id") String tid){
+        return teacherDao.studentExamPaperReviewList(tid);
+    }
+    @GetMapping("/public/terms-and-condition")
     public String termsAndCondition(){
-        return "All terms and condition here";
+        return new FAQAndTAndC().termsAndCondition;
     }
-    @GetMapping("/faq")
+    @GetMapping("/public/faq")
     public String faq(){
-        return "Your Question and Answer here...";
+        return new FAQAndTAndC().faq;
     }
 }
