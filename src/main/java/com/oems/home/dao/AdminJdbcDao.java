@@ -58,7 +58,17 @@ public class AdminJdbcDao{
     }
 
     public void updateSemester() {
+    	String q1 = "update student set semester=semester+1";
+    	String q2 = "update result set previousSemCrs=false";
+    	
+    	String q3 = "update result set previousSemCrs=true where cgpa=-1";
+    	String q4 = "update result set cgpa=-2 where cgpa=-1";
+    	String q5 = "update courses set courseCurrSession=courseCurrSession+1 where teacherId !='Not assigned'";
 
+    	jdbcTemplate.update(q1);
+    	jdbcTemplate.update(q2);
+    	jdbcTemplate.update(q3);
+    	jdbcTemplate.update(q4);
     }
 
     public List<RequestCourse> listOfRequestedCourses() {
@@ -126,4 +136,25 @@ public class AdminJdbcDao{
                 "values(?,?)";
         jdbcTemplate.update(queryForAddDept, department.getDeptId(), department.getDeptName());
     }
+	public void assignTeacherToCourse(String courseCode, String teacherId) {
+		String q1 = "update courses set teacherId ="+teacherId+"where courseCode="+courseCode;
+		jdbcTemplate.update(q1);
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
