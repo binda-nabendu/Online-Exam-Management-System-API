@@ -180,11 +180,11 @@ public class TeacherJdbcDao implements Dao<Teacher> {
         return jdbcTemplate.query(queryForReviewedStudentList,reviewMapper);
     }
 //t
-	public List<QuestionSummery> listOfAllPendingResult(String tId) { //endingDateTime er cheye choto why it is?
+	public List<QuestionSummery> listOfAllPendingResult(String tId) {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date today = Calendar.getInstance().getTime();
         String presentDateTime = df.format(today);
-		String pendingList = "select * from examPaper where teacherId="+tId+"and E.published=false and"+ 
+		String pendingList = "select * from examPaper where teacherId="+tId+" and published=false and "+ 
 				"endingDateTime <"+ presentDateTime;
 
 		return jdbcTemplate.query(pendingList,(rs, rn)->{
@@ -202,15 +202,15 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 	
 	public List<Student> listOfAllPendingResultStdList(int examId) {
 		String query ="select * from baseUser b, student s where b.nid=s.stdId and s.stdId = "+
-				"any(select stdId from result where courseCode=(select courseCode from examPaper"+ 
-				"where examId="+examId+")and cgpa=-1)";
+				"any(select stdId from result where courseCode=(select courseCode from examPaper "+ 
+				"where examId= "+examId+") and cgpa=-1)";
 
         return jdbcTemplate.query(query, studentRowMapper);
 	}
 
 	public List<Student> listOfReadyStudentForCgpaOfThatCourse(String courseCode) {
-		String query = "select * from baseUser b, student s where b.nid=s.stdId and s.stdId ="+ 
-				"any(select stdId from result where courseCode="+courseCode+"and cgpa=-2)";
+		String query = "select * from baseUser b, student s where b.nid=s.stdId and s.stdId = "+ 
+				"any(select stdId from result where courseCode= "+courseCode+" and cgpa=-2)";
 		return jdbcTemplate.query(query, studentRowMapper);
 	}
 	

@@ -60,11 +60,11 @@ public class TeacherController {
     public List<QuestionSummery> allPendingResult(@PathVariable("teacher-id") String tId){
         return teacherDao.listOfAllPendingResult(tId);
     }
-    @GetMapping("/teacher/all-pending-result/student-list{exam-id}")
+    @GetMapping("/teacher/all-pending-result/student-list/{exam-id}")
     public List<Student> allPendingResultStdList(@PathVariable("exam-id") int examId){
         return teacherDao.listOfAllPendingResultStdList(examId);
     }
-    @GetMapping("/teacher/{course-code}") //????
+    @GetMapping("/teacher/{course-code}")
     public List<Student> readyStudentForCgpaOfThatCourse(@PathVariable("course-code") String courseCode){
         return teacherDao.listOfReadyStudentForCgpaOfThatCourse(courseCode);
     }
