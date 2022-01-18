@@ -55,7 +55,7 @@ public class TeacherController {
     public List<QuestionSummery> getAllQuestionThatTeacherMade(@PathVariable("teacher-id") String tId){
         return examDao.returnAllQuestionAccordingToTeacher(tId);
     }
-    //t
+    
     @GetMapping("/teacher/all-pending-result/{teacher-id}")
     public List<QuestionSummery> allPendingResult(@PathVariable("teacher-id") String tId){
         return teacherDao.listOfAllPendingResult(tId);
