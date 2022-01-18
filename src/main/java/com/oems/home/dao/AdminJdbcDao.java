@@ -35,7 +35,7 @@ public class AdminJdbcDao{
 
     public boolean checkUserAndPassword(UserVerificationModel userDetails){
         String verifier = "select nid, email, password,role from " +
-                          "baseUser where nid ="+userDetails.getNid();
+                          "baseuser where nid ="+userDetails.getNid();
 
         UserVerificationModel modelUser;
         modelUser = Optional.ofNullable (jdbcTemplate.queryForObject(verifier,(rs, rowNumber)->{
@@ -87,7 +87,7 @@ public class AdminJdbcDao{
 
     public void approveCoursesForStudent(RequestCourse requestedCourse, boolean isDelete) {
 
-        String queryForDelFrmRequestCourse = "delete from requestCourse where stdId=? " +
+        String queryForDelFrmRequestCourse = "delete from requestcourse where stdId=? " +
                 "and courseCode=? and deptId=?";
 
         String queryForAddSub = " insert into result " +

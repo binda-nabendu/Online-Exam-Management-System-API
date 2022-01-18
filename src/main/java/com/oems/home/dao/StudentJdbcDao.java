@@ -33,7 +33,7 @@ public class StudentJdbcDao implements Dao<Student> {
     @Override
     public void create(Student student) {
         student.setRole("STUDENT");
-        String sqlQueryForBaseUser = "insert into baseUser(nid ,userName ,fatherName ,motherName ,gender ,contactNo ,email ,dob ,address ,role ,password) values(?,?,?,?,?,?,?,?,?,?,?)";
+        String sqlQueryForBaseUser = "insert into baseuser(nid ,userName ,fatherName ,motherName ,gender ,contactNo ,email ,dob ,address ,role ,password) values(?,?,?,?,?,?,?,?,?,?,?)";
         String sqlQueryForStudent = "insert into student(stdId ,deptId ,semester) values(?,?,?)";
         int baseUserStatus = jdbcTemplate.update(sqlQueryForBaseUser, student.getNid(), student.getUserName(),student.getFatherName(),
                 student.getMotherName(), student.getGender(), student.getContactNo(), student.getEmail(),student.getDob(),
@@ -64,7 +64,7 @@ public class StudentJdbcDao implements Dao<Student> {
     };
 
     public List<Student> listOfNonApprovedStudent(){
-        String joinQueryForAllStudentInfo ="select * from baseUser b, student s where b.nid=s.stdId and adminApproval=0";
+        String joinQueryForAllStudentInfo ="select * from baseuser b, student s where b.nid=s.stdId and adminApproval=0";
         return jdbcTemplate.query(joinQueryForAllStudentInfo, studentRowMapper);
     }
 
@@ -79,11 +79,11 @@ public class StudentJdbcDao implements Dao<Student> {
     }
     public void approveOrDeleteStudent(String id,Boolean approve){
         if(approve){
-            String q1= "update baseUser set adminApproval=1 where nid= ?";
+            String q1= "update baseuser set adminApproval=1 where nid= ?";
             jdbcTemplate.update(q1,id);
         }else{
             String q1="delete from student where stdId=?";
-            String q2 = "delete from baseUser where nid= ?";
+            String q2 = "delete from baseuser where nid= ?";
             jdbcTemplate.update(q1,id);
             jdbcTemplate.update(q2,id);
         }
@@ -97,10 +97,10 @@ public class StudentJdbcDao implements Dao<Student> {
         Date today = Calendar.getInstance().getTime();
         String now = df.format(today);
 
-        String q3 = "select COUNT(*) from examPaper where courseCode = any( " +
+        String q3 = "select COUNT(*) from exampaper where courseCode = any( " +
                 "select courseCode from result where stdId= "+id+" and cgpa=-1) and startingDateTime > '"+now+"'";
 
-        String q4 = "select COUNT(*) from studentMark where review=true";
+        String q4 = "select COUNT(*) from studentmark where review=true";
 
         Dashboard dashboard = new Dashboard();
         dashboard.setCard1(Optional.ofNullable(jdbcTemplate.queryForObject(q1, Integer.class)).orElse(0));
@@ -127,7 +127,7 @@ public class StudentJdbcDao implements Dao<Student> {
     public void requestedCourseAdd(List<CourseDetails> all, String stdId) {
         for (CourseDetails course:all) {
 
-            String queryForInsIntoReq="Insert into requestCourse" +
+            String queryForInsIntoReq="Insert into requestcourse" +
                     "(stdId, courseCode, deptId)" +
                     "values(?,?,?)";
             jdbcTemplate.update(queryForInsIntoReq,stdId,course.getCourseCode(),course.getDeptId());
@@ -188,7 +188,7 @@ public class StudentJdbcDao implements Dao<Student> {
         List<QuestionSummery> l1= jdbcTemplate.query(q1,questionSummaryMapper);
 
         for(QuestionSummery qs:l1){
-            String pubQuery = "select published from examPaper where examId="+qs.getExamId();
+            String pubQuery = "select published from exampaper where examId="+qs.getExamId();
             Boolean published=jdbcTemplate.queryForObject(pubQuery,Boolean.class);
             if(Boolean.TRUE.equals(published)){
                 String queryForGettingMark = " select gotTotalMarks from studentmark where examId= "+qs.getExamId();
@@ -207,7 +207,7 @@ public class StudentJdbcDao implements Dao<Student> {
 
     public void ReceiveAnswer(AnswerScript ansScript) {
         for(QuestionOptionPair qp : ansScript.getAllQuestionAnswer()) {
-            String s = "insert into stdAnsScript " +
+            String s = "insert into stdansscript " +
                     "(stdId, examId, questionNo, optionNo) " +
                     "values(?,?,?,?)";
             jdbcTemplate.update(s, ansScript.getStdId(), ansScript.getExamId(), qp.getQuestionNo(), qp.getOptionNo());

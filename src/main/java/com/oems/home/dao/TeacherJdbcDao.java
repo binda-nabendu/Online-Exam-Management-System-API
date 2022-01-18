@@ -32,7 +32,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 	@Override
 	public void create(Teacher teacher) {
 		teacher.setRole("TEACHER");
-		String sqlQueryForBaseUser = "insert into baseUser(nid ,userName ,fatherName ,motherName ,gender ,contactNo ,email ,dob ,address ,role ,password) values(?,?,?,?,?,?,?,?,?,?,?)";
+		String sqlQueryForBaseUser = "insert into baseuser(nid ,userName ,fatherName ,motherName ,gender ,contactNo ,email ,dob ,address ,role ,password) values(?,?,?,?,?,?,?,?,?,?,?)";
 		String sqlQueryForTeacher = "insert into teacher(teacherId ,eduQualification ,expertise) values(?,?,?)";
 		
 		int baseUserStatus = jdbcTemplate.update(sqlQueryForBaseUser, teacher.getNid(), teacher.getUserName(),teacher.getFatherName(),
@@ -78,24 +78,24 @@ public class TeacherJdbcDao implements Dao<Teacher> {
     };
     
 	public List<Teacher> listOfNonApprovedTeacher() {
-		String joinQueryForAllPendingTeachers = "select * from baseUser b, teacher t where b.nid=t.teacherId and adminApproval=0";
+		String joinQueryForAllPendingTeachers = "select * from baseuser b, teacher t where b.nid=t.teacherId and adminApproval=0";
 		return jdbcTemplate.query(joinQueryForAllPendingTeachers,teacherRowMapper);
 	}
 	
 	public void approveOrDeleteTeacher(String tId, boolean approve) {
 		if(approve){
-            String q1= "update baseUser set adminApproval=1 where nid= ?";
+            String q1= "update baseuser set adminApproval=1 where nid= ?";
             jdbcTemplate.update(q1,tId);
         }else{
             String q1="delete from teacher where teacherId=?";
-            String q2 = "delete from baseUser where nid= ?";
+            String q2 = "delete from baseuser where nid= ?";
             jdbcTemplate.update(q1,tId);
             jdbcTemplate.update(q2,tId);
         }
 	}
 	
 	public List<Teacher> listOfAllTeacher() {
-		String queryForListOfAllTeacher = "select * from baseUser b, teacher t where b.nid=t.teacherId";
+		String queryForListOfAllTeacher = "select * from baseuser b, teacher t where b.nid=t.teacherId";
 		return jdbcTemplate.query(queryForListOfAllTeacher,teacherRowMapper);
 	}
 	
@@ -138,13 +138,13 @@ public class TeacherJdbcDao implements Dao<Teacher> {
     };
 
 	public List<Student> listOfAllStudentOfThatCourse(String courseCode, String deptId) {
-		String queryForAllStudentOfThatCourse ="select * from baseUser b, student s where b.nid=s.stdId and s.stdId = any " +
+		String queryForAllStudentOfThatCourse ="select * from baseuser b, student s where b.nid=s.stdId and s.stdId = any " +
                 "(select stdId from result where courseCode='"+courseCode+"' and deptId='"+deptId+"' and cgpa=-1)";
         return jdbcTemplate.query(queryForAllStudentOfThatCourse, studentRowMapper);
 	}
 
 	public Dashboard teacherBoardManager(String tId) {
-		String q1="select COUNT(*) from studentMark s, courses c where s.courseCode = c.courseCode " +
+		String q1="select COUNT(*) from studentmark s, courses c where s.courseCode = c.courseCode " +
                   "and review=true and s.courseCode = any(" +
                   "select c.courseCode from courses where c.teacherId="+tId+")";
         String q2= "select count(*) from result where courseCode in " +
@@ -152,7 +152,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
                    "and cgpa=-1";
 
         String q3 = "select COUNT(*) from department";
-        String q4 = "select COUNT(*) from examPaper where teacherId="+tId;
+        String q4 = "select COUNT(*) from exampaper where teacherId="+tId;
 
         Dashboard dashboard = new Dashboard();
         dashboard.setCard1(Optional.ofNullable(jdbcTemplate.queryForObject(q1, Integer.class)).orElse(0));
@@ -172,7 +172,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
         return review;
     };
     public List<Review> studentExamPaperReviewList(String tid) {
-        String queryForReviewedStudentList = "select * from studentMark" +
+        String queryForReviewedStudentList = "select * from studentmark" +
                 " where courseCode in (" +
                 "select courseCode from courses " +
                 "where teacherId ="+tid+") and review = true ";
@@ -185,7 +185,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
         Date today = Calendar.getInstance().getTime();
         String presentDateTime = df.format(today);
         
-		String pendingList = "select * from examPaper where teacherId="+tId+" and published=false and "+ 
+		String pendingList = "select * from exampaper where teacherId="+tId+" and published=false and "+
 				"endingDateTime < '"+ presentDateTime+"'";
 
 		return jdbcTemplate.query(pendingList,(rs, rn)->{
@@ -202,7 +202,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 	}
 	
 	public List<Student> listOfAllPendingResultStdList(int examId) {
-		String query ="select * from baseUser b, student s where b.nid=s.stdId and s.stdId = "+
+		String query ="select * from baseuser b, student s where b.nid=s.stdId and s.stdId = "+
 				"any(select stdId from result where courseCode=(select courseCode from examPaper "+ 
 				"where examId= "+examId+") and cgpa=-1)";
 
@@ -210,7 +210,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 	}
 
 	public List<Student> listOfReadyStudentForCgpaOfThatCourse(String courseCode) {
-		String query = "select * from baseUser b, student s where b.nid=s.stdId and s.stdId = "+ 
+		String query = "select * from baseuser b, student s where b.nid=s.stdId and s.stdId = "+
 				"any (select stdId from result where courseCode= '"+courseCode+"' and cgpa=-2)";
 		return jdbcTemplate.query(query, studentRowMapper);
 	}
