@@ -33,7 +33,7 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
 
         questionPaper.calculateTotal();
 
-        String sqlQueryForExamPaper = "insert into examPaper" +
+        String sqlQueryForExamPaper = "insert into exampaper" +
                 "(examId, courseCode, teacherId, percentageValue, startingDateTime, endingDateTime, courseSession, total)" +
                 "values(?,?,?,?,?,?,?,?)";
         int addingStatus = jdbcTemplate.update(sqlQueryForExamPaper,questionPaper.getExamId(),questionPaper.getCourseCode(),
@@ -60,7 +60,7 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
 
     private void addAllOptionOfThatQuestion(int examId, int questionNo, List<QuestionAnswer> allOptions) {
         for (QuestionAnswer option:allOptions) {
-            String sqlQueryFoAddAllOption = "insert into questionAns" +
+            String sqlQueryFoAddAllOption = "insert into questionans" +
                     "(examId,questionNo,optionNo,optionValue,ansStatus)" +
                     "values(?,?,?,?,?)";
             int optionAddingStatus = jdbcTemplate.update(sqlQueryFoAddAllOption,examId,questionNo,
@@ -86,7 +86,7 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
     @Override
     public Optional<QuestionPaper> get(String questionId) {
         int examId = Integer.parseInt(questionId);
-        String queryForQuestionHeader = "select * from examPaper where examId="+examId;
+        String queryForQuestionHeader = "select * from exampaper where examId="+examId;
         QuestionPaper finalQuestion = null;
         try {
             finalQuestion = jdbcTemplate.queryForObject(queryForQuestionHeader, (rs, rowNumber) -> {
@@ -104,7 +104,7 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
             if(finalQuestion != null){
                 finalQuestion.setAllIndividualQuestions(getAllQuestions(examId));
                 for (IndividualQuestion question:finalQuestion.getAllIndividualQuestions()) {
-                    String queryForRetrieveOption = "select * from questionAns where examId="+finalQuestion.getExamId()+" and questionNo="+question.getQuestionNo();
+                    String queryForRetrieveOption = "select * from questionans where examId="+finalQuestion.getExamId()+" and questionNo="+question.getQuestionNo();
                     question.setAllOptions(jdbcTemplate.query(queryForRetrieveOption,(rss,rnn)->{
                         QuestionAnswer answer = new QuestionAnswer();
                         answer.setOptionNo(rss.getInt("optionNo"));
@@ -142,7 +142,7 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
     }
 
     public int getLastExamId() {
-        String s = "select max(examId) from examPaper";
+        String s = "select max(examId) from exampaper";
         int i = 0;
         Integer value = jdbcTemplate.queryForObject(s, Integer.class);
         if (value != null) i = value;
@@ -150,7 +150,7 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
     }
 
     public List<QuestionSummery> returnAllQuestionAccordingToTeacher(String tid) {
-        String queryForReturnQuestionHeader = "select * from examPaper " +
+        String queryForReturnQuestionHeader = "select * from exampaper " +
                 "where teacherId="+tid+" order by startingDateTime";
         return jdbcTemplate.query(queryForReturnQuestionHeader,questionSummaryMapper);
     }
@@ -161,7 +161,7 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
 
         questionPaper.ifPresent(e->{
             for(IndividualQuestion iq: e.getAllIndividualQuestions()){
-                String s1="select optionNo from questionAns where examId="+e.getExamId()
+                String s1="select optionNo from questionans where examId="+e.getExamId()
                         +" and questionNo="+iq.getQuestionNo()+" and ansStatus= true";
                 String s2="select optionNo from stdAnsScript where stdId="+stdId+
                         " and examId="+e.getExamId()+" and questionNo="+iq.getQuestionNo();
