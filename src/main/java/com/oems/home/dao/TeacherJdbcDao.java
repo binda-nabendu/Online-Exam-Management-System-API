@@ -203,7 +203,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 	
 	public List<Student> listOfAllPendingResultStdList(int examId) {
 		String query ="select * from baseuser b, student s where b.nid=s.stdId and s.stdId = "+
-				"any(select stdId from result where courseCode=(select courseCode from examPaper "+ 
+				"any(select stdId from result where courseCode=(select courseCode from exampaper "+ 
 				"where examId= "+examId+") and cgpa=-1)";
 
         return jdbcTemplate.query(query, studentRowMapper);
