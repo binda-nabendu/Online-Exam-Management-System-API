@@ -113,7 +113,9 @@ public class StudentJdbcDao implements Dao<Student> {
     private final RowMapper<CourseDetails> crsDetailsRowMapper = (rs, rowNumber)->{
         CourseDetails courseDetails = new CourseDetails();
         courseDetails.setCourseCode(rs.getString("courseCode"));
+        courseDetails.setDeptId(rs.getString("deptId"));
         courseDetails.setCourseName(rs.getString("courseName"));
+        courseDetails.setTeacherId(rs.getString("teacherId"));
         courseDetails.setCourseSessions(rs.getInt("courseCurrSession"));
         return courseDetails;
     };
@@ -139,18 +141,19 @@ public class StudentJdbcDao implements Dao<Student> {
 
     }
 
+    public String getDeptId(String stdId){
+        String q1= "select deptId from student where stdId='"+stdId+"'";
+        return Optional.ofNullable(jdbcTemplate.queryForObject(q1, String.class)).orElse("0000");
+    }
+
     public List<CourseDetails> departmentalCourseSet(String dept){
         String q1 ="select * from courses where deptId="+dept+" and teacherId != 'Not assigned' ";
         return jdbcTemplate.query(q1,crsDetailsRowMapper);
 
     }
     public List<CourseDetails> allRunningCourseDetails(String stdId){
-        String q1 ="select courseCode from result where stdId="+stdId+" and cgpa=-1";
-        return jdbcTemplate.query(q1,(rs, rowNumber)->{
-            CourseDetails courseDetails = new CourseDetails();
-            courseDetails.setCourseCode(rs.getString("courseCode"));
-            return courseDetails;
-        });
+        String q1 ="select * from result r, courses c where r.courseCode=c.courseCode and r.stdId="+stdId+" and r.cgpa=-1";
+        return jdbcTemplate.query(q1,crsDetailsRowMapper);
     }
     protected final RowMapper<QuestionSummery> questionSummaryMapper = (rs, rn)->{
         QuestionSummery question = new QuestionSummery();
