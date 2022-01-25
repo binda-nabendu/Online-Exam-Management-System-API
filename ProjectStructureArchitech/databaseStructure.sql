@@ -21,7 +21,8 @@ create table baseUser(
 );
 create table department(
 	deptId varchar(10) primary key,
-	deptName varchar(60) not null
+	deptName varchar(60) not null,
+	currentBatch int not null default 1
 );
 create table student(
 	stdId varchar(20) primary key,
