@@ -74,7 +74,7 @@ public class StudentController {
         questionPaper.ifPresent(QuestionPaper::removeAnsStatus);
     	return questionPaper;
     }
-    @PostMapping("/student/give-post-exam/")
+    @PostMapping("/student/give-post-exam")
     public void sendAnswer(@RequestHeader(value = "Authorization") String token, @RequestBody AnswerScript answerScript) {
         String stdId = jwtUtil.extractUsername(token.substring(7));
         answerScript.setStdId(stdId);
