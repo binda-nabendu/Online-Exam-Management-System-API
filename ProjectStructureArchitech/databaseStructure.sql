@@ -99,7 +99,7 @@ create table stdAnsScript(
 	questionNo int,
 	optionNo tinyint default 0,
 	ansStatus bool default false,
-    constraint pk_stdAnsScript primary key (stdId,examId,questionNo),
+    constraint pk_stdAnsScript primary key (stdId,examId,questionNo,optionNo),
     foreign key(stdId) references student(stdId),
     foreign key(examId, questionNo) references question(examId,questionNo)
 );
