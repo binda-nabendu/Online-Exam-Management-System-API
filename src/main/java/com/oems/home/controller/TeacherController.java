@@ -61,12 +61,13 @@ public class TeacherController {
         String tId = jwtUtil.extractUsername(token.substring(7));
         return examDao.returnAllQuestionAccordingToTeacher(tId);
     }
-    //t
+  
     @GetMapping("/teacher/all-pending-result")
     public List<QuestionSummery> allPendingResult(@RequestHeader(value = "Authorization") String token){
         String tId = jwtUtil.extractUsername(token.substring(7));
         return teacherDao.listOfAllPendingResult(tId);
     }
+  
     @GetMapping("/teacher/all-pending-result/student-list/{exam-id}")
     public List<Student> allPendingResultStdList(@PathVariable("exam-id") int examId){
         return teacherDao.listOfAllPendingResultStdList(examId);
