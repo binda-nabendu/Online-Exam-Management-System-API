@@ -60,12 +60,15 @@ public class AdminJdbcDao{
     	String q3 = "update result set previousSemCrs=true where cgpa=-1";
     	String q4 = "update result set cgpa=-2 where cgpa=-1";
     	String q5 = "update courses set courseCurrSession=courseCurrSession+1 where teacherId !='Not assigned'";
+        String q6 = "update department set currentBatch=currentBatch+1";
+
 
     	jdbcTemplate.update(q1);
     	jdbcTemplate.update(q2);
     	jdbcTemplate.update(q3);
     	jdbcTemplate.update(q4);
     	jdbcTemplate.update(q5);
+    	jdbcTemplate.update(q6);
     }
 
     public List<RequestCourse> listOfRequestedCourses() {

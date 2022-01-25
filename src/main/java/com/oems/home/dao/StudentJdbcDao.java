@@ -30,15 +30,25 @@ public class StudentJdbcDao implements Dao<Student> {
         return null;
     }
 
+    private int currentBatch(String deptId){
+        String q1="select currentBatch from department where deptId="+deptId;
+
+        return Optional.ofNullable(jdbcTemplate.queryForObject(q1, Integer.class)).orElse(0);
+    }
+
     @Override
     public void create(Student student) {
         student.setRole("STUDENT");
+        int setBatch = currentBatch(student.getDeptId());
+
         String sqlQueryForBaseUser = "insert into baseuser(nid ,userName ,fatherName ,motherName ,gender ,contactNo ,email ,dob ,address ,role ,password) values(?,?,?,?,?,?,?,?,?,?,?)";
-        String sqlQueryForStudent = "insert into student(stdId ,deptId ,semester) values(?,?,?)";
+        String sqlQueryForStudent = "insert into student(stdId ,deptId ,semester, batch) values(?,?,?,?)";
+
+
         int baseUserStatus = jdbcTemplate.update(sqlQueryForBaseUser, student.getNid(), student.getUserName(),student.getFatherName(),
                 student.getMotherName(), student.getGender(), student.getContactNo(), student.getEmail(),student.getDob(),
                 student.getAddress(),student.getRole(),student.getPassword());
-        int studentStatus = jdbcTemplate.update(sqlQueryForStudent,student.getNid(),student.getDeptId(),student.getSemester());
+        int studentStatus = jdbcTemplate.update(sqlQueryForStudent,student.getNid(),student.getDeptId(),student.getSemester(),setBatch);
         if (baseUserStatus==1 && studentStatus==1){
             System.out.println("Student inserted");
         }
@@ -113,7 +123,9 @@ public class StudentJdbcDao implements Dao<Student> {
     private final RowMapper<CourseDetails> crsDetailsRowMapper = (rs, rowNumber)->{
         CourseDetails courseDetails = new CourseDetails();
         courseDetails.setCourseCode(rs.getString("courseCode"));
+        courseDetails.setDeptId(rs.getString("deptId"));
         courseDetails.setCourseName(rs.getString("courseName"));
+        courseDetails.setTeacherId(rs.getString("teacherId"));
         courseDetails.setCourseSessions(rs.getInt("courseCurrSession"));
         return courseDetails;
     };
@@ -139,18 +151,19 @@ public class StudentJdbcDao implements Dao<Student> {
 
     }
 
+    public String getDeptId(String stdId){
+        String q1= "select deptId from student where stdId='"+stdId+"'";
+        return Optional.ofNullable(jdbcTemplate.queryForObject(q1, String.class)).orElse("0000");
+    }
+
     public List<CourseDetails> departmentalCourseSet(String dept){
         String q1 ="select * from courses where deptId="+dept+" and teacherId != 'Not assigned' ";
         return jdbcTemplate.query(q1,crsDetailsRowMapper);
 
     }
     public List<CourseDetails> allRunningCourseDetails(String stdId){
-        String q1 ="select courseCode from result where stdId="+stdId+" and cgpa=-1";
-        return jdbcTemplate.query(q1,(rs, rowNumber)->{
-            CourseDetails courseDetails = new CourseDetails();
-            courseDetails.setCourseCode(rs.getString("courseCode"));
-            return courseDetails;
-        });
+        String q1 ="select * from result r, courses c where r.courseCode=c.courseCode and r.stdId="+stdId+" and r.cgpa=-1";
+        return jdbcTemplate.query(q1,crsDetailsRowMapper);
     }
     protected final RowMapper<QuestionSummery> questionSummaryMapper = (rs, rn)->{
         QuestionSummery question = new QuestionSummery();
