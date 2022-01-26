@@ -107,8 +107,8 @@ public class StudentJdbcDao implements Dao<Student> {
         Date today = Calendar.getInstance().getTime();
         String now = df.format(today);
 
-        String q3 = "select COUNT(*) from exampaper where courseCode = any( " +
-                "select courseCode from result where stdId= "+id+" and cgpa=-1) and startingDateTime > '"+now+"'";
+        String q3 = "select COUNT(*) from exampaper where (courseCode, deptId) = any( " +
+                "select courseCode, deptId from result where stdId= "+id+" and cgpa=-1) and startingDateTime > '"+now+"'";
 
         String q4 = "select COUNT(*) from studentmark where review=true";
 
@@ -169,6 +169,7 @@ public class StudentJdbcDao implements Dao<Student> {
         QuestionSummery question = new QuestionSummery();
         question.setExamId(rs.getInt("examId"));
         question.setCourseCode(rs.getString("courseCode"));
+        question.setDeptId(rs.getString("deptId"));
         question.setTeacherId(rs.getString("teacherId"));
         question.setPercentageValue(rs.getDouble("percentageValue"));
         question.setStartingDateTime(rs.getString("startingDateTime"));
@@ -181,8 +182,8 @@ public class StudentJdbcDao implements Dao<Student> {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date today = Calendar.getInstance().getTime();
         String presentDateTime = df.format(today);
-        String q1 =" select * from exampaper where (courseCode, courseSession) in(" +
-                "select courseCode, courseSession from result" +
+        String q1 =" select * from exampaper where (courseCode, deptId, courseSession) in(" +
+                "select courseCode, deptId, courseSession from result" +
                 " where cgpa=-1 and stdId="+stdId+
                 ")  and exampaper.startingDateTime> '"+presentDateTime+"'";
 
@@ -193,8 +194,8 @@ public class StudentJdbcDao implements Dao<Student> {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date today = Calendar.getInstance().getTime();
         String presentDateTime = df.format(today);
-        String q1 =" select * from exampaper where (courseCode, courseSession) in(" +
-                "select courseCode, courseSession from result" +
+        String q1 =" select * from exampaper where (courseCode, deptId, courseSession) in(" +
+                "select courseCode, deptId, courseSession from result" +
                 " where (cgpa=-1 or previousSemCrs = true) and stdId= "+stdId +
                 ") and endingDateTime< '"+presentDateTime+"'";
 
