@@ -163,7 +163,7 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
             for(IndividualQuestion iq: e.getAllIndividualQuestions()){
                 String s1="select optionNo from questionans where examId="+e.getExamId()
                         +" and questionNo="+iq.getQuestionNo()+" and ansStatus= true";
-                String s2="select optionNo from stdAnsScript where stdId="+stdId+
+                String s2="select optionNo from stdansscript where stdId="+stdId+
                         " and examId="+e.getExamId()+" and questionNo="+iq.getQuestionNo();
                 iq.setCorrectOption(jdbcTemplate.query(s1,(rs,rn)-> rs.getInt("optionNo")));
                 iq.setSelectedOption(jdbcTemplate.query(s2,(rs,rn)-> rs.getInt("optionNo")));
