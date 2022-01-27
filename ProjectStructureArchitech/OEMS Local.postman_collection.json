@@ -1,0 +1,1474 @@
+{
+	"info": {
+		"_postman_id": "0fe65497-0393-4a35-8e49-5a575dceb3c9",
+		"name": "OEMS Local",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Student",
+			"item": [
+				{
+					"name": "student dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDUxIiwiZXhwIjoxNjQzMjU5Nzc1LCJpYXQiOjE2NDMyMjM3NzV9.rmN2BlMgYPsgPV6NHNevysis3B6uuyMohUdlCAhQwPU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/student/board",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"student",
+								"board"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "student my courses",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDU3IiwiZXhwIjoxNjQzMjE5Mjg1LCJpYXQiOjE2NDMxODMyODV9.eADGzpAn2qIi0hDB_QiVXfVHMj6y3RCNYN3kfMIWNBs",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/student/my-courses",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"student",
+								"my-courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "student departmental course",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDU3IiwiZXhwIjoxNjQzMjE5Mjg1LCJpYXQiOjE2NDMxODMyODV9.eADGzpAn2qIi0hDB_QiVXfVHMj6y3RCNYN3kfMIWNBs",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/student/departmental-course",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"student",
+								"departmental-course"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "student departmental completed course ",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDU3IiwiZXhwIjoxNjQzMjE5Mjg1LCJpYXQiOjE2NDMxODMyODV9.eADGzpAn2qIi0hDB_QiVXfVHMj6y3RCNYN3kfMIWNBs",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/student/departmental-course/completed",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"student",
+								"departmental-course",
+								"completed"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "student request for courses",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDUyIiwiZXhwIjoxNjQzMjIwMDM0LCJpYXQiOjE2NDMxODQwMzR9.nziTRFiLN6GsCWwFsrS8S0X52_yJ2Uu0twWGp4oKN3o",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n    \"courseCode\":\"CSE315\",\r\n    \"deptId\":\"2019\"\r\n    },\r\n    {\r\n    \"courseCode\":\"CSE341\",\r\n    \"deptId\":\"2019\"\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/student/request-for-courses",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"student",
+								"request-for-courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "student upcoming exams",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDUxIiwiZXhwIjoxNjQzMjU5Nzc1LCJpYXQiOjE2NDMyMjM3NzV9.rmN2BlMgYPsgPV6NHNevysis3B6uuyMohUdlCAhQwPU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/student/exams/upcoming",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"student",
+								"exams",
+								"upcoming"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "student previous exams",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDUxIiwiZXhwIjoxNjQzMjU5Nzc1LCJpYXQiOjE2NDMyMjM3NzV9.rmN2BlMgYPsgPV6NHNevysis3B6uuyMohUdlCAhQwPU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/student/exams/previous",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"student",
+								"exams",
+								"previous"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "student exams send review",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDUzIiwiZXhwIjoxNjQzMjIxNTY5LCJpYXQiOjE2NDMxODU1Njl9.d9CRlJN16u8nLvG7wi5bC8DbusYW3FMoyVhtsMYTLqI",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/student/exams/send-review/3",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"student",
+								"exams",
+								"send-review",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "student get question paper",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDUzIiwiZXhwIjoxNjQzMjIxNTY5LCJpYXQiOjE2NDMxODU1Njl9.d9CRlJN16u8nLvG7wi5bC8DbusYW3FMoyVhtsMYTLqI",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/student/give-post-exam/14",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"student",
+								"give-post-exam",
+								"14"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "student submit ans script",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDUzIiwiZXhwIjoxNjQzMjIxNTY5LCJpYXQiOjE2NDMxODU1Njl9.d9CRlJN16u8nLvG7wi5bC8DbusYW3FMoyVhtsMYTLqI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"examId\": \"14\",\r\n    \"allQuestionAnswer\": [\r\n        {\r\n            \"questionNo\":\"1\",\r\n            \"optionNo\":\"1\"\r\n        },\r\n        {\r\n            \"questionNo\":\"2\",\r\n            \"optionNo\":\"3\"\r\n        },\r\n        {\r\n            \"questionNo\":\"1\",\r\n            \"optionNo\":\"2\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/student/give-post-exam",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"student",
+								"give-post-exam"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "student request for ans script",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDUzIiwiZXhwIjoxNjQzMjIxNTY5LCJpYXQiOjE2NDMxODU1Njl9.d9CRlJN16u8nLvG7wi5bC8DbusYW3FMoyVhtsMYTLqI",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/get-answer-script/14",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"get-answer-script",
+								"14"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "authorization",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"6118194051\",\r\n    \"password\":\"2345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/authenticate",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Teacher",
+			"item": [
+				{
+					"name": "authorization",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"6118194065\",\r\n    \"password\":\"7238\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/authenticate",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "teacher board",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY1IiwiZXhwIjoxNjQzMjI1ODAzLCJpYXQiOjE2NDMxODk4MDN9.Nu64PbdG0bbQMXT_XkX2lmSIJ8oALsNrLmJ_iSOLm38",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/teacher/board",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"teacher",
+								"board"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all teachers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY1IiwiZXhwIjoxNjQzMjI1ODAzLCJpYXQiOjE2NDMxODk4MDN9.Nu64PbdG0bbQMXT_XkX2lmSIJ8oALsNrLmJ_iSOLm38",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/teacher/all-teachers",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"teacher",
+								"all-teachers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all courses",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY1IiwiZXhwIjoxNjQzMjI1ODAzLCJpYXQiOjE2NDMxODk4MDN9.Nu64PbdG0bbQMXT_XkX2lmSIJ8oALsNrLmJ_iSOLm38",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/teacher/all-courses",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"teacher",
+								"all-courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all current courses",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY1IiwiZXhwIjoxNjQzMjI1ODAzLCJpYXQiOjE2NDMxODk4MDN9.Nu64PbdG0bbQMXT_XkX2lmSIJ8oALsNrLmJ_iSOLm38",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/teacher/courses",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"teacher",
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all student of that course",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY1IiwiZXhwIjoxNjQzMjI1ODAzLCJpYXQiOjE2NDMxODk4MDN9.Nu64PbdG0bbQMXT_XkX2lmSIJ8oALsNrLmJ_iSOLm38",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/teacher/courses/my-students/CSE315",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"teacher",
+								"courses",
+								"my-students",
+								"CSE315"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create question",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY1IiwiZXhwIjoxNjQzMjYwMTAxLCJpYXQiOjE2NDMyMjQxMDF9.iyiDYFYoz494_pubMXAzu3cvbXN64GkoumRW6LZrva4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teacherId\": \"6118194062\",\r\n    \"courseCode\": \"CSE315\",\r\n    \"deptId\":\"2019\",\r\n    \"percentageValue\": 0.5,\r\n    \"startingDateTime\": \"2022-07-18 18:22:30\",\r\n    \"endingDateTime\": \"2022-07-18 20:22:30\",\r\n    \"courseSession\": 1,\r\n    \"allIndividualQuestions\": [\r\n        {\r\n            \"questionNo\": 1,\r\n            \"question\": \"what is the pring statement in c++\",\r\n            \"mark\": 2.0,\r\n            \"allOptions\": [\r\n                {\r\n                    \"optionNo\": 1,\r\n                    \"optionValue\": \"wrdc\",\r\n                    \"ansStatus\": false\r\n                },\r\n                {\r\n                    \"optionNo\": 2,\r\n                    \"optionValue\": \"cdrc\",\r\n                    \"ansStatus\": false\r\n                },\r\n                {\r\n                    \"optionNo\": 3,\r\n                    \"optionValue\": \"cout\",\r\n                    \"ansStatus\": true\r\n                },\r\n                {\r\n                    \"optionNo\": 4,\r\n                    \"optionValue\": \"cin\",\r\n                    \"ansStatus\": false\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"questionNo\": 2,\r\n            \"question\": \"How maney operand are there\",\r\n            \"mark\": 3,\r\n            \"allOptions\": [\r\n                {\r\n                    \"optionNo\": 1,\r\n                    \"optionValue\": \"2\",\r\n                    \"ansStatus\": false\r\n                },\r\n                {\r\n                    \"optionNo\": 2,\r\n                    \"optionValue\": \"4\",\r\n                    \"ansStatus\": false\r\n                },\r\n                {\r\n                    \"optionNo\": 3,\r\n                    \"optionValue\": \"jhkljh\",\r\n                    \"ansStatus\": true\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/teacher/create-exams/question",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"teacher",
+								"create-exams",
+								"question"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "See questions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY1IiwiZXhwIjoxNjQzMjYwMTAxLCJpYXQiOjE2NDMyMjQxMDF9.iyiDYFYoz494_pubMXAzu3cvbXN64GkoumRW6LZrva4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/teacher/see-questions/11",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"teacher",
+								"see-questions",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "see all question",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY1IiwiZXhwIjoxNjQzMjYxNDAxLCJpYXQiOjE2NDMyMjU0MDF9.J8rdICemgSPqYVhQbJAHNGc94U2Kh8iOXMF060AYcxw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/teacher/all-questions",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"teacher",
+								"all-questions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all pending result ",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY5IiwiZXhwIjoxNjQzMjYxMjU5LCJpYXQiOjE2NDMyMjUyNTl9.Rt0p9JFUUO6_tKK23r70xa6N2VumHogfwhvJkWTuZnI",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/teacher/all-pending-result",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"teacher",
+								"all-pending-result"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all student list for that question",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY5IiwiZXhwIjoxNjQzMjYxMjU5LCJpYXQiOjE2NDMyMjUyNTl9.Rt0p9JFUUO6_tKK23r70xa6N2VumHogfwhvJkWTuZnI",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/teacher/all-pending-result/student-list/1",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"teacher",
+								"all-pending-result",
+								"student-list",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cgpa assignable student list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY5IiwiZXhwIjoxNjQzMjYxMjU5LCJpYXQiOjE2NDMyMjUyNTl9.Rt0p9JFUUO6_tKK23r70xa6N2VumHogfwhvJkWTuZnI",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/teacher/assign-cgpa/CSE315",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"teacher",
+								"assign-cgpa",
+								"CSE315"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "assign cgpa to a student",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY5IiwiZXhwIjoxNjQzMjYxMjU5LCJpYXQiOjE2NDMyMjUyNTl9.Rt0p9JFUUO6_tKK23r70xa6N2VumHogfwhvJkWTuZnI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "stdId",
+									"value": "6118194051",
+									"type": "text"
+								},
+								{
+									"key": "courseCode",
+									"value": "CSE315",
+									"type": "text"
+								},
+								{
+									"key": "deptId",
+									"value": "2019",
+									"type": "text"
+								},
+								{
+									"key": "cgpa",
+									"value": "3.95",
+									"type": "text"
+								},
+								{
+									"key": "grade",
+									"value": "A",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/teacher/assign-cgpa",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"teacher",
+								"assign-cgpa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "receive review list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY5IiwiZXhwIjoxNjQzMjYxMjU5LCJpYXQiOjE2NDMyMjUyNTl9.Rt0p9JFUUO6_tKK23r70xa6N2VumHogfwhvJkWTuZnI",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/teacher/receive-review",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"teacher",
+								"receive-review"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "authorization Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"6118194065\",\r\n    \"password\":\"7238\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/authenticate",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "authorization",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"6118194069\",\r\n    \"password\":\"7382\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/authenticate",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY5IiwiZXhwIjoxNjQzMjYyNzE1LCJpYXQiOjE2NDMyMjY3MTV9.pLq_YNVKzwdBMxKKmTdxxBoE4R-T3NCmUHcIttBSWOE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/admin/board",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"admin",
+								"board"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pending teacher list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY5IiwiZXhwIjoxNjQzMjYyNzE1LCJpYXQiOjE2NDMyMjY3MTV9.pLq_YNVKzwdBMxKKmTdxxBoE4R-T3NCmUHcIttBSWOE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/admin/approve-teachers/list",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"admin",
+								"approve-teachers",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "approve a pending teacher",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY5IiwiZXhwIjoxNjQzMjYyNzE1LCJpYXQiOjE2NDMyMjY3MTV9.pLq_YNVKzwdBMxKKmTdxxBoE4R-T3NCmUHcIttBSWOE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/admin/approve-teachers/approve/1567862511",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"admin",
+								"approve-teachers",
+								"approve",
+								"1567862511"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete a pending teacher",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY5IiwiZXhwIjoxNjQzMjYyNzE1LCJpYXQiOjE2NDMyMjY3MTV9.pLq_YNVKzwdBMxKKmTdxxBoE4R-T3NCmUHcIttBSWOE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/admin/approve-teachers/delete/1567862511",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"admin",
+								"approve-teachers",
+								"delete",
+								"1567862511"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pending student list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY5IiwiZXhwIjoxNjQzMjYyNzE1LCJpYXQiOjE2NDMyMjY3MTV9.pLq_YNVKzwdBMxKKmTdxxBoE4R-T3NCmUHcIttBSWOE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/admin/approve-student/list",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"admin",
+								"approve-student",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "approve a student",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY5IiwiZXhwIjoxNjQzMjYyNzE1LCJpYXQiOjE2NDMyMjY3MTV9.pLq_YNVKzwdBMxKKmTdxxBoE4R-T3NCmUHcIttBSWOE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/admin/approve-student/approve/15454625",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"admin",
+								"approve-student",
+								"approve",
+								"15454625"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete a student",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY5IiwiZXhwIjoxNjQzMjYyNzE1LCJpYXQiOjE2NDMyMjY3MTV9.pLq_YNVKzwdBMxKKmTdxxBoE4R-T3NCmUHcIttBSWOE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/admin/approve-student/delete/15454625",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"admin",
+								"approve-student",
+								"delete",
+								"15454625"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add a department",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY5IiwiZXhwIjoxNjQzMjYyNzE1LCJpYXQiOjE2NDMyMjY3MTV9.pLq_YNVKzwdBMxKKmTdxxBoE4R-T3NCmUHcIttBSWOE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "deptId",
+									"value": "2022",
+									"type": "text"
+								},
+								{
+									"key": "deptName",
+									"value": "Biocamical Engineearing",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/admin/add-department/",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"admin",
+								"add-department",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add a course to a department",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY5IiwiZXhwIjoxNjQzMjYyNzE1LCJpYXQiOjE2NDMyMjY3MTV9.pLq_YNVKzwdBMxKKmTdxxBoE4R-T3NCmUHcIttBSWOE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "courseCode",
+									"value": "BE212",
+									"type": "text"
+								},
+								{
+									"key": "deptId",
+									"value": "2022",
+									"type": "text"
+								},
+								{
+									"key": "courseName",
+									"value": "biochemistry ",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/admin/add-courses/",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"admin",
+								"add-courses",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "goto new semester",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY5IiwiZXhwIjoxNjQzMjYyNzE1LCJpYXQiOjE2NDMyMjY3MTV9.pLq_YNVKzwdBMxKKmTdxxBoE4R-T3NCmUHcIttBSWOE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nid",
+									"value": "6118194069",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "7382",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/admin/action/changeSemester",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"admin",
+								"action",
+								"changeSemester"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request course list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDY5IiwiZXhwIjoxNjQzMjYyNzE1LCJpYXQiOjE2NDMyMjY3MTV9.pLq_YNVKzwdBMxKKmTdxxBoE4R-T3NCmUHcIttBSWOE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/admin/requested-courses",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"admin",
+								"requested-courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "requested courses approve",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDcwIiwiZXhwIjoxNjQzMzc3MTc3LCJpYXQiOjE2NDMzNDExNzd9.SCp7t0LZo9EuP_NcaD0JTOk0ido_tMWpu8F7urOsvso",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"stdId\":\"6118194057\",\r\n    \"deptId\":\"2019\",\r\n    \"batch\":\"5\",\r\n    \"semester\":\"5\",\r\n    \"courseCode\":\"CSE341\",\r\n    \"courseName\":\"Theory of computing\",\r\n    \"teacherId\":\"6118194068\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/admin/requested-courses/approve",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"admin",
+								"requested-courses",
+								"approve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "requested courses delete",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDcwIiwiZXhwIjoxNjQzMzc3MTc3LCJpYXQiOjE2NDMzNDExNzd9.SCp7t0LZo9EuP_NcaD0JTOk0ido_tMWpu8F7urOsvso",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"stdId\":\"6118194057\",\r\n    \"deptId\":\"2019\",\r\n    \"batch\":\"5\",\r\n    \"semester\":\"5\",\r\n    \"courseCode\":\"CSE341\",\r\n    \"courseName\":\"Theory of computing\",\r\n    \"teacherId\":\"6118194068\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/admin/requested-courses/delete",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"admin",
+								"requested-courses",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "requested courses",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDcwIiwiZXhwIjoxNjQzMzc1NzY1LCJpYXQiOjE2NDMzMzk3NjV9.qb3wYi2JfAlQFq6EDpfMwEsd_ejn89kD97Bhng2MurY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/admin/requested-courses",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"admin",
+								"requested-courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "assign teacher",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTE4MTk0MDcwIiwiZXhwIjoxNjQzMzc1NzY1LCJpYXQiOjE2NDMzMzk3NjV9.qb3wYi2JfAlQFq6EDpfMwEsd_ejn89kD97Bhng2MurY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "courseCode",
+									"value": "CSE315",
+									"type": "text"
+								},
+								{
+									"key": "deptId",
+									"value": "2019",
+									"type": "text"
+								},
+								{
+									"key": "teacherId",
+									"value": "6118194062",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/admin/course/assign-teacher",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"admin",
+								"course",
+								"assign-teacher"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Public",
+			"item": [
+				{
+					"name": "get available dept",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/public/get-available-dept",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"public",
+								"get-available-dept"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "student signup",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nid",
+									"value": "15678625",
+									"type": "default"
+								},
+								{
+									"key": "userName",
+									"value": "Tawhid mahamud",
+									"type": "default"
+								},
+								{
+									"key": "fatherName",
+									"value": "Abdul Bari",
+									"type": "default"
+								},
+								{
+									"key": "motherName",
+									"value": "Halima khatun",
+									"type": "default"
+								},
+								{
+									"key": "gender",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "contactNo",
+									"value": "01521254682",
+									"type": "default"
+								},
+								{
+									"key": "email",
+									"value": "pritom@gmail.com",
+									"type": "default"
+								},
+								{
+									"key": "dob",
+									"value": "1998-02-05",
+									"type": "default"
+								},
+								{
+									"key": "address",
+									"value": "phulpur",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "default"
+								},
+								{
+									"key": "deptId",
+									"value": "2019",
+									"type": "default"
+								},
+								{
+									"key": "semester",
+									"value": "1",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/public/request-to-join-as-student",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"public",
+								"request-to-join-as-student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "teacher signup",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nid",
+									"value": "15678625111",
+									"type": "default"
+								},
+								{
+									"key": "userName",
+									"value": "Tawhid mahamud",
+									"type": "default"
+								},
+								{
+									"key": "fatherName",
+									"value": "Abdul Bari",
+									"type": "default"
+								},
+								{
+									"key": "motherName",
+									"value": "Halima khatun",
+									"type": "default"
+								},
+								{
+									"key": "gender",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "contactNo",
+									"value": "01521254682",
+									"type": "default"
+								},
+								{
+									"key": "email",
+									"value": "pritom@gmail.com",
+									"type": "default"
+								},
+								{
+									"key": "dob",
+									"value": "1998-02-05",
+									"type": "default"
+								},
+								{
+									"key": "address",
+									"value": "phulpur",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "default"
+								},
+								{
+									"key": "eduQualification",
+									"value": "Bsc in CSE",
+									"type": "default"
+								},
+								{
+									"key": "expertise",
+									"value": "Machine learning",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/public/request-to-join-as-teacher",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"public",
+								"request-to-join-as-teacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "terms-and-condition",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/public/terms-and-condition",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"public",
+								"terms-and-condition"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "faq",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/public/faq",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"public",
+								"faq"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

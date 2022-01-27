@@ -11,7 +11,7 @@ public class RequestCourse {
     private String courseCode;
     private String courseName;
     private String teacherId;
-    private String courseCurrSession;
+    private int courseCurrSession;
 
     public String getStdId() {
         return stdId;
@@ -69,11 +69,11 @@ public class RequestCourse {
         this.teacherId = teacherId;
     }
 
-    public String getCourseCurrSession() {
+    public int getCourseCurrSession() {
         return courseCurrSession;
     }
 
-    public void setCourseCurrSession(String courseCurrSession) {
+    public void setCourseCurrSession(int courseCurrSession) {
         this.courseCurrSession = courseCurrSession;
     }
 }

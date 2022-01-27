@@ -87,7 +87,7 @@ public class AdminJdbcDao{
             requestedCourse.setCourseCode(rs.getString("courseCode"));
             requestedCourse.setCourseName(rs.getString("courseName"));
             requestedCourse.setTeacherId(rs.getString("teacherId"));
-            requestedCourse.setCourseCurrSession(rs.getString("courseCurrSession"));
+            requestedCourse.setCourseCurrSession(rs.getInt("courseCurrSession"));
             return requestedCourse;
         });
     }
@@ -105,12 +105,18 @@ public class AdminJdbcDao{
                 requestedCourse.getCourseCode(), requestedCourse.getDeptId());
 
         if(isDelete) return;
+        requestedCourse.setCourseCurrSession(retriveCourseCurrentSession(requestedCourse.getCourseCode(),requestedCourse.getDeptId()));
 
         jdbcTemplate.update(queryForAddSub, requestedCourse.getStdId(),
                 requestedCourse.getCourseCode(), requestedCourse.getDeptId(), requestedCourse.getCourseCurrSession(),
                 requestedCourse.getSemester());
 
 
+    }
+
+    private int retriveCourseCurrentSession(String courseCode, String deptId) {
+        String s1 = "select courseCurrSession from courses where courseCode='"+courseCode+"' and deptId='"+deptId+"'";
+        return Optional.ofNullable(jdbcTemplate.queryForObject(s1,Integer.class)).orElse(-33);
     }
 
     public void addACourses(CourseDetails details) {
