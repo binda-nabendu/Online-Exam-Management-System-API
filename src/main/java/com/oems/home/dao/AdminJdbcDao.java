@@ -35,22 +35,26 @@ public class AdminJdbcDao{
 
     public boolean checkUserAndPassword(UserVerificationModel userDetails){
         String verifier = "select nid, email, password,role from " +
-                          "baseuser where nid ="+userDetails.getNid();
+                          "baseuser where nid = '"+userDetails.getNid()+"'";
 
         UserVerificationModel modelUser;
-        modelUser = Optional.ofNullable (jdbcTemplate.queryForObject(verifier,(rs, rowNumber)->{
-            UserVerificationModel model=new UserVerificationModel();
-            model.setNid(rs.getString("nid"));
-            model.setEmail(rs.getString("email"));
-            model.setPassword(rs.getString("password"));
-            model.setRole(rs.getString("role"));
+        try{
+            modelUser = Optional.ofNullable(jdbcTemplate.queryForObject(verifier, (rs, rowNumber) -> {
+                UserVerificationModel model = new UserVerificationModel();
+                model.setNid(rs.getString("nid"));
+                model.setEmail(rs.getString("email"));
+                model.setPassword(rs.getString("password"));
+                model.setRole(rs.getString("role"));
 
-            return model;
-        })).orElse(new UserVerificationModel());
+                return model;
+            })).orElse(new UserVerificationModel());
+        }catch (Exception e){
+            return false;
+        }
         System.out.println(modelUser.toString());
-        return userDetails.getNid().equals(modelUser.getNid()) &&
+        return (userDetails.getNid().equals(modelUser.getNid()) &&
                     userDetails.getPassword().equals(modelUser.getPassword()) &&
-                    modelUser.getRole().equals("ADMIN");
+                    modelUser.getRole().equals("ADMIN"));
        
     }
 
@@ -60,12 +64,15 @@ public class AdminJdbcDao{
     	String q3 = "update result set previousSemCrs=true where cgpa=-1";
     	String q4 = "update result set cgpa=-2 where cgpa=-1";
     	String q5 = "update courses set courseCurrSession=courseCurrSession+1 where teacherId !='Not assigned'";
+        String q6 = "update department set currentBatch=currentBatch+1";
+
 
     	jdbcTemplate.update(q1);
     	jdbcTemplate.update(q2);
     	jdbcTemplate.update(q3);
     	jdbcTemplate.update(q4);
     	jdbcTemplate.update(q5);
+    	jdbcTemplate.update(q6);
     }
 
     public List<RequestCourse> listOfRequestedCourses() {

@@ -4,12 +4,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserVerificationModel {
-    private String nid="121";
-    private String email="121";
-    private String password="121";
-    private String role="121";
-    
-    
+    private String nid;
+    private String email;
+    private String password;
+    private String role;
+
+    public UserVerificationModel() {
+        nid="Fake";
+        email="fake";
+        password="%^&6";
+        role="Student";
+    }
 
     public String getEmail() {
         return email;

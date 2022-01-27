@@ -7,6 +7,7 @@ public class QuestionSummery {
 
     private int examId;
 	private String courseCode;
+	private String deptId;
 	private String teacherId;
 	private Double percentageValue;
 	private String startingDateTime;
@@ -26,6 +27,15 @@ public class QuestionSummery {
 	public void setCourseCode(String courseCode) {
 		this.courseCode = courseCode;
 	}
+
+	public String getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(String deptId) {
+		this.deptId = deptId;
+	}
+
 	public String getTeacherId() {
 		return teacherId;
 	}

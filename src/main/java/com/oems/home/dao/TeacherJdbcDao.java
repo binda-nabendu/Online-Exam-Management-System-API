@@ -192,6 +192,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 	        QuestionSummery question = new QuestionSummery();
 	        question.setExamId(rs.getInt("examId"));
 	        question.setCourseCode(rs.getString("courseCode"));
+            question.setDeptId(rs.getString("deptId"));
 	        question.setTeacherId(rs.getString("teacherId"));
 	        question.setPercentageValue(rs.getDouble("percentageValue"));
 	        question.setStartingDateTime(rs.getString("startingDateTime"));
@@ -203,7 +204,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 	
 	public List<Student> listOfAllPendingResultStdList(int examId) {
 		String query ="select * from baseuser b, student s where b.nid=s.stdId and s.stdId = "+
-				"any(select stdId from result where courseCode=(select courseCode from exampaper "+ 
+				"any(select stdId from result where (courseCode, deptId)=(select courseCode, deptId from exampaper "+
 				"where examId= "+examId+") and cgpa=-1)";
 
         return jdbcTemplate.query(query, studentRowMapper);

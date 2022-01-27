@@ -4,8 +4,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class QuestionOptionPair {
-    int questionNo;
-    int optionNo;
+    private int questionNo;
+    private int optionNo;
 
     public int getQuestionNo() {
         return questionNo;

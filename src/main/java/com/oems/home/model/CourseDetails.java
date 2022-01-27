@@ -7,7 +7,7 @@ public class CourseDetails {
     private String courseCode;
     private String deptId;
     private String courseName;
-    private String teacherId="x";
+    private String teacherId="Not assigned";
     private int courseSessions=-33;
 
     public String getCourseCode() {

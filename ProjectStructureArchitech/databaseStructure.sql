@@ -1,6 +1,6 @@
-create database examManagementSystem;
+create database ems;
 
-use examManagementSystem;
+use ems;
 
 create table baseUser(
 	nid varchar(20) primary key,
@@ -21,12 +21,13 @@ create table baseUser(
 );
 create table department(
 	deptId varchar(10) primary key,
-	deptName varchar(60) not null
+	deptName varchar(60) not null,
+	currentBatch int not null default 1
 );
 create table student(
 	stdId varchar(20) primary key,
 	deptId varchar(10) not null,
-	batch int,
+	batch int not null,
 	semester int not null,
     foreign key(stdId) references baseUser(nid),
     foreign key(deptId) references department(deptId)
@@ -44,13 +45,15 @@ create table courses(
 	teacherId varchar(20) default 'Not assigned',
     courseCurrSession int,
     constraint pk_courses primary key (courseCode,deptId),
+    
     foreign key(deptId) references department(deptId),
     foreign key(teacherId) references teacher(teacherId)
 );
 create table examPaper(
 	examId int primary key,
-	courseCode varchar(10),
-    teacherId varchar(20),
+	courseCode varchar(10) not null,
+    deptId varchar(10) not null,
+    teacherId varchar(20) not null,
 	percentageValue decimal(5,2) not null,
 	startingDateTime datetime not null,
 	endingDateTime datetime not null,
@@ -58,7 +61,7 @@ create table examPaper(
 	total decimal(5,2) not null,
     published bool default false,
     
-    foreign key(courseCode) references courses(courseCode),
+    foreign key(courseCode, deptId) references courses(courseCode, deptId),
     foreign key(teacherId) references teacher(teacherId)
 );
 create table question(
@@ -98,7 +101,8 @@ create table stdAnsScript(
 	questionNo int,
 	optionNo tinyint default 0,
 	ansStatus bool default false,
-    constraint pk_stdAnsScript primary key (stdId,examId,questionNo),
+    constraint pk_stdAnsScript primary key (stdId,examId,questionNo,optionNo),
+    
     foreign key(stdId) references student(stdId),
     foreign key(examId, questionNo) references question(examId,questionNo)
 );
@@ -112,6 +116,7 @@ create table result(
 	semester int not null,
     previousSemCrs bool default false,
     constraint pk_result primary key (stdId,courseCode,deptId),
+    
     foreign key(stdId) references student(stdId),
     foreign key(courseCode,deptId) references courses(courseCode,deptId)
 );
