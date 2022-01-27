@@ -78,7 +78,7 @@ public class AdminController {
         studentDao.approveOrDeleteStudent(sId,false);
     }
 
-    @PostMapping("/admin/courses/add-department/")
+    @PostMapping("/admin/add-department/")
     public String addDepartment(Department department){
         adminDao.addADepartment(department);
         return "department Added Successful";

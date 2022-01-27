@@ -14,8 +14,9 @@ import java.util.List;
 @Component
 public class QuestionPaper {
     private int examId;
-    private String teacherId;
     private String courseCode;
+    private String deptId;
+    private String teacherId;
     private Double percentageValue;
     private String startingDateTime;
     private String endingDateTime;
@@ -45,6 +46,14 @@ public class QuestionPaper {
 
     public void setCourseCode(String courseCode) {
         this.courseCode = courseCode;
+    }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
     }
 
     public Double getPercentageValue() {
