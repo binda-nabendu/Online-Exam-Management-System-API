@@ -34,11 +34,12 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
         questionPaper.calculateTotal();
 
         String sqlQueryForExamPaper = "insert into exampaper" +
-                "(examId, courseCode, teacherId, percentageValue, startingDateTime, endingDateTime, courseSession, total)" +
-                "values(?,?,?,?,?,?,?,?)";
+                "(examId, courseCode, deptId, teacherId, percentageValue, startingDateTime, endingDateTime, courseSession, total)" +
+                "values(?,?,?,?,?,?,?,?,?)";
         int addingStatus = jdbcTemplate.update(sqlQueryForExamPaper,questionPaper.getExamId(),questionPaper.getCourseCode(),
-                questionPaper.getTeacherId(), questionPaper.getPercentageValue(),questionPaper.getStartingDateTime(),
-                questionPaper.getEndingDateTime(), questionPaper.getCourseSession(),questionPaper.getTotal());
+                questionPaper.getDeptId(),questionPaper.getTeacherId(), questionPaper.getPercentageValue(),
+                questionPaper.getStartingDateTime(), questionPaper.getEndingDateTime(), questionPaper.getCourseSession(),
+                questionPaper.getTotal());
         if(addingStatus>0){
             addAllIndividualQuestions(questionPaper.getExamId(), questionPaper.getAllIndividualQuestions());
         }
@@ -75,6 +76,7 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
         QuestionSummery question = new QuestionSummery();
         question.setExamId(rs.getInt("examId"));
         question.setCourseCode(rs.getString("courseCode"));
+        question.setDeptId(rs.getString("deptId"));
         question.setTeacherId(rs.getString("teacherId"));
         question.setPercentageValue(rs.getDouble("percentageValue"));
         question.setStartingDateTime(rs.getString("startingDateTime"));
@@ -93,6 +95,7 @@ public class ExamManagerJdbcDao implements Dao<QuestionPaper> {
                 QuestionPaper questionPaper=new QuestionPaper();
                 questionPaper.setExamId(rs.getInt("examId"));
                 questionPaper.setCourseCode(rs.getString("courseCode"));
+                questionPaper.setDeptId(rs.getString("deptId"));
                 questionPaper.setTeacherId(rs.getString("teacherId"));
                 questionPaper.setPercentageValue(rs.getDouble("percentageValue"));//may create problem
                 questionPaper.setStartingDateTime(rs.getString("startingDateTime"));//may create problem
