@@ -35,22 +35,26 @@ public class AdminJdbcDao{
 
     public boolean checkUserAndPassword(UserVerificationModel userDetails){
         String verifier = "select nid, email, password,role from " +
-                          "baseuser where nid ="+userDetails.getNid();
+                          "baseuser where nid = '"+userDetails.getNid()+"'";
 
         UserVerificationModel modelUser;
-        modelUser = Optional.ofNullable (jdbcTemplate.queryForObject(verifier,(rs, rowNumber)->{
-            UserVerificationModel model=new UserVerificationModel();
-            model.setNid(rs.getString("nid"));
-            model.setEmail(rs.getString("email"));
-            model.setPassword(rs.getString("password"));
-            model.setRole(rs.getString("role"));
+        try{
+            modelUser = Optional.ofNullable(jdbcTemplate.queryForObject(verifier, (rs, rowNumber) -> {
+                UserVerificationModel model = new UserVerificationModel();
+                model.setNid(rs.getString("nid"));
+                model.setEmail(rs.getString("email"));
+                model.setPassword(rs.getString("password"));
+                model.setRole(rs.getString("role"));
 
-            return model;
-        })).orElse(new UserVerificationModel());
+                return model;
+            })).orElse(new UserVerificationModel());
+        }catch (Exception e){
+            return false;
+        }
         System.out.println(modelUser.toString());
-        return userDetails.getNid().equals(modelUser.getNid()) &&
+        return (userDetails.getNid().equals(modelUser.getNid()) &&
                     userDetails.getPassword().equals(modelUser.getPassword()) &&
-                    modelUser.getRole().equals("ADMIN");
+                    modelUser.getRole().equals("ADMIN"));
        
     }
 
