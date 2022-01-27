@@ -4,6 +4,7 @@ import com.oems.home.dao.AdminJdbcDao;
 import com.oems.home.dao.StudentJdbcDao;
 import com.oems.home.dao.TeacherJdbcDao;
 import com.oems.home.model.*;
+import com.oems.home.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -17,10 +18,13 @@ public class AdminController {
     TeacherJdbcDao teacherDao;
     @Autowired
     AdminJdbcDao adminDao;
+    @Autowired
+    JwtUtil jwtUtil;
 
-    @GetMapping("/admin/board/{user-id}")
-    public Dashboard adminBoardManager(@PathVariable("user-id") String user){
-        return adminDao.adminBoardManager(user);
+    @GetMapping("/admin/board")
+    public Dashboard adminBoardManager(@RequestHeader(value = "Authorization") String token){
+        String adminId = jwtUtil.extractUsername(token.substring(7));
+        return adminDao.adminBoardManager(adminId);
     }
 
   //-----------For teacher approve-------------
@@ -74,7 +78,7 @@ public class AdminController {
         studentDao.approveOrDeleteStudent(sId,false);
     }
 
-    @PostMapping("/admin/courses/add-department/")
+    @PostMapping("/admin/add-department/")
     public String addDepartment(Department department){
         adminDao.addADepartment(department);
         return "department Added Successful";

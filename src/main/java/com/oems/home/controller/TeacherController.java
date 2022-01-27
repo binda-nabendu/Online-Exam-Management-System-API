@@ -4,6 +4,7 @@ import com.oems.home.dao.ExamManagerJdbcDao;
 import com.oems.home.dao.TeacherJdbcDao;
 import com.oems.home.model.*;
 
+import com.oems.home.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +18,12 @@ public class TeacherController {
     TeacherJdbcDao teacherDao;
     @Autowired
     ExamManagerJdbcDao examDao;
+    @Autowired
+    JwtUtil jwtUtil;
 	
-    @GetMapping("/teacher/board/{id}")
-    public Dashboard TeacherBoardManager(@PathVariable("id") String tId){
+    @GetMapping("/teacher/board")
+    public Dashboard TeacherBoardManager(@RequestHeader(value = "Authorization") String token){
+        String tId = jwtUtil.extractUsername(token.substring(7));
     	return teacherDao.teacherBoardManager(tId);
     }
     @GetMapping("/teacher/all-teachers")
@@ -30,8 +34,9 @@ public class TeacherController {
     public List<CourseDetails> allCoursesOfAllDept(){
     	return teacherDao.listOfAllCoursesOfAllDept();
     }
-    @GetMapping("/teacher/courses/{teacherId}")
-    public List<CourseDetails> allCurrentCrsOfThatTeacher(@PathVariable("teacherId")String tId){
+    @GetMapping("/teacher/courses")
+    public List<CourseDetails> allCurrentCrsOfThatTeacher(@RequestHeader(value = "Authorization") String token){
+        String tId = jwtUtil.extractUsername(token.substring(7));
     	return teacherDao.currCoursesOfTeacher(tId);
     }
     @GetMapping("/teacher/courses/my-students/{course-code}")
@@ -51,15 +56,18 @@ public class TeacherController {
         return examDao.get(qId);
     }
 
-    @GetMapping("/teacher/all-questions/{teacher-id}")
-    public List<QuestionSummery> getAllQuestionThatTeacherMade(@PathVariable("teacher-id") String tId){
+    @GetMapping("/teacher/all-questions")
+    public List<QuestionSummery> getAllQuestionThatTeacherMade(@RequestHeader(value = "Authorization") String token){
+        String tId = jwtUtil.extractUsername(token.substring(7));
         return examDao.returnAllQuestionAccordingToTeacher(tId);
     }
-    
-    @GetMapping("/teacher/all-pending-result/{teacher-id}")
-    public List<QuestionSummery> allPendingResult(@PathVariable("teacher-id") String tId){
+  
+    @GetMapping("/teacher/all-pending-result")
+    public List<QuestionSummery> allPendingResult(@RequestHeader(value = "Authorization") String token){
+        String tId = jwtUtil.extractUsername(token.substring(7));
         return teacherDao.listOfAllPendingResult(tId);
     }
+  
     @GetMapping("/teacher/all-pending-result/student-list/{exam-id}")
     public List<Student> allPendingResultStdList(@PathVariable("exam-id") int examId){
         return teacherDao.listOfAllPendingResultStdList(examId);
@@ -75,9 +83,10 @@ public class TeacherController {
     
     
     
-    @GetMapping("/teacher/receive-review/{teacher-id}")
-    public List<Review> ReviewList(@PathVariable("teacher-id") String tid){
-        return teacherDao.studentExamPaperReviewList(tid);
+    @GetMapping("/teacher/receive-review")
+    public List<Review> ReviewList(@RequestHeader(value = "Authorization") String token){
+        String tId = jwtUtil.extractUsername(token.substring(7));
+        return teacherDao.studentExamPaperReviewList(tId);
     }
     @GetMapping("/public/terms-and-condition")
     public String termsAndCondition(){
