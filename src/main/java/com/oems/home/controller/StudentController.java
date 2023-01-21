@@ -7,6 +7,7 @@ import com.oems.home.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public class StudentController {
     JwtUtil jwtUtil;
 
     @GetMapping("/student/board")
-    public Dashboard studentDashBoard(@RequestHeader(value = "Authorization") String token){
+    public HashMap<String, Integer> studentDashBoard(@RequestHeader(value = "Authorization") String token){
         String id = jwtUtil.extractUsername(token.substring(7));
         return studentDao.studentBoardManager(id);
     }

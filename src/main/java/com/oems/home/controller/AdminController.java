@@ -7,6 +7,8 @@ import com.oems.home.model.*;
 import com.oems.home.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -22,7 +24,7 @@ public class AdminController {
     JwtUtil jwtUtil;
 
     @GetMapping("/admin/board")
-    public Dashboard adminBoardManager(@RequestHeader(value = "Authorization") String token){
+    public HashMap<String, Integer> adminBoardManager(@RequestHeader(value = "Authorization") String token){
         String adminId = jwtUtil.extractUsername(token.substring(7));
         return adminDao.adminBoardManager(adminId);
     }
@@ -30,6 +32,7 @@ public class AdminController {
   //-----------For teacher approve-------------
     @PostMapping("/public/request-to-join-as-teacher")
     public Teacher addTeacher(Teacher teacher){
+        System.out.println("the value is :"+teacher.getNid());
         teacherDao.create(teacher);
         return teacher;
     }

@@ -129,5 +129,9 @@ create table requestCourse
     foreign key(stdId) references student(stdId),
     foreign key(courseCode, deptId) references courses(courseCode, deptId)
 );
-
-
+create table faq
+(
+	faqId int primary key auto_increment,
+    faqQuestion varchar(500),
+    faqAns varchar(2000)
+);
