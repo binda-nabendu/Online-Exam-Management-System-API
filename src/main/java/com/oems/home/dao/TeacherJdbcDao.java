@@ -2,10 +2,7 @@ package com.oems.home.dao;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import com.oems.home.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +73,23 @@ public class TeacherJdbcDao implements Dao<Teacher> {
         teacher.setPassword(rs.getString("password"));
         return teacher;
     };
+    private final RowMapper<Teacher> displayteacherRowMapper = (rs,rowNumber)->{
+        Teacher teacher = new Teacher();
+        teacher.setNid(rs.getString("nid"));
+        teacher.setUserName(rs.getString("userName"));
+        teacher.setFatherName(rs.getString("fatherName"));
+        teacher.setMotherName(rs.getString("motherName"));
+        teacher.setGender(rs.getInt("gender"));
+        teacher.setContactNo(rs.getString("contactNo"));
+        teacher.setEmail(rs.getString("email"));
+        teacher.setDob(rs.getString("dob"));
+        teacher.setAddress(rs.getString("address"));
+        teacher.setEduQualification(rs.getString("eduQualification"));
+        teacher.setExpertise(rs.getString("expertise"));
+        teacher.setRole(rs.getString("role"));
+        teacher.setPassword("No one authorized to see this");
+        return teacher;
+    };
     
 	public List<Teacher> listOfNonApprovedTeacher() {
 		String joinQueryForAllPendingTeachers = "select * from baseuser b, teacher t where b.nid=t.teacherId and adminApproval=0";
@@ -96,7 +110,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 	
 	public List<Teacher> listOfAllTeacher() {
 		String queryForListOfAllTeacher = "select * from baseuser b, teacher t where b.nid=t.teacherId";
-		return jdbcTemplate.query(queryForListOfAllTeacher,teacherRowMapper);
+		return jdbcTemplate.query(queryForListOfAllTeacher,displayteacherRowMapper);
 	}
 	
 	private final RowMapper<CourseDetails> crsDetailsRowMapper = (rs, rowNumber)->{
@@ -143,7 +157,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
         return jdbcTemplate.query(queryForAllStudentOfThatCourse, studentRowMapper);
 	}
 
-	public Dashboard teacherBoardManager(String tId) {
+	public  HashMap<String, Integer> teacherBoardManager(String tId) {
 		String q1="select COUNT(*) from studentmark s, courses c where s.courseCode = c.courseCode " +
                   "and review=true and s.courseCode = any(" +
                   "select c.courseCode from courses where c.teacherId="+tId+")";
@@ -159,7 +173,12 @@ public class TeacherJdbcDao implements Dao<Teacher> {
         dashboard.setCard2(Optional.ofNullable(jdbcTemplate.queryForObject(q2, Integer.class)).orElse(0));
         dashboard.setCard3(Optional.ofNullable(jdbcTemplate.queryForObject(q3, Integer.class)).orElse(0));
         dashboard.setCard4(Optional.ofNullable(jdbcTemplate.queryForObject(q4, Integer.class)).orElse(0));
-        return dashboard;
+        HashMap<String, Integer> all = new HashMap<String, Integer>();
+        all.put("Coming For Review", dashboard.getCard1());
+        all.put("Unrated Subject", dashboard.getCard2());
+        all.put("Total Department", dashboard.getCard3());
+        all.put("Total Exam Owner", dashboard.getCard4());
+        return all;
 	}
 
 

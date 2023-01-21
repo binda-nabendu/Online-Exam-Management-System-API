@@ -9,10 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 @Repository
@@ -99,7 +96,7 @@ public class StudentJdbcDao implements Dao<Student> {
         }
     }
 
-    public Dashboard studentBoardManager(String id){
+    public HashMap<String, Integer> studentBoardManager(String id){
         String q1= "select COUNT(*) from result where stdId="+id+" and cgpa=-1";
         String q2= "select COUNT(*) from result where stdId="+id+" and cgpa>0";
 
@@ -117,7 +114,12 @@ public class StudentJdbcDao implements Dao<Student> {
         dashboard.setCard2(Optional.ofNullable(jdbcTemplate.queryForObject(q2, Integer.class)).orElse(0));
         dashboard.setCard3(Optional.ofNullable(jdbcTemplate.queryForObject(q3, Integer.class)).orElse(0));
         dashboard.setCard4(Optional.ofNullable(jdbcTemplate.queryForObject(q4, Integer.class)).orElse(0));
-        return dashboard;
+        HashMap<String, Integer> all = new HashMap<String, Integer>();
+        all.put("Present Courses", dashboard.getCard1());
+        all.put("Complete Courses", dashboard.getCard2());
+        all.put("Total Upcoming Exam", dashboard.getCard3());
+        all.put("Pending Review", dashboard.getCard4());
+        return all;
     }
 
     private final RowMapper<CourseDetails> crsDetailsRowMapper = (rs, rowNumber)->{

@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -22,7 +24,7 @@ public class TeacherController {
     JwtUtil jwtUtil;
 	
     @GetMapping("/teacher/board")
-    public Dashboard TeacherBoardManager(@RequestHeader(value = "Authorization") String token){
+    public HashMap<String, Integer> TeacherBoardManager(@RequestHeader(value = "Authorization") String token){
         String tId = jwtUtil.extractUsername(token.substring(7));
     	return teacherDao.teacherBoardManager(tId);
     }
@@ -89,11 +91,12 @@ public class TeacherController {
         return teacherDao.studentExamPaperReviewList(tId);
     }
     @GetMapping("/public/terms-and-condition")
-    public String termsAndCondition(){
-        return new FAQAndTAndC().termsAndCondition;
+    public TandC termsAndCondition(){
+        return new TandC();
     }
     @GetMapping("/public/faq")
-    public String faq(){
-        return new FAQAndTAndC().faq;
+    public Map<String, String> faq(){
+        FAQ faq = new FAQ();
+        return faq.generate();
     }
 }
