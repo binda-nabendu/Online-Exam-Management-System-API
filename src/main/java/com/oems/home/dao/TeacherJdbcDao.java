@@ -240,7 +240,11 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 		String query = "update result set cgpa = ?, grade = ? where stdId = ? and courseCode = ? and deptId = ?";
 		jdbcTemplate.update(query, cgpa, grade, stdId, courseCode, deptId);
 	}
-	
+
+    public List<Student> listOfAllStudent() {
+        String queryForAllStudentOfThatCourse ="select * from baseuser b, student s where b.nid=s.stdId and b.adminApproval=1";
+        return jdbcTemplate.query(queryForAllStudentOfThatCourse, studentRowMapper);
+    }
 }
 
 
