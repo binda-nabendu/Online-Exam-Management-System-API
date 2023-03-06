@@ -109,9 +109,9 @@ public class AdminController {
         return null;
     }
     @PostMapping("/admin/course/assign-teacher")
-    public void assignTeacher(String courseCode, String deptId, String teacherId){
+    public String assignTeacher(String courseCode, String deptId, String teacherId){
     	
-    	adminDao.assignTeacherToCourse(courseCode, deptId, teacherId);
+    	return adminDao.assignTeacherToCourse(courseCode, deptId, teacherId);
     }
 
     @GetMapping("/admin/requested-courses")
