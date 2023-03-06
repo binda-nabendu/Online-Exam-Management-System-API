@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class AdminController {
@@ -94,17 +95,18 @@ public class AdminController {
     }
 
     @PostMapping("/admin/action/changeSemester")
-    public String changeAndGoNextSemester(String nid, String password){
-    	
+    public ActionMsg changeAndGoNextSemester(String nid, String password){
     	UserVerificationModel model =  new UserVerificationModel();
     	model.setNid(nid);
     	model.setPassword(password);
+        ActionMsg am = new ActionMsg();
     	
     	if(adminDao.checkUserAndPassword(model)){
-            adminDao.updateSemester();
-            return "Successful...Enjoy new semester";
+//            adminDao.updateSemester();
+            am.setStatus(true);
+            return am;
         }
-        return "Failed... You are not authorized";
+        return null;
     }
     @PostMapping("/admin/course/assign-teacher")
     public void assignTeacher(String courseCode, String deptId, String teacherId){
