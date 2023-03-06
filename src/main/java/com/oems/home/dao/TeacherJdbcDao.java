@@ -119,6 +119,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
         courseDetails.setCourseName(rs.getString("courseName"));
         courseDetails.setCourseSessions(rs.getInt("courseCurrSession"));
         courseDetails.setDeptId(rs.getString("deptId"));
+        courseDetails.setTeacherId(rs.getString("teacherId"));
         return courseDetails;
     };
 
