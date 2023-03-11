@@ -97,7 +97,6 @@ public class AdminJdbcDao{
             return requestedCourse;
         });
     }
-
     public void approveCoursesForStudent(RequestCourse requestedCourse, boolean isDelete) {
 
         String queryForDelFrmRequestCourse = "delete from requestcourse where stdId=? " +
@@ -153,9 +152,13 @@ public class AdminJdbcDao{
         jdbcTemplate.update(queryForAddDept, department.getDeptId(), department.getDeptName());
     }
 	public String assignTeacherToCourse(String courseCode, String deptId, String teacherId) {
-		String q1 = "update courses set teacherId =? where courseCode=? and deptId=?";
-           if(jdbcTemplate.update(q1, teacherId, courseCode, deptId) > 0)
+        int sess = retriveCourseCurrentSession(courseCode, deptId);
+
+        if(sess < 1) sess = 1;
+		String q1 = "update courses set teacherId =?, courseCurrSession = ? where courseCode=? and deptId=?";
+           if(jdbcTemplate.update(q1, teacherId, sess, courseCode, deptId) > 0) {
                return "{\n" + "\"code\": \"" + courseCode + "\"\n}";
+           }
            else return null;
 	}
 }

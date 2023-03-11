@@ -40,7 +40,7 @@ public class StudentController {
 
         return studentDao.departmentalCourseSet(deptId);
     }
-    @GetMapping("/student/departmental-course/completed")
+    @GetMapping("/student/course-completed")
     public List<CourseDetails> allCompletedCourseOfThatStudent(@RequestHeader(value = "Authorization") String token){
         String stdId = jwtUtil.extractUsername(token.substring(7));
         return studentDao.completedCoursesByStudent(stdId);

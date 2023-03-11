@@ -120,12 +120,12 @@ public class AdminController {
     }
 
     @PostMapping("/admin/requested-courses/approve")
-    public void approveCrsRequest(@RequestBody RequestCourse list){
-        adminDao.approveCoursesForStudent(list,false);
+    public void approveCrsRequest(@RequestBody RequestCourse reqCrs){
+        adminDao.approveCoursesForStudent(reqCrs,false);
     }
     @PostMapping("/admin/requested-courses/delete")
-    public void DeleteCrsRequest(@RequestBody RequestCourse list){
-        adminDao.approveCoursesForStudent(list,true);
+    public void DeleteCrsRequest(@RequestBody RequestCourse reqCrs){
+        adminDao.approveCoursesForStudent(reqCrs,true);
     }
 
 
