@@ -224,9 +224,9 @@ public class StudentJdbcDao implements Dao<Student> {
     public void ReceiveAnswer(AnswerScript ansScript) {
         for(QuestionOptionPair qp : ansScript.getAllQuestionAnswer()) {
             String s = "insert into stdansscript " +
-                    "(stdId, examId, questionNo, optionNo) " +
-                    "values(?,?,?,?)";
-            jdbcTemplate.update(s, ansScript.getStdId(), ansScript.getExamId(), qp.getQuestionNo(), qp.getOptionNo());
+                    "(stdId, examId, questionNo, optionNo, optionValue) " +
+                    "values(?,?,?,?, ?)";
+            jdbcTemplate.update(s, ansScript.getStdId(), ansScript.getExamId(), qp.getQuestionNo(), qp.getOptionNo(), qp.getValue());
         }
     }
 
@@ -238,5 +238,19 @@ public class StudentJdbcDao implements Dao<Student> {
             dept.setDeptName(rs.getString("deptName"));
             return dept;
         });
+    }
+
+    public UserInfo getInfo(String tecId) {
+        UserInfo user = new UserInfo();
+
+        String q1= "select email from baseuser where nid='"+tecId+"'";
+        user.setEmail( Optional.ofNullable(jdbcTemplate.queryForObject(q1, String.class)).orElse("mail not found"));
+
+        q1= "select userName from baseuser where nid='"+tecId+"'";
+        user.setName( Optional.ofNullable(jdbcTemplate.queryForObject(q1, String.class)).orElse("name not found"));
+
+        q1= "select role from baseuser where nid='"+tecId+"'";
+        user.setRole( Optional.ofNullable(jdbcTemplate.queryForObject(q1, String.class)).orElse("role not found"));
+        return user;
     }
 }
