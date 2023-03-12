@@ -66,7 +66,10 @@ public class StudentController {
         String stdId = jwtUtil.extractUsername(token.substring(7));
         studentDao.requestForReview(stdId,examId);
     }
-    
+    @GetMapping("/student/exams/req-for-info")
+    public UserInfo upComingExamStudent(@RequestHeader(value = "Authorization") String token, String id){
+        return studentDao.getInfo(id);
+    }
     @GetMapping("/student/give-post-exam/{questionId}")
     public Optional<QuestionPaper> getQuestion(@PathVariable("questionId") String questionId) {
         // String examDateTime = examDao.getExamDate(questionId);

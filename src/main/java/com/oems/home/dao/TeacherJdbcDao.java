@@ -224,8 +224,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 	
 	public List<Student> listOfAllPendingResultStdList(int examId) {
 		String query ="select * from baseuser b, student s where b.nid=s.stdId and s.stdId = "+
-				"any(select stdId from result where (courseCode, deptId)=(select courseCode, deptId from exampaper "+
-				"where examId= "+examId+") and cgpa=-1)";
+				"any(select DISTINCT(stdId) from stdansscript where examId = " + examId +")";
 
         return jdbcTemplate.query(query, studentRowMapper);
 	}
@@ -245,6 +244,54 @@ public class TeacherJdbcDao implements Dao<Teacher> {
     public List<Student> listOfAllStudent() {
         String queryForAllStudentOfThatCourse ="select * from baseuser b, student s where b.nid=s.stdId and b.adminApproval=1";
         return jdbcTemplate.query(queryForAllStudentOfThatCourse, studentRowMapper);
+    }
+    public List<String> pendingNonPublishedExam(String tId){
+        String q1 = "select examId from exampaper where teacherId= '"+tId+"' and published=false";
+        return jdbcTemplate.query(q1, (rs, rn)->{
+            String ei = rs.getString("examId");
+            return ei;
+        });
+    }
+//    public List<AnswerScript> allStudentPendingScript(String tId, int examId) {
+//        String q1 = "select DISTINCT(stdId) from stdansscript where examId = " + examId;
+//        List<String> allStdId = jdbcTemplate.query(q1, (rs, rn)->{
+//            String ei = rs.getString("stdId");
+//            return ei;
+//        });
+//      List<AnswerScript> allScript = new ArrayList<>();
+//        for(String ai : allStdId){
+//            AnswerScript as = new AnswerScript();
+//
+//            q1 = "select questionNo,optionNo,optionValue from stdansscript where examId="+examId+" and stdId='"+ai+"'";
+//            as.setExamId(examId); as.setStdId(ai);
+//
+//            List<QuestionOptionPair> all = jdbcTemplate.query(q1, (rs, rn)->{
+//                QuestionOptionPair ei = new QuestionOptionPair();
+//                ei.setQuestionNo(rs.getInt("questionNo"));
+//                ei.setOptionNo(rs.getInt("optionNo"));
+//                ei.setValue(rs.getString("optionValue"));
+//                return ei;
+//            });
+//            as.setAllQuestionAnswer(new ArrayList<>(all));
+//            allScript.add(as);
+//        }
+//        return allScript;
+//    }
+    public AnswerScript allStudentPendingScript(String stdId, int examId) {
+        AnswerScript as = new AnswerScript();
+
+        String q1 = "select questionNo,optionNo,optionValue from stdansscript where examId=" + examId + " and stdId='" + stdId + "'";
+        as.setExamId(examId);
+        as.setStdId(stdId);
+
+        List<QuestionOptionPair> all = jdbcTemplate.query(q1, (rs, rn) -> {
+            QuestionOptionPair ei = new QuestionOptionPair();
+            ei.setQuestionNo(rs.getInt("questionNo"));
+            ei.setOptionNo(rs.getInt("optionNo"));
+            ei.setValue(rs.getString("optionValue"));
+            return ei;
+        });
+        return as;
     }
 }
 
