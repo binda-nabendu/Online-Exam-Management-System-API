@@ -100,6 +100,8 @@ create table stdAnsScript(
 	examId int,
 	questionNo int,
 	optionNo tinyint default 0,
+-- 	add march 12 23
+    optionValue varchar(3500),
 	ansStatus bool default false,
     constraint pk_stdAnsScript primary key (stdId,examId,questionNo,optionNo),
     
