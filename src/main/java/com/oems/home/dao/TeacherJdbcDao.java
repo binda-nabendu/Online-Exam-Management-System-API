@@ -40,6 +40,11 @@ public class TeacherJdbcDao implements Dao<Teacher> {
 //            System.out.println("Get success");
 //      }
 	}
+    public int assignMark(StudentMark questionPaper) {
+        String query = "insert into studentmark(stdId, courseCode, deptId, examId, gotTotalMarks, review) values(?,?,?,?,?,?)";
+        int teacherStatus = jdbcTemplate.update(query,questionPaper.getStdID(), questionPaper.getCourseCode(), questionPaper.getDeptId(), questionPaper.getExamId(), questionPaper.getGotTotalMark(), questionPaper.isReview());
+        return teacherStatus;
+    }
 	
 	@Override
     public Optional<Teacher> get(String target) {
@@ -291,6 +296,7 @@ public class TeacherJdbcDao implements Dao<Teacher> {
             ei.setValue(rs.getString("optionValue"));
             return ei;
         });
+        as.setAllQuestionAnswer(new ArrayList<>(all));
         return as;
     }
 }

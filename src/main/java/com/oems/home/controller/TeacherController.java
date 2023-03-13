@@ -75,7 +75,7 @@ public class TeacherController {
         return teacherDao.listOfAllPendingResult(tId);
     }
     @GetMapping("/teacher/get-ans-script/{exam-id}/{std-id}")
-    public AnswerScript allAnswerScript(@RequestHeader(value = "Authorization") String token, @PathVariable("exam-id") int examId, @PathVariable("estd-id") String stdId){
+    public AnswerScript allAnswerScript(@RequestHeader(value = "Authorization") String token, @PathVariable("exam-id") int examId, @PathVariable("std-id") String stdId){
 //        String tId = jwtUtil.extractUsername(token.substring(7));
         return teacherDao.allStudentPendingScript(stdId, examId);
     }
@@ -107,5 +107,9 @@ public class TeacherController {
     public Map<String, String> faq(){
         FAQ faq = new FAQ();
         return faq.generate();
+    }
+    @PostMapping("/teacher/assign-mark-for-ans-script")
+    public boolean markAssign(@RequestBody StudentMark questionPaper){
+        return teacherDao.assignMark(questionPaper) != 0;
     }
 }
