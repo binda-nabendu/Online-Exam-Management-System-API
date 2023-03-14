@@ -56,6 +56,11 @@ public class StudentController {
         String stdId = jwtUtil.extractUsername(token.substring(7));
     	return studentDao.upcomingExamForStudent(stdId);
     }
+    @GetMapping("/student/exams/immediate-upcoming")
+    public List<QuestionSummery> immediateUpComingExamStudent(@RequestHeader(value = "Authorization") String token){
+        String stdId = jwtUtil.extractUsername(token.substring(7));
+        return studentDao.immediateUpcomingExam(stdId);
+    }
     @GetMapping("/student/exams/previous")
     public List<QuestionSummery> previousExamStudent(@RequestHeader(value = "Authorization") String token){
         String stdId = jwtUtil.extractUsername(token.substring(7));
@@ -72,8 +77,7 @@ public class StudentController {
     }
     @GetMapping("/student/give-post-exam/{questionId}")
     public Optional<QuestionPaper> getQuestion(@PathVariable("questionId") String questionId) {
-        // String examDateTime = examDao.getExamDate(questionId);
-        // if(examDateTime>presentDateTime) return Optional.empty();
+         if( !studentDao.isAvailableQuestion(Integer.parseInt(questionId), true)) return Optional.empty();
         Optional<QuestionPaper> questionPaper = examDao.get(questionId);
         questionPaper.ifPresent(QuestionPaper::removeAnsStatus);
     	return questionPaper;
@@ -81,6 +85,7 @@ public class StudentController {
     @PostMapping("/student/give-post-exam")
     public void sendAnswer(@RequestHeader(value = "Authorization") String token, @RequestBody AnswerScript answerScript) {
         String stdId = jwtUtil.extractUsername(token.substring(7));
+        if( !studentDao.isAvailableQuestion(answerScript.getExamId(), false)) return;
         answerScript.setStdId(stdId);
         studentDao.ReceiveAnswer(answerScript);
     }
