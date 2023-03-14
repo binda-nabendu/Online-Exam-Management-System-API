@@ -253,4 +253,33 @@ public class StudentJdbcDao implements Dao<Student> {
         user.setRole( Optional.ofNullable(jdbcTemplate.queryForObject(q1, String.class)).orElse("role not found"));
         return user;
     }
+
+    public List<QuestionSummery> immediateUpcomingExam(String stdId) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+        String presentDateTime = df.format(today);
+
+        String q1 =" SELECT * FROM exampaper " +
+                " WHERE (courseCode, deptId, courseSession) IN (" +
+                "      SELECT courseCode, deptId, courseSession FROM result" +
+                "      WHERE cgpa=-1 AND stdId="+stdId+
+                " ) AND exampaper.endingDateTime > '"+presentDateTime+"' " +
+                " ORDER BY exampaper.startingDateTime LIMIT 1";
+
+        return jdbcTemplate.query(q1,questionSummaryMapper);
+    }
+    public boolean isAvailableQuestion(int qId, boolean s){
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+        String presentDateTime = df.format(today);
+        String q1="";
+        if(s){
+            q1 = "SELECT examId from exampaper where examId="+qId+" and startingDateTime <="+presentDateTime;
+        }
+        else{
+            q1 = "SELECT examId from exampaper where examId="+qId+" and exampaper.endingDateTime >="+presentDateTime;
+        }
+        int t = (Optional.ofNullable(jdbcTemplate.queryForObject(q1, Integer.class)).orElse(0));
+        return t != 0;
+    }
 }
