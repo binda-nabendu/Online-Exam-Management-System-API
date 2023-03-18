@@ -54,8 +54,28 @@ public class TeacherController {
     @PostMapping("/teacher/create-exams/question")
     public QuestionPaper QuestionPaperHandler(@RequestBody QuestionPaper questionPaper){
         questionPaper.setExamId(examDao.getLastExamId()+1);
+//        printQuestion(questionPaper);
         examDao.create(questionPaper);
         return questionPaper;
+    }
+    public void printQuestion(QuestionPaper qp){
+        System.out.println(qp.getExamId());
+        System.out.println(qp.getCourseCode());
+        System.out.print(qp.getStartingDateTime()+"    ");
+        System.out.print(qp.getEndingDateTime()+"\n");
+        System.out.println(qp.getPercentageValue());
+        System.out.println(qp.getCourseSession());
+        System.out.println(qp.getDeptId());
+        System.out.println(qp.getTeacherId());
+        for (IndividualQuestion i : qp.getAllIndividualQuestions()){
+            System.out.println(i.getQuestionNo());
+            System.out.println(i.getQuestion());
+            System.out.println(i.getMark());
+            for(QuestionAnswer j: i.getAllOptions()){
+                System.out.println(j.getOptionNo());
+                System.out.println(j.getOptionValue());
+            }
+        }
     }
 
     @GetMapping("/teacher/see-questions/{question-paper-id}")
