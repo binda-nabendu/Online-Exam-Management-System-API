@@ -9,10 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 @Repository
@@ -99,7 +96,7 @@ public class StudentJdbcDao implements Dao<Student> {
         }
     }
 
-    public Dashboard studentBoardManager(String id){
+    public HashMap<String, Integer> studentBoardManager(String id){
         String q1= "select COUNT(*) from result where stdId="+id+" and cgpa=-1";
         String q2= "select COUNT(*) from result where stdId="+id+" and cgpa>0";
 
@@ -117,7 +114,12 @@ public class StudentJdbcDao implements Dao<Student> {
         dashboard.setCard2(Optional.ofNullable(jdbcTemplate.queryForObject(q2, Integer.class)).orElse(0));
         dashboard.setCard3(Optional.ofNullable(jdbcTemplate.queryForObject(q3, Integer.class)).orElse(0));
         dashboard.setCard4(Optional.ofNullable(jdbcTemplate.queryForObject(q4, Integer.class)).orElse(0));
-        return dashboard;
+        HashMap<String, Integer> all = new HashMap<String, Integer>();
+        all.put("Present Courses", dashboard.getCard1());
+        all.put("Complete Courses", dashboard.getCard2());
+        all.put("Total Upcoming Exam", dashboard.getCard3());
+        all.put("Pending Review", dashboard.getCard4());
+        return all;
     }
 
     private final RowMapper<CourseDetails> crsDetailsRowMapper = (rs, rowNumber)->{
@@ -222,9 +224,9 @@ public class StudentJdbcDao implements Dao<Student> {
     public void ReceiveAnswer(AnswerScript ansScript) {
         for(QuestionOptionPair qp : ansScript.getAllQuestionAnswer()) {
             String s = "insert into stdansscript " +
-                    "(stdId, examId, questionNo, optionNo) " +
-                    "values(?,?,?,?)";
-            jdbcTemplate.update(s, ansScript.getStdId(), ansScript.getExamId(), qp.getQuestionNo(), qp.getOptionNo());
+                    "(stdId, examId, questionNo, optionNo, optionValue) " +
+                    "values(?,?,?,?, ?)";
+            jdbcTemplate.update(s, ansScript.getStdId(), ansScript.getExamId(), qp.getQuestionNo(), qp.getOptionNo(), qp.getValue());
         }
     }
 
@@ -236,5 +238,48 @@ public class StudentJdbcDao implements Dao<Student> {
             dept.setDeptName(rs.getString("deptName"));
             return dept;
         });
+    }
+
+    public UserInfo getInfo(String tecId) {
+        UserInfo user = new UserInfo();
+
+        String q1= "select email from baseuser where nid='"+tecId+"'";
+        user.setEmail( Optional.ofNullable(jdbcTemplate.queryForObject(q1, String.class)).orElse("mail not found"));
+
+        q1= "select userName from baseuser where nid='"+tecId+"'";
+        user.setName( Optional.ofNullable(jdbcTemplate.queryForObject(q1, String.class)).orElse("name not found"));
+
+        q1= "select role from baseuser where nid='"+tecId+"'";
+        user.setRole( Optional.ofNullable(jdbcTemplate.queryForObject(q1, String.class)).orElse("role not found"));
+        return user;
+    }
+
+    public List<QuestionSummery> immediateUpcomingExam(String stdId) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+        String presentDateTime = df.format(today);
+
+        String q1 =" SELECT * FROM exampaper " +
+                " WHERE (courseCode, deptId, courseSession) IN (" +
+                "      SELECT courseCode, deptId, courseSession FROM result" +
+                "      WHERE cgpa=-1 AND stdId="+stdId+
+                " ) AND exampaper.endingDateTime > '"+presentDateTime+"' " +
+                " ORDER BY exampaper.startingDateTime LIMIT 1";
+
+        return jdbcTemplate.query(q1,questionSummaryMapper);
+    }
+    public boolean isAvailableQuestion(int qId, boolean s){
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+        String presentDateTime = df.format(today);
+        String q1="";
+        if(s){
+            q1 = "SELECT examId from exampaper where examId="+qId+" and startingDateTime <="+presentDateTime;
+        }
+        else{
+            q1 = "SELECT examId from exampaper where examId="+qId+" and exampaper.endingDateTime >="+presentDateTime;
+        }
+        int t = (Optional.ofNullable(jdbcTemplate.queryForObject(q1, Integer.class)).orElse(0));
+        return t != 0;
     }
 }

@@ -100,6 +100,8 @@ create table stdAnsScript(
 	examId int,
 	questionNo int,
 	optionNo tinyint default 0,
+-- 	add march 12 23
+    optionValue varchar(3500),
 	ansStatus bool default false,
     constraint pk_stdAnsScript primary key (stdId,examId,questionNo,optionNo),
     
@@ -129,5 +131,9 @@ create table requestCourse
     foreign key(stdId) references student(stdId),
     foreign key(courseCode, deptId) references courses(courseCode, deptId)
 );
-
-
+create table faq
+(
+	faqId int primary key auto_increment,
+    faqQuestion varchar(500),
+    faqAns varchar(2000)
+);

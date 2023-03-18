@@ -7,7 +7,10 @@ import com.oems.home.model.*;
 import com.oems.home.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class AdminController {
@@ -22,7 +25,7 @@ public class AdminController {
     JwtUtil jwtUtil;
 
     @GetMapping("/admin/board")
-    public Dashboard adminBoardManager(@RequestHeader(value = "Authorization") String token){
+    public HashMap<String, Integer> adminBoardManager(@RequestHeader(value = "Authorization") String token){
         String adminId = jwtUtil.extractUsername(token.substring(7));
         return adminDao.adminBoardManager(adminId);
     }
@@ -30,6 +33,7 @@ public class AdminController {
   //-----------For teacher approve-------------
     @PostMapping("/public/request-to-join-as-teacher")
     public Teacher addTeacher(Teacher teacher){
+        System.out.println("the value is :"+teacher.getNid());
         teacherDao.create(teacher);
         return teacher;
     }
@@ -91,22 +95,23 @@ public class AdminController {
     }
 
     @PostMapping("/admin/action/changeSemester")
-    public String changeAndGoNextSemester(String nid, String password){
-    	
+    public ActionMsg changeAndGoNextSemester(String nid, String password){
     	UserVerificationModel model =  new UserVerificationModel();
     	model.setNid(nid);
     	model.setPassword(password);
+        ActionMsg am = new ActionMsg();
     	
     	if(adminDao.checkUserAndPassword(model)){
-            adminDao.updateSemester();
-            return "Successful...Enjoy new semester";
+//            adminDao.updateSemester();
+            am.setStatus(true);
+            return am;
         }
-        return "Failed... You are not authorized";
+        return null;
     }
     @PostMapping("/admin/course/assign-teacher")
-    public void assignTeacher(String courseCode, String deptId, String teacherId){
+    public String assignTeacher(String courseCode, String deptId, String teacherId){
     	
-    	adminDao.assignTeacherToCourse(courseCode, deptId, teacherId);
+    	return adminDao.assignTeacherToCourse(courseCode, deptId, teacherId);
     }
 
     @GetMapping("/admin/requested-courses")
@@ -115,12 +120,12 @@ public class AdminController {
     }
 
     @PostMapping("/admin/requested-courses/approve")
-    public void approveCrsRequest(@RequestBody RequestCourse list){
-        adminDao.approveCoursesForStudent(list,false);
+    public void approveCrsRequest(@RequestBody RequestCourse reqCrs){
+        adminDao.approveCoursesForStudent(reqCrs,false);
     }
     @PostMapping("/admin/requested-courses/delete")
-    public void DeleteCrsRequest(@RequestBody RequestCourse list){
-        adminDao.approveCoursesForStudent(list,true);
+    public void DeleteCrsRequest(@RequestBody RequestCourse reqCrs){
+        adminDao.approveCoursesForStudent(reqCrs,true);
     }
 
 
