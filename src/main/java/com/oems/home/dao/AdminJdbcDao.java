@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ public class AdminJdbcDao{
     public AdminJdbcDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-    public Dashboard adminBoardManager(String id){
+    public HashMap<String, Integer> adminBoardManager(String id){
         String q1= "select COUNT(*) from teacher";
         String q2= "select COUNT(*) from student";
         String q3= "select COUNT(*) from department";
@@ -29,7 +30,12 @@ public class AdminJdbcDao{
         dashboard.setCard2(Optional.ofNullable(jdbcTemplate.queryForObject(q2, Integer.class)).orElse(-1));
         dashboard.setCard3(Optional.ofNullable(jdbcTemplate.queryForObject(q3, Integer.class)).orElse(-1));
         dashboard.setCard4(Optional.ofNullable(jdbcTemplate.queryForObject(q4, Integer.class)).orElse(-1));
-        return dashboard;
+        HashMap<String, Integer> all = new HashMap<String, Integer>();
+        all.put("Total Teacher", dashboard.getCard1());
+        all.put("Total Student", dashboard.getCard2());
+        all.put("Total Department", dashboard.getCard3());
+        all.put("Ready Exam paper", dashboard.getCard4());
+        return all;
 
     }
 
@@ -91,7 +97,6 @@ public class AdminJdbcDao{
             return requestedCourse;
         });
     }
-
     public void approveCoursesForStudent(RequestCourse requestedCourse, boolean isDelete) {
 
         String queryForDelFrmRequestCourse = "delete from requestcourse where stdId=? " +
@@ -146,9 +151,15 @@ public class AdminJdbcDao{
                 "values(?,?)";
         jdbcTemplate.update(queryForAddDept, department.getDeptId(), department.getDeptName());
     }
-	public void assignTeacherToCourse(String courseCode, String deptId, String teacherId) {
-		String q1 = "update courses set teacherId =? where courseCode=? and deptId=?";
-		jdbcTemplate.update(q1,teacherId,courseCode,deptId);
+	public String assignTeacherToCourse(String courseCode, String deptId, String teacherId) {
+        int sess = retriveCourseCurrentSession(courseCode, deptId);
+
+        if(sess < 1) sess = 1;
+		String q1 = "update courses set teacherId =?, courseCurrSession = ? where courseCode=? and deptId=?";
+           if(jdbcTemplate.update(q1, teacherId, sess, courseCode, deptId) > 0) {
+               return "{\n" + "\"code\": \"" + courseCode + "\"\n}";
+           }
+           else return null;
 	}
 }
 

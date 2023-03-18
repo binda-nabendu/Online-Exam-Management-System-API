@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -38,6 +39,11 @@ public class SecurityManager extends WebSecurityConfigurerAdapter {
 
     @Override
     protected  void configure(HttpSecurity http) throws Exception {
+
+        //******This code for localhost enable*********
+        http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+        //*********************************************
+
         http.csrf().disable()
                 .authorizeRequests().antMatchers("/authenticate","/public/**").permitAll()
                 .antMatchers("/admin/**").access("hasAuthority('ADMIN')")

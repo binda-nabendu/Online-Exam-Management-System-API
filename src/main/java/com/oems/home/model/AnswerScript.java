@@ -3,12 +3,13 @@ package com.oems.home.model;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class AnswerScript {
     private String stdId;
     private int examId;
-    private ArrayList<QuestionOptionPair> allQuestionAnswer = new ArrayList<>();
+    private List<QuestionOptionPair> allQuestionAnswer = new ArrayList<>();
 
     public String getStdId() {
         return stdId;
@@ -26,7 +27,7 @@ public class AnswerScript {
         this.examId = examId;
     }
 
-    public ArrayList<QuestionOptionPair> getAllQuestionAnswer() {
+    public List<QuestionOptionPair> getAllQuestionAnswer() {
         return allQuestionAnswer;
     }
 

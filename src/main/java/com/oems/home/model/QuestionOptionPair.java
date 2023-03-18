@@ -7,6 +7,8 @@ public class QuestionOptionPair {
     private int questionNo;
     private int optionNo;
 
+    private String value;
+
     public int getQuestionNo() {
         return questionNo;
     }
@@ -21,5 +23,13 @@ public class QuestionOptionPair {
 
     public void setOptionNo(int optionNo) {
         this.optionNo = optionNo;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }

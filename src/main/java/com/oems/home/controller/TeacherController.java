@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -22,7 +24,7 @@ public class TeacherController {
     JwtUtil jwtUtil;
 	
     @GetMapping("/teacher/board")
-    public Dashboard TeacherBoardManager(@RequestHeader(value = "Authorization") String token){
+    public HashMap<String, Integer> TeacherBoardManager(@RequestHeader(value = "Authorization") String token){
         String tId = jwtUtil.extractUsername(token.substring(7));
     	return teacherDao.teacherBoardManager(tId);
     }
@@ -42,6 +44,11 @@ public class TeacherController {
     @GetMapping("/teacher/courses/my-students/{course-code}")
     public List<Student> allStudentOfThatCourse(@PathVariable("course-code")String courseCode,String deptId){
     	return teacherDao.listOfAllStudentOfThatCourse(courseCode, deptId);
+    }
+
+    @GetMapping("/teacher/all-students")
+    public List<Student> allStudents(){
+        return teacherDao.listOfAllStudent();
     }
     // !---------- must be full details of exam paper needed-----------!
     @PostMapping("/teacher/create-exams/question")
@@ -67,7 +74,11 @@ public class TeacherController {
         String tId = jwtUtil.extractUsername(token.substring(7));
         return teacherDao.listOfAllPendingResult(tId);
     }
-  
+    @GetMapping("/teacher/get-ans-script/{exam-id}/{std-id}")
+    public AnswerScript allAnswerScript(@RequestHeader(value = "Authorization") String token, @PathVariable("exam-id") int examId, @PathVariable("std-id") String stdId){
+//        String tId = jwtUtil.extractUsername(token.substring(7));
+        return teacherDao.allStudentPendingScript(stdId, examId);
+    }
     @GetMapping("/teacher/all-pending-result/student-list/{exam-id}")
     public List<Student> allPendingResultStdList(@PathVariable("exam-id") int examId){
         return teacherDao.listOfAllPendingResultStdList(examId);
@@ -89,11 +100,16 @@ public class TeacherController {
         return teacherDao.studentExamPaperReviewList(tId);
     }
     @GetMapping("/public/terms-and-condition")
-    public String termsAndCondition(){
-        return new FAQAndTAndC().termsAndCondition;
+    public TandC termsAndCondition(){
+        return new TandC();
     }
     @GetMapping("/public/faq")
-    public String faq(){
-        return new FAQAndTAndC().faq;
+    public Map<String, String> faq(){
+        FAQ faq = new FAQ();
+        return faq.generate();
+    }
+    @PostMapping("/teacher/assign-mark-for-ans-script")
+    public boolean markAssign(@RequestBody StudentMark questionPaper){
+        return teacherDao.assignMark(questionPaper) != 0;
     }
 }
