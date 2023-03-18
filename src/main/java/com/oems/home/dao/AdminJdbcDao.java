@@ -23,7 +23,7 @@ public class AdminJdbcDao{
         String q1= "select COUNT(*) from teacher";
         String q2= "select COUNT(*) from student";
         String q3= "select COUNT(*) from department";
-        String q4= "select COUNT(*) from examPaper where teacherId="+id;
+        String q4= "select COUNT(*) from exampaper where teacherId="+id;
 
         Dashboard dashboard = new Dashboard();
         dashboard.setCard1(Optional.ofNullable(jdbcTemplate.queryForObject(q1, Integer.class)).orElse(-1));
