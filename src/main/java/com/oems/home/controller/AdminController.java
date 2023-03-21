@@ -45,12 +45,12 @@ public class AdminController {
 
     @PostMapping("/admin/approve-teachers/approve/{teacher-id}")
     public void approveTeacher(@PathVariable("teacher-id") String tId){
-    	teacherDao.approveOrDeleteTeacher(tId, true);
+//    	teacherDao.approveOrDeleteTeacher(tId, true);
     }
 
     @PostMapping("/admin/approve-teachers/delete/{teacher-id}")
     public void deleteTeacher(@PathVariable("teacher-id") String tId){
-    	teacherDao.approveOrDeleteTeacher(tId, false);
+//    	teacherDao.approveOrDeleteTeacher(tId, false);
     }
 
     //-----------For student approve-------------
@@ -74,17 +74,17 @@ public class AdminController {
 
     @PostMapping("/admin/approve-student/approve/{student-id}")
     public void approveStudent(@PathVariable("student-id") String sId){
-        studentDao.approveOrDeleteStudent(sId,true);
+//        studentDao.approveOrDeleteStudent(sId,true);
     }
 
     @PostMapping("/admin/approve-student/delete/{student-id}")
     public void deleteStudent(@PathVariable("student-id") String sId){
-        studentDao.approveOrDeleteStudent(sId,false);
+//        studentDao.approveOrDeleteStudent(sId,false);
     }
 
     @PostMapping("/admin/add-department/")
     public String addDepartment(Department department){
-        adminDao.addADepartment(department);
+//        adminDao.addADepartment(department);
         return "department Added Successful";
     }
 
@@ -96,22 +96,23 @@ public class AdminController {
 
     @PostMapping("/admin/action/changeSemester")
     public ActionMsg changeAndGoNextSemester(String nid, String password){
-    	UserVerificationModel model =  new UserVerificationModel();
+/*    	UserVerificationModel model =  new UserVerificationModel();
     	model.setNid(nid);
     	model.setPassword(password);
         ActionMsg am = new ActionMsg();
-    	
+
     	if(adminDao.checkUserAndPassword(model)){
-//            adminDao.updateSemester();
+            adminDao.updateSemester();
             am.setStatus(true);
             return am;
-        }
+        }*/
         return null;
     }
     @PostMapping("/admin/course/assign-teacher")
     public String assignTeacher(String courseCode, String deptId, String teacherId){
     	
-    	return adminDao.assignTeacherToCourse(courseCode, deptId, teacherId);
+//    	return adminDao.assignTeacherToCourse(courseCode, deptId, teacherId);
+        return "";
     }
 
     @GetMapping("/admin/requested-courses")
@@ -121,11 +122,11 @@ public class AdminController {
 
     @PostMapping("/admin/requested-courses/approve")
     public void approveCrsRequest(@RequestBody RequestCourse reqCrs){
-        adminDao.approveCoursesForStudent(reqCrs,false);
+//        adminDao.approveCoursesForStudent(reqCrs,false);
     }
     @PostMapping("/admin/requested-courses/delete")
     public void DeleteCrsRequest(@RequestBody RequestCourse reqCrs){
-        adminDao.approveCoursesForStudent(reqCrs,true);
+//        adminDao.approveCoursesForStudent(reqCrs,true);
     }
 
 

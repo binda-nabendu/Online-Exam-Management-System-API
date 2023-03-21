@@ -184,8 +184,8 @@ public class StudentJdbcDao implements Dao<Student> {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date today = Calendar.getInstance().getTime();
         String presentDateTime = df.format(today);
-        String q1 =" select * from exampaper where (courseCode, deptId, courseSession) in(" +
-                "select courseCode, deptId, courseSession from result" +
+        String q1 =" select * from exampaper where (courseCode, deptId) in(" +
+                "select courseCode, deptId from result" +
                 " where cgpa=-1 and stdId="+stdId+
                 ")  and exampaper.startingDateTime> '"+presentDateTime+"'";
 
@@ -260,8 +260,8 @@ public class StudentJdbcDao implements Dao<Student> {
         String presentDateTime = df.format(today);
 
         String q1 =" SELECT * FROM exampaper " +
-                " WHERE (courseCode, deptId, courseSession) IN (" +
-                "      SELECT courseCode, deptId, courseSession FROM result" +
+                " WHERE (courseCode, deptId) IN (" +
+                "      SELECT courseCode, deptId FROM result" +
                 "      WHERE cgpa=-1 AND stdId="+stdId+
                 " ) AND exampaper.endingDateTime > '"+presentDateTime+"' " +
                 " ORDER BY exampaper.startingDateTime LIMIT 1";
