@@ -48,6 +48,9 @@ public class StudentController {
     @PostMapping("/student/request-for-courses")
     public List<CourseDetails> reqCourseList(@RequestHeader(value = "Authorization") String token, @RequestBody List<CourseDetails> courses){
         String stdId = jwtUtil.extractUsername(token.substring(7));
+//        for(CourseDetails t : courses){
+//            System.out.println(t.getCourseName()+'\n');
+//        }
         studentDao.requestedCourseAdd(courses, stdId);
         return courses;
     }
