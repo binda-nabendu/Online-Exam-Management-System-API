@@ -109,7 +109,7 @@ public class TeacherController {
     }
     @PostMapping("/teacher/assign-cgpa")
     public void assignCgpa(String stdId, String courseCode, String deptId, String cgpa, String grade) {
-    	teacherDao.assignStdCgpa(stdId, courseCode, deptId, cgpa, grade);
+//    	teacherDao.assignStdCgpa(stdId, courseCode, deptId, cgpa, grade);
     }
     
     
@@ -130,6 +130,7 @@ public class TeacherController {
     }
     @PostMapping("/teacher/assign-mark-for-ans-script")
     public boolean markAssign(@RequestBody StudentMark questionPaper){
-        return teacherDao.assignMark(questionPaper) != 0;
+//        return teacherDao.assignMark(questionPaper) != 0;
+        return false;
     }
 }
