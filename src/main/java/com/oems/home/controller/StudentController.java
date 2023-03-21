@@ -48,10 +48,7 @@ public class StudentController {
     @PostMapping("/student/request-for-courses")
     public List<CourseDetails> reqCourseList(@RequestHeader(value = "Authorization") String token, @RequestBody List<CourseDetails> courses){
         String stdId = jwtUtil.extractUsername(token.substring(7));
-//        for(CourseDetails t : courses){
-//            System.out.println(t.getCourseName()+'\n');
-//        }
-        studentDao.requestedCourseAdd(courses, stdId);
+//        studentDao.requestedCourseAdd(courses, stdId);
         return courses;
     }
     @GetMapping("/student/exams/upcoming")
@@ -71,8 +68,8 @@ public class StudentController {
     }
     @PostMapping("/student/exams/send-review/{examId}")
     public void RequestReview(@RequestHeader(value = "Authorization") String token, @PathVariable("examId") int examId){
-        String stdId = jwtUtil.extractUsername(token.substring(7));
-        studentDao.requestForReview(stdId,examId);
+//        String stdId = jwtUtil.extractUsername(token.substring(7));
+//        studentDao.requestForReview(stdId,examId);
     }
     @GetMapping("/student/exams/req-for-info")
     public UserInfo upComingExamStudent(@RequestHeader(value = "Authorization") String token, String id){
@@ -87,10 +84,10 @@ public class StudentController {
     }
     @PostMapping("/student/give-post-exam")
     public void sendAnswer(@RequestHeader(value = "Authorization") String token, @RequestBody AnswerScript answerScript) {
-        String stdId = jwtUtil.extractUsername(token.substring(7));
-        if( !studentDao.isAvailableQuestion(answerScript.getExamId(), false)) return;
-        answerScript.setStdId(stdId);
-        studentDao.ReceiveAnswer(answerScript);
+//        String stdId = jwtUtil.extractUsername(token.substring(7));
+//        if( !studentDao.isAvailableQuestion(answerScript.getExamId(), false)) return;
+//        answerScript.setStdId(stdId);
+//        studentDao.ReceiveAnswer(answerScript);
     }
 
     @GetMapping("/get-answer-script/{questionId}")
