@@ -1,7 +1,20 @@
-FROM maven:3.8.4-openjdk-8-slim
+FROM maven:3.5.2-jdk-8 AS build
 WORKDIR /app
-COPY pom.xml .
-COPY src/ ./src/
-RUN mvn clean install -DskipTests
-ENTRYPOINT ["java", "-jar", "./target/Exam-management-system-0.0.1-SNAPSHOT.jar"]
+COPY src src
+COPY pom.xml pom.xml
+RUN mvn -f pom.xml clean package
+RUN mv target/wurley-*.jar target/wurley.jar
+
+FROM openjdk:8
+ARG GIT_SHA
+ENV GIT_SHA=$GIT_SHA
+ENV TZ=Asia/Dhaka
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+ENV TINI_VERSION v0.19.0
+WORKDIR /app
+RUN curl -sSL https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini --output /usr/sbin/tini \
+        && chmod +x /usr/sbin/tini
+COPY --from=build /app/target/wurley.jar wurley.jar
 EXPOSE 8080
+ENTRYPOINT ["/usr/sbin/tini", "--"]
+CMD ["java", "-jar", "wurley.jar", "--spring.config=application.properties"]
