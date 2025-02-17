@@ -3,7 +3,7 @@ WORKDIR /app
 COPY src src
 COPY pom.xml pom.xml
 RUN mvn -f pom.xml clean package
-RUN mv target/wurley-*.jar target/wurley.jar
+RUN mv target/oems-*.jar target/oems.jar
 
 FROM openjdk:8
 ARG GIT_SHA
