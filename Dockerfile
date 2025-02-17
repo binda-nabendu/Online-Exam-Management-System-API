@@ -14,7 +14,7 @@ ENV TINI_VERSION v0.19.0
 WORKDIR /app
 RUN curl -sSL https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini --output /usr/sbin/tini \
         && chmod +x /usr/sbin/tini
-COPY --from=build /app/target/wurley.jar wurley.jar
+COPY --from=build /app/target/oems.jar oems.jar
 EXPOSE 8080
 ENTRYPOINT ["/usr/sbin/tini", "--"]
-CMD ["java", "-jar", "wurley.jar", "--spring.config=application.properties"]
+CMD ["java", "-jar", "oems.jar", "--spring.config=application.properties"]
