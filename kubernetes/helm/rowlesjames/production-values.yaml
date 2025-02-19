@@ -1,0 +1,63 @@
+replicaCount: 1
+
+image:
+  repository: doesnotexist
+  pullPolicy: IfNotPresent
+  tag: "doesnotexist"
+
+imagePullSecrets:
+  - name: docker-hub
+
+fullnameOverride: ""
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+environment: {}
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+
+  hosts:
+    - host: www.oems-front-end-bindanabendu.vercel.app
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+    - host: www.oems-front-end-bindanabendu.vercel.app
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: certificate-oems
+      hosts:
+        - oems-front-end-bindanabendu.vercel.app
+        - www.oems-front-end-bindanabendu.vercel.app
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 512Mi
+  requests:
+    cpu: 20m
+    memory: 30Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80

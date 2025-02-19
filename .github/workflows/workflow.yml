@@ -32,11 +32,10 @@ jobs:
 
       - name: Build image
         run: |
-          echo $OEMS_DATASOURCE_URL
           docker build -t ${{ env.IMAGE }}:${{ env.TAG }} . --build-arg GIT_BRANCH=${GITHUB_REF##*/}
 
       - name: Push image to DockerHUB Container Registry
-        run: docker push ${{ env.IMAGE }}:${{ env.TAG }}
+        run: docker push ${{ env.REGISTRY}}/${{ env.IMAGE }}:${{ env.TAG }}
   deploy:
     runs-on: ubuntu-latest
     needs: build_and_push

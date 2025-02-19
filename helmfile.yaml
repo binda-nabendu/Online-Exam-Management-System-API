@@ -1,0 +1,23 @@
+---
+helmDefaults:
+  args:
+  force: false
+  verify: false
+  wait: false
+  timeout: 300
+  createNamespace: true
+  atomic: false
+  cleanupOnFail: true
+
+repositories: []
+
+environments:
+  staging:
+  production:
+
+releases:
+  - name: "{{ requiredEnv "RELEASE" }}"
+    namespace: "{{ .Environment.Name }}"
+    chart: kubernetes/helm/{{ requiredEnv "RELEASE" }}
+    values:
+      - kubernetes/helm/{{ requiredEnv "RELEASE" }}/{{ .Environment.Name }}-values.yaml
