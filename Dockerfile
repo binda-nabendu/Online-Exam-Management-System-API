@@ -9,7 +9,7 @@ RUN mvn -B dependency:go-offline
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-RUN mv target/oems-*.jar target/oems.jar
+# RUN mv target/oems.jar target/oems.jar
 
 
 # ===============================
