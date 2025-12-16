@@ -5,7 +5,7 @@ COPY pom.xml pom.xml
 RUN mvn -f pom.xml clean package
 RUN mv target/oems-*.jar target/oems.jar
 
-FROM openjdk:8
+FROM amazoncorretto:8
 ARG GIT_SHA
 ENV GIT_SHA=$GIT_SHA
 ENV TZ=Asia/Dhaka
