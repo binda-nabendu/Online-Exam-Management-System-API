@@ -32,7 +32,8 @@ jobs:
 
       - name: Build image
         run: |
-          docker build -t ${{ env.IMAGE }}:${{ env.TAG }} . --build-arg GIT_BRANCH=${GITHUB_REF##*/}
+          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE }}:${{ env.TAG }} \
+                       --build-arg GIT_BRANCH=${GITHUB_REF##*/} .
 
       - name: Push image to DockerHUB Container Registry
         run: docker push ${{ env.REGISTRY}}/${{ env.IMAGE }}:${{ env.TAG }}
