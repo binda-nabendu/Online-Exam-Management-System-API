@@ -62,6 +62,10 @@ jobs:
             --restart always \
             --name oems \
             -p 80:8080 \
+            -e OEMS_PORT=8080 \
+            -e OEMS_DATASOURCE_URL='${{ secrets.OEMS_DATASOURCE_URL }}' \
+            -e OEMS_DATASOURCE_USERNAME='${{ secrets.OEMS_DATASOURCE_USERNAME }}' \
+            -e OEMS_DATASOURCE_PASSWORD='${{ secrets.OEMS_DATASOURCE_PASSWORD }}' \
             bindanabendu/oems:$(echo $GITHUB_SHA | head -c7)
 
       - name: Cleanup Old Docker Images
